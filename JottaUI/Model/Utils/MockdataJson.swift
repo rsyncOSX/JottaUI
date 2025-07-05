@@ -9,10 +9,10 @@ struct MockdataJson {
     let json = """
     {
       "User": {
-        "Email": "thomeven@gmail.com",
-        "Fullname": "Thomas Evensen",
+        "Email": "thomas@mail.org",
+        "Fullname": "Thomas",
         "Avatar": {
-          "Initials": "TE",
+          "Initials": "TT",
           "Background": {
             "r": 255,
             "g": 121,
@@ -45,7 +45,7 @@ struct MockdataJson {
           },
           "Uploading": {},
           "Errors": {},
-          "DeviceID": "cffe8ca6-65eb-4d33-83b5-42b97e5f9dc9",
+          "DeviceID": "xxxxxxx-eeee-dddd-8888-42b97e5f9dc9",
           "ErrorFilesCount": {},
           "History": [
             {
@@ -69,14 +69,14 @@ struct MockdataJson {
         },
         {
           "Name": "DxO PhotoLab v8",
-          "Path": "/Users/thomas/Library/DxO PhotoLab v8",
+          "Path": "/Users/thomas/Library/DxO",
           "Count": {
             "Files": 41,
             "Bytes": 121875995
           },
           "Uploading": {},
           "Errors": {},
-          "DeviceID": "cffe8ca6-65eb-4d33-83b5-42b97e5f9dc9",
+          "DeviceID": "xxxxxxx-eeee-dddd-8888-42b97e5f9dc9",
           "ErrorFilesCount": {},
           "History": [
             {
