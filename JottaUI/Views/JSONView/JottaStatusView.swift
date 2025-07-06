@@ -95,7 +95,7 @@ struct JottaStatusView: View {
                 }
             }
             .sheet(isPresented: $scan) {
-                MessageView(mytext: "Scan is completed", size: .title2)
+                MessageView(mytext: "Scan is completed", size: .title3)
                     .padding()
                     .onAppear {
                         Task {

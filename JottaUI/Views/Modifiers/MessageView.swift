@@ -9,17 +9,15 @@ import SwiftUI
 
 struct MessageView: View {
     @Environment(\.colorScheme) var colorScheme
-    
+
     private var mytext: String
     private var textsize: Font
 
     var body: some View {
-        
         if colorScheme == .dark {
             ZStack {
                 RoundedRectangle(cornerRadius: 15).fill(Color.gray.opacity(0.3))
                 Text(mytext)
-                    // .font(.caption2)
                     .font(textsize)
                     .foregroundColor(Color.green)
                     .multilineTextAlignment(.center)
@@ -34,7 +32,6 @@ struct MessageView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 15).fill(Color.gray.opacity(0.3))
                 Text(mytext)
-                    // .font(.caption2)
                     .font(textsize)
                     .foregroundColor(Color.blue)
                     .multilineTextAlignment(.center)
@@ -53,4 +50,3 @@ struct MessageView: View {
         textsize = size
     }
 }
-
