@@ -95,12 +95,11 @@ struct JottaStatusView: View {
                 }
             }
             .sheet(isPresented: $scan) {
-                Text("Scan is completed")
-                    .font(.caption)
+                MessageView(mytext: "Scan is completed", size: .title2)
                     .padding()
                     .onAppear {
                         Task {
-                            try await Task.sleep(seconds: 1)
+                            try await Task.sleep(seconds: 2)
                             scan = false
                         }
                     }
