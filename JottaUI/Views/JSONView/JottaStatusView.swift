@@ -37,7 +37,7 @@ struct JottaStatusView: View {
                     Button {
                         mockprocesstermination()
                     } label: {
-                        Text("Mockdata Status")
+                        Text("Status by Mockdata")
                     }
                     .buttonStyle(ColorfulButtonStyle())
 
@@ -45,7 +45,7 @@ struct JottaStatusView: View {
                     HStack {
                         Button {
                             let arguments = ["status", "--json"]
-                            let command = "/opt/homebrew/bin/jotta-cli"
+                            let command = FullpathJottaCli().jottaclipathandcommand()
 
                             // Start progressview
                             showprogressview = true
@@ -60,7 +60,7 @@ struct JottaStatusView: View {
 
                         Button {
                             let arguments = ["scan"]
-                            let command = "/opt/homebrew/bin/jotta-cli"
+                            let command = FullpathJottaCli().jottaclipathandcommand()
 
                             // Start progressview
                             showprogressview = true
@@ -73,10 +73,14 @@ struct JottaStatusView: View {
                         }
                         .buttonStyle(ColorfulButtonStyle())
                     }
+                    
+                    if showprogressview {
+                        ProgressView()
+                    }
                 }
             }
             .padding()
-            .navigationTitle("Jotta status")
+            .navigationTitle("Jotta status (JSON)")
             .navigationDestination(for: Status.self) { which in
                 makeView(view: which.task)
             }

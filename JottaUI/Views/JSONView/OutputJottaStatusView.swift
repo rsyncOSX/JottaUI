@@ -53,7 +53,7 @@ struct OutputJottaStatusView: View {
 
             Table(jsondata.backups) {
                 TableColumn("Path", value: \.Path)
-                TableColumn("DeviceID", value: \.DeviceID)
+                // TableColumn("DeviceID", value: \.DeviceID)
                 TableColumn("Name", value: \.Name)
                 TableColumn("Files") { data in
                     Text(String(data.Count.Files))

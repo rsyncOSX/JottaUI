@@ -9,7 +9,7 @@ import OSLog
 import SwiftUI
 
 enum Sidebaritems: String, Identifiable, CaseIterable {
-    case status, output, logfile
+    case status, status_text, logfile
     var id: String { rawValue }
 }
 
@@ -58,7 +58,7 @@ struct SidebarMainView: View {
         switch view {
         case .logfile:
             NavigationJottaCliLogfileView()
-        case .output:
+        case .status_text:
             JottaStatusOutputView()
         case .status:
             JottaStatusView(statuspath: $statuspath)
@@ -78,7 +78,7 @@ struct SidebarRow: View {
         switch view {
         case .logfile:
             "doc.plaintext"
-        case .output:
+        case .status_text:
             "doc.plaintext"
         case .status:
             "doc.plaintext"

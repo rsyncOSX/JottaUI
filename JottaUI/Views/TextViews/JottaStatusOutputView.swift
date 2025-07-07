@@ -20,8 +20,7 @@ struct JottaStatusOutputView: View {
                 } else {
                     Button {
                         let arguments = ["status"]
-                        // let arguments = ["status"]
-                        let command = "/opt/homebrew/bin/jotta-cli"
+                        let command = FullpathJottaCli().jottaclipathandcommand()
 
                         // Start progressview
                         showprogressview = true
@@ -36,7 +35,7 @@ struct JottaStatusOutputView: View {
                 }
             }
             .padding()
-            .navigationTitle("Jotta-client output")
+            .navigationTitle("Jotta status (Jotta-client output)")
             .navigationDestination(isPresented: $completed) {
                 OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
