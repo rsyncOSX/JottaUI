@@ -81,9 +81,9 @@ struct SidebarRow: View {
         case .logfile:
             "doc.plaintext"
         case .status_text:
-            "doc.plaintext"
+            "arrowshape.turn.up.backward"
         case .status:
-            "doc.plaintext"
+            "arrowshape.turn.up.backward.fill"
         case .add_catalogs_backup:
             "folder.fill"
         }
