@@ -10,21 +10,53 @@ import SwiftUI
 
 struct AddCatalogsForBackup: View {
     @State private var catalogsforbackup = ObservableCatalogsforbackup()
+    @State private var catalogadded: Bool = false
+    @State private var showprogressview = false
 
     var body: some View {
-        Form {
-            Section {
-                HStack {
-                    setpathforrestore
-                    
-                    OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
+        VStack {
+            Form {
+                Section {
+                    HStack {
+                        setpathforrestore
+                        
+                        OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
+                    }
+                } header: {
+                    Text("Catalog for backup")
                 }
-            } header: {
-                Text("Catalog for backup")
+                .formStyle(.grouped)
             }
-            .formStyle(.grouped)
+            
+            if catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) {
+                Form {
+                    Button {
+                        let arguments = ["add"]
+                        let command = FullpathJottaCli().jottaclipathandcommand()
+
+                        // Start progressview
+                        showprogressview = true
+                        let process = ProcessCommand(command: command,
+                                                     arguments: arguments,
+                                                     processtermination: processtermination)
+                        process.executeProcess()
+                    } label: {
+                        Text("Add catalog")
+                    }
+                    .buttonStyle(ColorfulButtonStyle())
+                }
+            }
         }
-        
+        .sheet(isPresented: $catalogadded) {
+            MessageView(mytext: "Catalog for backup is added", size: .title3)
+                .padding()
+                .onAppear {
+                    Task {
+                        try await Task.sleep(seconds: 2)
+                        catalogadded = false
+                    }
+                }
+        }
     }
     
     var setpathforrestore: some View {
@@ -42,5 +74,10 @@ struct AddCatalogsForBackup: View {
                     }
                 }
             }
+    }
+    
+    func processtermination(_: [String]?) {
+        showprogressview = false
+        catalogadded = true
     }
 }
