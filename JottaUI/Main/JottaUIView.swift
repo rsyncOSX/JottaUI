@@ -10,6 +10,7 @@ import SwiftUI
 
 struct JottaUIView: View {
     @State private var start: Bool = true
+    @State private var jottacliversion = JottaCliVersion()
 
     var body: some View {
         VStack {
@@ -30,6 +31,9 @@ struct JottaUIView: View {
             }
         }
         .padding()
+        .task {
+            jottacliversion.getjottacliversion()
+        }
     }
 
     var errorhandling: AlertError {

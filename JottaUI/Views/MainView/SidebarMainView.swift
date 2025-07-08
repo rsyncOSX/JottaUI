@@ -40,6 +40,8 @@ struct SidebarMainView: View {
             }
             .listStyle(.sidebar)
             .disabled(statuspath.isEmpty == false)
+            
+            MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 
         } detail: {
             selectView(selectedview)

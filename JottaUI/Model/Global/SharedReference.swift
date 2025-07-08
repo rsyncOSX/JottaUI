@@ -38,4 +38,5 @@ final class SharedReference {
     var process: Process?
     // Object for propogate errors to views
     @ObservationIgnored var errorobject: AlertError?
+    var jottacliversion: String?
 }
