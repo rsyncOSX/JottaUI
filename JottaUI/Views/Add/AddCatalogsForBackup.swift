@@ -49,7 +49,8 @@ struct AddCatalogsForBackup: View {
             "Catalog for backup added",
             isPresented: $catalogadded
         ) {
-            Button("Dismiss", role: .cancel) {
+            Button("Close", role: .cancel) {
+                catalogsforbackup.catalogsforbackup = ""
                 catalogadded = false
             }
         }
