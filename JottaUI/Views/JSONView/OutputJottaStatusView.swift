@@ -54,31 +54,50 @@ struct OutputJottaStatusView: View {
             Table(jsondata.backups) {
                 TableColumn("Path", value: \.Path)
                 // TableColumn("DeviceID", value: \.DeviceID)
+                    .width(min: 120, max: 400)
+                
                 TableColumn("Name", value: \.Name)
+                    .width(min: 80, max: 200)
+                
                 TableColumn("Files") { data in
                     Text(String(data.Count.Files))
                 }
+                .width(min: 40, max: 80)
+                .alignment(.trailing)
+                
                 TableColumn("Started") { data in
                     Text(String(data.history.Started))
                 }
+                .width(min: 60, max: 100)
+                .alignment(.trailing)
+                
                 TableColumn("Ended") { data in
                     Text(String(data.history.Ended))
+                    
                 }
+                .width(min: 60, max: 100)
+                .alignment(.trailing)
+                
                 TableColumn("Finished") { data in
                     Text(String(data.history.Finished))
                 }
+                .width(min: 50, max: 50)
+                .alignment(.trailing)
 
                 TableColumn("LastUpdateMS") { data in
                     Text(dateinseconds(data.LastUpdateMS))
                 }
+                .width(min: 80, max: 100)
 
                 TableColumn("NextBackupMS") { data in
                     Text(dateinseconds(data.NextBackupMS))
                 }
+                .width(min: 80, max: 100)
 
                 TableColumn("LastScanStartedMS") { data in
                     Text(dateinseconds(data.LastScanStartedMS))
                 }
+                .width(min: 80, max: 100)
             }
         }
         .padding()
@@ -87,7 +106,7 @@ struct OutputJottaStatusView: View {
     let dateinseconds: (Int) -> String = { (ms: Int) -> String in
         let date = Date(timeIntervalSince1970: TimeInterval(ms) / 1000.0)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.dateFormat = "yy-MM-dd HH:mm"
         return dateFormatter.string(from: date)
     }
 }
