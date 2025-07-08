@@ -23,7 +23,7 @@ struct FullpathJottaCli {
             return SharedReference.shared.usrlocalbin.appending("/") + SharedReference.shared.jottaclient
         }
     }
-    
+
     init() {
         let silicon = ProcessInfo().machineHardwareName?.contains("arm64") ?? false
         if silicon {

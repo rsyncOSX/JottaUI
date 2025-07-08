@@ -10,11 +10,10 @@ import Observation
 
 @Observable @MainActor
 final class ObservableCatalogsforbackup {
-    
     // Catalog for backup
     var catalogsforbackup: String = ""
     // Mark number of days since last backup
-    
+
     func verifycatalogsforbackup(_ path: String) -> Bool {
         let fm = FileManager.default
         return fm.fileExists(atPath: path, isDirectory: nil)

@@ -29,9 +29,8 @@ struct EditValueScheme: View {
         myprompt = Text(str ?? "")
         myerror = error
     }
-    
+
     func color(error: Bool) -> Color {
         error == false ? .red : (colorScheme == .dark ? .white : .black)
     }
 }
-

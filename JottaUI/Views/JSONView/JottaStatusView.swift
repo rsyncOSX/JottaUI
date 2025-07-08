@@ -73,7 +73,7 @@ struct JottaStatusView: View {
                         }
                         .buttonStyle(ColorfulButtonStyle())
                     }
-                    
+
                     if showprogressview {
                         ProgressView()
                     }
