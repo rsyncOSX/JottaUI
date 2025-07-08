@@ -58,8 +58,14 @@ struct OutputJottaStatusView: View {
                 TableColumn("Files") { data in
                     Text(String(data.Count.Files))
                 }
-                TableColumn("Bytes") { data in
-                    Text(String(data.Count.Bytes))
+                TableColumn("Started") { data in
+                    Text(String(data.history.Started))
+                }
+                TableColumn("Ended") { data in
+                    Text(String(data.history.Ended))
+                }
+                TableColumn("Finished") { data in
+                    Text(String(data.history.Finished))
                 }
 
                 TableColumn("LastUpdateMS") { data in
