@@ -30,7 +30,8 @@ struct AddCatalogsForBackup: View {
             if catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) {
                 Form {
                     Button {
-                        let arguments = ["add"]
+                        let catalogsforbackup = catalogsforbackup.catalogsforbackup
+                        let arguments = ["add",catalogsforbackup]
                         let command = FullpathJottaCli().jottaclipathandcommand()
                         // Start progressview
                         let process = ProcessCommand(command: command,
