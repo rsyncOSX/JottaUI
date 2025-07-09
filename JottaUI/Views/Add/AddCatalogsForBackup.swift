@@ -31,7 +31,7 @@ struct AddCatalogsForBackup: View {
                 Form {
                     Button {
                         let catalogsforbackup = catalogsforbackup.catalogsforbackup
-                        let arguments = ["add",catalogsforbackup]
+                        let arguments = ["add", catalogsforbackup]
                         let command = FullpathJottaCli().jottaclipathandcommand()
                         // Start progressview
                         let process = ProcessCommand(command: command,

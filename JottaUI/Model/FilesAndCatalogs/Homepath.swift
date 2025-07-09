@@ -10,14 +10,6 @@ import OSLog
 
 @MainActor
 struct Homepath {
-    // full path without macserialnumber
-    var fullpathnomacserial: String?
-    // Documentscatalog
-    var documentscatalog: String? {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as NSArray
-        return paths.firstObject as? String
-    }
-
     // Mac serialnumber
     var macserialnumber: String? {
         if SharedReference.shared.macserialnumber == nil {
@@ -36,22 +28,8 @@ struct Homepath {
         }
     }
 
-    var userHomeDirectoryURLPath: URL? {
-        let pw = getpwuid(getuid())
-        if let home = pw?.pointee.pw_dir {
-            let homePath = FileManager.default.string(withFileSystemRepresentation: home, length: Int(strlen(home)))
-            return URL(fileURLWithPath: homePath)
-        } else {
-            return nil
-        }
-    }
-
     func propogateerror(error: Error) {
         SharedReference.shared.errorobject?.alert(error: error)
-    }
-
-    init() {
-        fullpathnomacserial = (userHomeDirectoryPath ?? "") + SharedConstants().logfilepath
     }
 }
 

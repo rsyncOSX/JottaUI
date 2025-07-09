@@ -18,8 +18,4 @@ final class ObservableCatalogsforbackup {
         let fm = FileManager.default
         return fm.fileExists(atPath: path, isDirectory: nil)
     }
-
-    func propogateerror(error: Error) {
-        SharedReference.shared.errorobject?.alert(error: error)
-    }
 }

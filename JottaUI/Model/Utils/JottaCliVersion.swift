@@ -10,14 +10,13 @@ import Observation
 
 @Observable @MainActor
 final class JottaCliVersion {
-    
     func getjottacliversion() {
         let arguments = ["version"]
         let clicommand = FullpathJottaCli().jottaclipathandcommand()
 
         let command = ProcessCommand(command: clicommand,
                                      arguments: arguments,
-                                            processtermination: processtermination)
+                                     processtermination: processtermination)
         command.executeProcess()
     }
 

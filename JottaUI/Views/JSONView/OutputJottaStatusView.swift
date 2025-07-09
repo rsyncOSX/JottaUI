@@ -53,31 +53,30 @@ struct OutputJottaStatusView: View {
 
             Table(jsondata.backups) {
                 TableColumn("Path", value: \.Path)
-                // TableColumn("DeviceID", value: \.DeviceID)
+                    // TableColumn("DeviceID", value: \.DeviceID)
                     .width(min: 120, max: 400)
-                
+
                 TableColumn("Name", value: \.Name)
                     .width(min: 80, max: 200)
-                
+
                 TableColumn("Files") { data in
                     Text(String(data.Count.Files))
                 }
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
-                
+
                 TableColumn("Started") { data in
                     Text(String(data.history.Started))
                 }
                 .width(min: 60, max: 100)
                 .alignment(.trailing)
-                
+
                 TableColumn("Ended") { data in
                     Text(String(data.history.Ended))
-                    
                 }
                 .width(min: 60, max: 100)
                 .alignment(.trailing)
-                
+
                 TableColumn("Finished") { data in
                     Text(String(data.history.Finished))
                 }
