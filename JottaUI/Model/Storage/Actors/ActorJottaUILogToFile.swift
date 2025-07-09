@@ -24,7 +24,7 @@ enum FilesizeError: LocalizedError {
 actor ActorJottaUILogToFile {
     @concurrent
     nonisolated func writeloggfile(_ newlogadata: String, _ reset: Bool) async {
-        let path = await Homepath()
+        let path = Homepath()
         if let homepath = await path.userHomeDirectoryPath {
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
@@ -57,7 +57,7 @@ actor ActorJottaUILogToFile {
 
     @concurrent
     nonisolated func readloggfile() async -> [String]? {
-        let path = await Homepath()
+        let path = Homepath()
         let fm = FileManager.default
         if let homepath = await path.userHomeDirectoryPath {
             let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
@@ -86,7 +86,7 @@ actor ActorJottaUILogToFile {
 
     @concurrent
     private nonisolated func readloggfileasline() async -> String? {
-        let path = await Homepath()
+        let path = Homepath()
         let fm = FileManager.default
         if let homepath = await path.userHomeDirectoryPath {
             let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
@@ -113,7 +113,7 @@ actor ActorJottaUILogToFile {
 
     @concurrent
     private nonisolated func appendloggfileData(_ newlogadata: String, _ reset: Bool) async -> Data? {
-        let path = await Homepath()
+        let path = Homepath()
         let fm = FileManager.default
         if let homepath = await path.userHomeDirectoryPath {
             let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile

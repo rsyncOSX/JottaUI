@@ -13,7 +13,7 @@ actor ActorFileSize {
 
     @concurrent
     nonisolated func filesize() async throws -> NSNumber? {
-        let path = await Homepath()
+        let path = Homepath()
         let fm = FileManager.default
         if let homepath = await path.userHomeDirectoryPath {
             let logfilepath = SharedConstants().jottaUIlogfile

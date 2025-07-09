@@ -13,7 +13,7 @@ import OSLog
 actor ActorReadJottaCliLogfile {
     @concurrent
     nonisolated func readloggfile() async -> [String]? {
-        let path = await Homepath()
+        let path = Homepath()
         let fm = FileManager.default
         if let homepath = await path.userHomeDirectoryPath {
             let logfilepath = SharedConstants().logfilepath
