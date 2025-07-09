@@ -13,12 +13,6 @@ enum Sidebaritems: String, Identifiable, CaseIterable {
     var id: String { rawValue }
 }
 
-// The sidebar is context sensitive, it is computed everytime a new profile is loaded
-struct MenuItem: Identifiable, Hashable {
-    var menuitem: Sidebaritems
-    let id = UUID()
-}
-
 struct SidebarMainView: View {
     @Bindable var errorhandling: AlertError
     // Toggle sidebar
