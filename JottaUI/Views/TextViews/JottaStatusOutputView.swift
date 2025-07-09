@@ -39,6 +39,20 @@ struct JottaStatusOutputView: View {
             .navigationDestination(isPresented: $completed) {
                 OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        let arguments = ["web"]
+                        let command = FullpathJottaCli().jottaclipathandcommand()
+                        let process = ProcessCommand(command: command,
+                                                     arguments: arguments)
+                        process.executeProcess()
+                    } label: {
+                        Image(systemName: "network")
+                    }
+                    .help("Jottacloud Web")
+                }
+            }
         }
     }
 

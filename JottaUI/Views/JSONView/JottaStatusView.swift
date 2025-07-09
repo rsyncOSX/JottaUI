@@ -91,6 +91,19 @@ struct JottaStatusView: View {
 
                 ToolbarItem {
                     Button {
+                        let arguments = ["web"]
+                        let command = FullpathJottaCli().jottaclipathandcommand()
+                        let process = ProcessCommand(command: command,
+                                                     arguments: arguments)
+                        process.executeProcess()
+                    } label: {
+                        Image(systemName: "network")
+                    }
+                    .help("Jottacloud Web")
+                }
+                
+                ToolbarItem {
+                    Button {
                         statuspath.append(Status(task: .logfileview))
                     } label: {
                         Image(systemName: "doc.plaintext")
@@ -150,7 +163,7 @@ extension JottaStatusView {
         showprogressview = false
         scan = true
     }
-
+    
     func mockprocesstermination() {
         let data = Data(MockdataJson().json.utf8)
         jsondata.setJSONData(data)

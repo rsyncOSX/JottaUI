@@ -113,6 +113,17 @@ final class ProcessCommand {
             line.contains("--json") ? true : nil
         }
     }
+    
+    convenience init(command: String?,
+                     arguments: [String]?)
+    {
+        let processtermination: ([String]?) -> Void = { _ in
+            Logger.process.info("ProcessCommand: You SEE this message only when Process() is terminated")
+        }
+        self.init(command: command,
+                  arguments: arguments,
+                  processtermination: processtermination)
+    }
 
     deinit {
         Logger.process.info("ProcessCommand: DEINIT")
