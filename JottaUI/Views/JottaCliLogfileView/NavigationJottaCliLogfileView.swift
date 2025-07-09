@@ -14,7 +14,7 @@ struct NavigationJottaCliLogfileView: View {
     // Filterstring
     @State private var filterstring: String = ""
     // Sortdirection, true most recent at top false default
-    @State private var sortdirection: Bool = false
+    @State private var sortdirection: Bool = true
     // Reset and read logfile again as default
     @State private var reset: Bool = false
     // Set progressview when resetting, filter or reset data
@@ -31,7 +31,7 @@ struct NavigationJottaCliLogfileView: View {
                         }
                         .width(min: 100, max: 150)
 
-                        TableColumn("Logfile form Jotta-client" + ": \(logfilerecords.count) rows") { data in
+                        TableColumn("Logfile form Jotta-client" + ": \(logfilerecords.count) rows" + sortdirectionstring()) { data in
                             Text(data.line)
                         }
                     }
@@ -112,5 +112,12 @@ struct NavigationJottaCliLogfileView: View {
                 .help("Reset and read again")
             }
         }
+    }
+    
+    func sortdirectionstring() -> String {
+        if sortdirection {
+            return " - most recent at TOP"
+        }
+        return "- most recent at BOTTOM"
     }
 }

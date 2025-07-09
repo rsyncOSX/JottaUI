@@ -19,15 +19,7 @@ struct JottaStatusOutputView: View {
                     ProgressView()
                 } else {
                     Button {
-                        let arguments = ["status"]
-                        let command = FullpathJottaCli().jottaclipathandcommand()
-
-                        // Start progressview
-                        showprogressview = true
-                        let process = ProcessCommand(command: command,
-                                                     arguments: arguments,
-                                                     processtermination: processtermination)
-                        process.executeProcess()
+                        scan()
                     } label: {
                         Text("Status")
                     }
@@ -42,17 +34,17 @@ struct JottaStatusOutputView: View {
             .toolbar {
                 ToolbarItem {
                     Button {
-                        let arguments = ["web"]
-                        let command = FullpathJottaCli().jottaclipathandcommand()
-                        let process = ProcessCommand(command: command,
-                                                     arguments: arguments)
-                        process.executeProcess()
+                        webview()
                     } label: {
                         Image(systemName: "network")
                     }
                     .help("Jottacloud Web")
                 }
             }
+            .onAppear {
+                scan()
+            }
+            
         }
     }
 
@@ -65,6 +57,27 @@ struct JottaStatusOutputView: View {
 }
 
 extension JottaStatusOutputView {
+    
+    func scan() {
+        let arguments = ["status"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+
+        // Start progressview
+        showprogressview = true
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments,
+                                     processtermination: processtermination)
+        process.executeProcess()
+    }
+    
+    func webview() {
+        let arguments = ["web"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments)
+        process.executeProcess()
+    }
+    
     func abort() {
         InterruptProcess()
     }

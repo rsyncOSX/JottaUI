@@ -91,11 +91,7 @@ struct JottaStatusView: View {
 
                 ToolbarItem {
                     Button {
-                        let arguments = ["web"]
-                        let command = FullpathJottaCli().jottaclipathandcommand()
-                        let process = ProcessCommand(command: command,
-                                                     arguments: arguments)
-                        process.executeProcess()
+                        webview()
                     } label: {
                         Image(systemName: "network")
                     }
@@ -116,7 +112,7 @@ struct JottaStatusView: View {
                     .padding()
                     .onAppear {
                         Task {
-                            try await Task.sleep(seconds: 2)
+                            try await Task.sleep(seconds: 1)
                             scan = false
                         }
                     }
@@ -147,6 +143,15 @@ struct JottaStatusView: View {
 }
 
 extension JottaStatusView {
+    
+    func webview() {
+        let arguments = ["web"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments)
+        process.executeProcess()
+    }
+    
     func abort() {
         InterruptProcess()
     }
