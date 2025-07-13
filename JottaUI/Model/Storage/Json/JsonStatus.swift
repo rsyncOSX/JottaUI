@@ -97,6 +97,7 @@ struct Backup: Identifiable {
     let DeviceID: String
     let LastScanStartedMS: Int
     let Name: String
+    let WaitingForScan: Bool
 }
 
 struct Errors {

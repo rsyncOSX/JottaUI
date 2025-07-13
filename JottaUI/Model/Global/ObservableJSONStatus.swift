@@ -93,6 +93,7 @@ final class ObservableJSONStatus {
                     let DeviceID = item["DeviceID"].stringValue
                     let LastScanStartedMS = item["LastScanStartedMS"].intValue
                     let name = item["Name"].stringValue
+                    let WaitingForScan = item["WaitingForScan"].boolValue
 
                     let backupitem = Backup(LastUpdateMS: LastUpdateMS,
                                             NextBackupMS: NextBackupMS,
@@ -101,7 +102,8 @@ final class ObservableJSONStatus {
                                             history: history,
                                             DeviceID: DeviceID,
                                             LastScanStartedMS: LastScanStartedMS,
-                                            Name: name)
+                                            Name: name,
+                                            WaitingForScan: WaitingForScan)
                     backups.append(backupitem)
                 }
             }

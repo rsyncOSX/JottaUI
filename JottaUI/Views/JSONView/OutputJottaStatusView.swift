@@ -55,6 +55,12 @@ struct OutputJottaStatusView: View {
                 TableColumn("Path", value: \.Path)
                     // TableColumn("DeviceID", value: \.DeviceID)
                     .width(min: 120, max: 400)
+                
+                TableColumn("WaitingForScan") { data in
+                    Text(String(data.WaitingForScan))
+                }
+                .width(min: 50, max: 100)
+                .alignment(.trailing)
 
                 TableColumn("Name", value: \.Name)
                     .width(min: 80, max: 200)
