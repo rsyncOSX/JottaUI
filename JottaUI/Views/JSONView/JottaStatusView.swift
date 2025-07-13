@@ -34,12 +34,23 @@ struct JottaStatusView: View {
         NavigationStack(path: $statuspath) {
             ZStack {
                 if mockdata {
+                HStack {
                     Button {
                         mockprocesstermination()
                     } label: {
-                        Text("Status by Mockdata")
+                        Text("Status by Mockdata 1")
                     }
                     .buttonStyle(ColorfulButtonStyle())
+                    
+                    Button {
+                        mockprocesstermination2()
+                    } label: {
+                        Text("Status by Mockdata 2")
+                    }
+                    .buttonStyle(ColorfulButtonStyle())
+                }
+               
+                    
 
                 } else {
                     HStack {
@@ -112,7 +123,7 @@ struct JottaStatusView: View {
                     .padding()
                     .onAppear {
                         Task {
-                            try await Task.sleep(seconds: 1)
+                            try await Task.sleep(seconds: 0.5)
                             scan = false
                         }
                     }
@@ -171,6 +182,13 @@ extension JottaStatusView {
     
     func mockprocesstermination() {
         let data = Data(MockdataJson().json.utf8)
+        jsondata.setJSONData(data)
+        jsondata.debugJSONdata()
+        statuspath.append(Status(task: .completedview))
+    }
+    
+    func mockprocesstermination2() {
+        let data = Data(MockdataJson().json2.utf8)
         jsondata.setJSONData(data)
         jsondata.debugJSONdata()
         statuspath.append(Status(task: .completedview))
