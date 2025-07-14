@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct JottaStatusOutputView: View {
+    @Binding var completedjottastatustextview: Bool
+    
     @State private var showprogressview = false
     @State private var jottaclioutput = ObservableJottaOutput()
-    @State private var completed: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -28,7 +29,7 @@ struct JottaStatusOutputView: View {
             }
             .padding()
             .navigationTitle("Jotta status (Jotta-client output)")
-            .navigationDestination(isPresented: $completed) {
+            .navigationDestination(isPresented: $completedjottastatustextview) {
                 OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
             .toolbar {
@@ -86,7 +87,7 @@ extension JottaStatusOutputView {
         showprogressview = false
         Task {
             jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
-            completed = true
+            completedjottastatustextview = true
         }
     }
 }

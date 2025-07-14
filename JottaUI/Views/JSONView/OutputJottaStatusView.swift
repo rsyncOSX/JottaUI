@@ -72,13 +72,13 @@ struct OutputJottaStatusView: View {
                 .alignment(.trailing)
 
                 TableColumn("Started") { data in
-                    Text(String(data.history.Started))
+                    Text(String(dateinseconds(data.history.Started)))
                 }
                 .width(min: 60, max: 100)
                 .alignment(.trailing)
 
                 TableColumn("Ended") { data in
-                    Text(String(data.history.Ended))
+                    Text(String(dateinseconds(data.history.Ended)))
                 }
                 .width(min: 60, max: 100)
                 .alignment(.trailing)
@@ -90,17 +90,17 @@ struct OutputJottaStatusView: View {
                 .alignment(.trailing)
 
                 TableColumn("LastUpdateMS") { data in
-                    Text(dateinseconds(data.LastUpdateMS))
+                    Text(dateinmilliseconds(data.LastUpdateMS))
                 }
                 .width(min: 80, max: 100)
 
                 TableColumn("NextBackupMS") { data in
-                    Text(dateinseconds(data.NextBackupMS))
+                    Text(dateinmilliseconds(data.NextBackupMS))
                 }
                 .width(min: 80, max: 100)
 
                 TableColumn("LastScanStartedMS") { data in
-                    Text(dateinseconds(data.LastScanStartedMS))
+                    Text(dateinmilliseconds(data.LastScanStartedMS))
                 }
                 .width(min: 80, max: 100)
             }
@@ -108,9 +108,18 @@ struct OutputJottaStatusView: View {
         .padding()
     }
 
-    let dateinseconds: (Int) -> String = { (ms: Int) -> String in
+    let dateinmilliseconds: (Int) -> String = { (ms: Int) -> String in
         let date = Date(timeIntervalSince1970: TimeInterval(ms) / 1000.0)
         let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yy-MM-dd HH:mm"
+        return dateFormatter.string(from: date)
+    }
+    
+    let dateinseconds: (Int) -> String = { (s: Int) -> String in
+        let date = Date(timeIntervalSince1970: TimeInterval(s))
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
         dateFormatter.dateFormat = "yy-MM-dd HH:mm"
         return dateFormatter.string(from: date)
     }

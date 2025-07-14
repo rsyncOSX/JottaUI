@@ -18,7 +18,10 @@ struct SidebarMainView: View {
     // Toggle sidebar
     @State private var columnVisibility = NavigationSplitViewVisibility.doubleColumn
     @State private var selectedview: Sidebaritems = .status
+    // Status JSON
     @State var statuspath: [Status] = []
+    // Status text
+    @State var completedjottastatustextview: Bool = false
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -33,7 +36,7 @@ struct SidebarMainView: View {
                 }
             }
             .listStyle(.sidebar)
-            .disabled(statuspath.isEmpty == false)
+            .disabled(statuspath.isEmpty == false || completedjottastatustextview == true)
 
             MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 
@@ -55,7 +58,7 @@ struct SidebarMainView: View {
         case .logfile:
             NavigationJottaCliLogfileView()
         case .status_text:
-            JottaStatusOutputView()
+            JottaStatusOutputView(completedjottastatustextview: $completedjottastatustextview)
         case .status:
             JottaStatusView(statuspath: $statuspath)
         case .add_catalogs_backup:
