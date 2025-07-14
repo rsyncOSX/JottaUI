@@ -20,10 +20,10 @@ struct MockdataJson {
           }
         },
         "Brand": "Jottacloud",
-        "Hostname": "mac.lan",
+        "Hostname": "mini4.local",
         "AccountInfo": {
           "Capacity": 1000000000000,
-          "Usage": 421173706706,
+          "Usage": 440492607691,
           "Subscription": 1,
           "CanUpgrade": true,
           "UpgradeHint": true,
@@ -41,12 +41,9 @@ struct MockdataJson {
           "Path": "/Users/thomas/Library/DxO PhotoLab v8",
           "Count": {
             "Files": 25,
-            "Bytes": 52066070
+            "Bytes": 55428214
           },
-          "Uploading": {
-            "Files": 3,
-            "Bytes": 15519744
-          },
+          "Uploading": {},
           "Errors": {},
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
@@ -57,18 +54,18 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751527729,
-              "Ended": 1751527729,
+              "Started": 1751608952,
+              "Ended": 1751608952,
               "Finished": true,
               "Total": {
                 "Files": 25,
-                "Bytes": 55464702
+                "Bytes": 54663070
               }
             }
           ],
-          "LastUpdateMS": 1752403319722,
-          "LastScanStartedMS": 1752403319722,
-          "NextBackupMS": 1752406919722
+          "LastUpdateMS": 1752487033916,
+          "LastScanStartedMS": 1752487033916,
+          "NextBackupMS": 1752490633916
         },
         {
           "Name": "Affinity",
@@ -79,7 +76,6 @@ struct MockdataJson {
           },
           "Uploading": {},
           "Errors": {},
-          "WaitingForScan": true,
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
           "History": [
@@ -89,8 +85,8 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751531389,
-              "Ended": 1751531389,
+              "Started": 1751608952,
+              "Ended": 1751608952,
               "Finished": true,
               "Total": {
                 "Files": 916,
@@ -98,20 +94,19 @@ struct MockdataJson {
               }
             }
           ],
-          "LastUpdateMS": 1752403317412,
-          "LastScanStartedMS": 1752403317412,
-          "NextBackupMS": 1752406917412
+          "LastUpdateMS": 1752487033952,
+          "LastScanStartedMS": 1752487033952,
+          "NextBackupMS": 1752490633952
         },
         {
           "Name": "GitDocuments",
           "Path": "/Volumes/MacMini4/GitDocuments",
           "Count": {
-            "Files": 1557,
-            "Bytes": 723592682
+            "Files": 1622,
+            "Bytes": 740797025
           },
           "Uploading": {},
           "Errors": {},
-          "WaitingForScan": true,
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
           "History": [
@@ -121,8 +116,8 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751533904,
-              "Ended": 1751533904,
+              "Started": 1752403319,
+              "Ended": 1752403319,
               "Finished": true,
               "Total": {
                 "Files": 1557,
@@ -130,21 +125,18 @@ struct MockdataJson {
               }
             }
           ],
-          "LastUpdateMS": 1752403367859,
-          "LastScanStartedMS": 1752403367859,
-          "NextBackupMS": 1752406967859
+          "LastUpdateMS": 1752487033859,
+          "LastScanStartedMS": 1752487033859,
+          "NextBackupMS": 1752490633859
         },
         {
           "Name": "GitHub",
           "Path": "/Volumes/MacMini4/GitHub",
           "Count": {
-            "Files": 11624,
-            "Bytes": 1226277660
+            "Files": 11822,
+            "Bytes": 1226492825
           },
-          "Uploading": {
-            "Files": 397,
-            "Bytes": 64514951
-          },
+          "Uploading": {},
           "Errors": {},
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
@@ -153,26 +145,26 @@ struct MockdataJson {
               "Path": "/Volumes/MacMini4/GitHub",
               "Upload": {
                 "Started": {
-                  "Files": 42,
-                  "Bytes": 724460
+                  "Files": 4,
+                  "Bytes": 137343
                 },
                 "Completed": {
-                  "Files": 42,
-                  "Bytes": 724460
+                  "Files": 4,
+                  "Bytes": 137343
                 }
               },
-              "Started": 1751527728,
-              "Ended": 1751527729,
+              "Started": 1751608952,
+              "Ended": 1751608953,
               "Finished": true,
               "Total": {
-                "Files": 11664,
-                "Bytes": 1168281691
+                "Files": 11829,
+                "Bytes": 1168452222
               }
             }
           ],
-          "LastUpdateMS": 1752403317877,
-          "LastScanStartedMS": 1752403317877,
-          "NextBackupMS": 1752406917877
+          "LastUpdateMS": 1752487033536,
+          "LastScanStartedMS": 1752487033536,
+          "NextBackupMS": 1752490633536
         },
         {
           "Name": "Movies",
@@ -181,10 +173,7 @@ struct MockdataJson {
             "Files": 317,
             "Bytes": 91625462698
           },
-          "Uploading": {
-            "Files": 13,
-            "Bytes": 16853053708
-          },
+          "Uploading": {},
           "Errors": {},
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
@@ -195,8 +184,8 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751527728,
-              "Ended": 1751527728,
+              "Started": 1751608952,
+              "Ended": 1751608952,
               "Finished": true,
               "Total": {
                 "Files": 337,
@@ -204,9 +193,9 @@ struct MockdataJson {
               }
             }
           ],
-          "LastUpdateMS": 1752403317823,
-          "LastScanStartedMS": 1752403317823,
-          "NextBackupMS": 1752406917823
+          "LastUpdateMS": 1752487033493,
+          "LastScanStartedMS": 1752487033493,
+          "NextBackupMS": 1752490633493
         },
         {
           "Name": "Pictures_jpg",
@@ -217,7 +206,6 @@ struct MockdataJson {
           },
           "Uploading": {},
           "Errors": {},
-          "WaitingForScan": true,
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
           "History": [
@@ -227,8 +215,8 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751533903,
-              "Ended": 1751533903,
+              "Started": 1752403317,
+              "Ended": 1752403317,
               "Finished": true,
               "Total": {
                 "Files": 2311,
@@ -236,21 +224,18 @@ struct MockdataJson {
               }
             }
           ],
-          "LastUpdateMS": 1752403367987,
-          "LastScanStartedMS": 1752403367987,
-          "NextBackupMS": 1752406967987
+          "LastUpdateMS": 1752487034357,
+          "LastScanStartedMS": 1752487034357,
+          "NextBackupMS": 1752490634357
         },
         {
           "Name": "Pictures_raw",
           "Path": "/Volumes/MacMini4/Pictures_raw",
           "Count": {
-            "Files": 8469,
-            "Bytes": 156306661853
+            "Files": 8481,
+            "Bytes": 156524964242
           },
-          "Uploading": {
-            "Files": 41,
-            "Bytes": 918616865
-          },
+          "Uploading": {},
           "Errors": {},
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
@@ -261,18 +246,18 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751527728,
-              "Ended": 1751527729,
+              "Started": 1751608952,
+              "Ended": 1751608952,
               "Finished": true,
               "Total": {
-                "Files": 8268,
-                "Bytes": 152679797993
+                "Files": 8292,
+                "Bytes": 153167309374
               }
             }
           ],
-          "LastUpdateMS": 1752403317589,
-          "LastScanStartedMS": 1752403317589,
-          "NextBackupMS": 1752406917589
+          "LastUpdateMS": 1752487034118,
+          "LastScanStartedMS": 1752487034118,
+          "NextBackupMS": 1752490634118
         },
         {
           "Name": "Pictures_raw_2004_2020",
@@ -283,7 +268,6 @@ struct MockdataJson {
           },
           "Uploading": {},
           "Errors": {},
-          "WaitingForScan": true,
           "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
           "ErrorFilesCount": {},
           "History": [
@@ -293,8 +277,8 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751533903,
-              "Ended": 1751533903,
+              "Started": 1752403317,
+              "Ended": 1752403317,
               "Finished": true,
               "Total": {
                 "Files": 3870,
@@ -302,9 +286,9 @@ struct MockdataJson {
               }
             }
           ],
-          "LastUpdateMS": 1752403367915,
-          "LastScanStartedMS": 1752403367915,
-          "NextBackupMS": 1752406967915
+          "LastUpdateMS": 1752487033977,
+          "LastScanStartedMS": 1752487033977,
+          "NextBackupMS": 1752490633977
         }
       ],
       "Sync": {
@@ -312,11 +296,10 @@ struct MockdataJson {
         "RemoteCount": {}
       },
       "State": {
-        "BackupWorking": true,
         "RestoreWorking": true,
         "Uploading": {},
         "Downloading": {},
-        "LastTokenRefresh": 1752401317
+        "LastTokenRefresh": 1752485728
       }
     }
     """
