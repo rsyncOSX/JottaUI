@@ -14,7 +14,7 @@ struct NavigationJottaCliLogfileView: View {
     // Filterstring
     @State private var filterstring: String = ""
     // Sortdirection, true most recent at top false default
-    @State private var sortdirection: Bool = true
+    @State private var sortdirection: Bool = false
     // Reset and read logfile again as default
     @State private var reset: Bool = false
     // Set progressview when resetting, filter or reset data
