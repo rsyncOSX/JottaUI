@@ -34,51 +34,32 @@ struct JottaStatusView: View {
         NavigationStack(path: $statuspath) {
             ZStack {
                 if mockdata {
-                HStack {
-                    Button {
-                        mockprocesstermination()
-                    } label: {
-                        Text("Status by Mockdata 1")
-                    }
-                    .buttonStyle(ColorfulButtonStyle())
-                    
-                    Button {
-                        mockprocesstermination2()
-                    } label: {
-                        Text("Status by Mockdata 2")
-                    }
-                    .buttonStyle(ColorfulButtonStyle())
-                }
-               
-                    
+                    HStack {
+                        Button {
+                            mockprocesstermination()
+                        } label: {
+                            Text("Status by Mockdata 1")
+                        }
+                        .buttonStyle(ColorfulButtonStyle())
 
+                        Button {
+                            mockprocesstermination2()
+                        } label: {
+                            Text("Status by Mockdata 2")
+                        }
+                        .buttonStyle(ColorfulButtonStyle())
+                    }
                 } else {
                     HStack {
                         Button {
-                            let arguments = ["status", "--json"]
-                            let command = FullpathJottaCli().jottaclipathandcommand()
-
-                            // Start progressview
-                            showprogressview = true
-                            let process = ProcessCommand(command: command,
-                                                         arguments: arguments,
-                                                         processtermination: processterminationjson)
-                            process.executeProcess()
+                            executejsonstatus()
                         } label: {
                             Text("Status")
                         }
                         .buttonStyle(ColorfulButtonStyle())
 
                         Button {
-                            let arguments = ["scan"]
-                            let command = FullpathJottaCli().jottaclipathandcommand()
-
-                            // Start progressview
-                            showprogressview = true
-                            let process = ProcessCommand(command: command,
-                                                         arguments: arguments,
-                                                         processtermination: processtermination)
-                            process.executeProcess()
+                            executescan()
                         } label: {
                             Text("Scan")
                         }
@@ -108,7 +89,7 @@ struct JottaStatusView: View {
                     }
                     .help("Jottacloud Web")
                 }
-                
+
                 ToolbarItem {
                     Button {
                         statuspath.append(Status(task: .logfileview))
@@ -154,7 +135,6 @@ struct JottaStatusView: View {
 }
 
 extension JottaStatusView {
-    
     func webview() {
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -162,9 +142,33 @@ extension JottaStatusView {
                                      arguments: arguments)
         process.executeProcess()
     }
-    
+
     func abort() {
         InterruptProcess()
+    }
+    
+    func executescan() {
+        let arguments = ["scan"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+
+        // Start progressview
+        showprogressview = true
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments,
+                                     processtermination: processtermination)
+        process.executeProcess()
+    }
+
+    func executejsonstatus() {
+        let arguments = ["status", "--json"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+
+        // Start progressview
+        showprogressview = true
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments,
+                                     processtermination: processterminationjson)
+        process.executeProcess()
     }
 
     func processterminationjson(_ stringoutput: [String]?) {
@@ -177,16 +181,19 @@ extension JottaStatusView {
 
     func processtermination(_: [String]?) {
         showprogressview = false
-        scan = true
+        Task {
+            try await Task.sleep(for: .seconds(1))
+            executejsonstatus()
+        }
     }
-    
+
     func mockprocesstermination() {
         let data = Data(MockdataJson().json.utf8)
         jsondata.setJSONData(data)
         jsondata.debugJSONdata()
         statuspath.append(Status(task: .completedview))
     }
-    
+
     func mockprocesstermination2() {
         let data = Data(MockdataJson().json2.utf8)
         jsondata.setJSONData(data)

@@ -113,7 +113,7 @@ final class ProcessCommand {
             line.contains("--json") ? true : nil
         }
     }
-    
+
     convenience init(command: String?,
                      arguments: [String]?)
     {

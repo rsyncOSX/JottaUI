@@ -303,7 +303,7 @@ struct MockdataJson {
       }
     }
     """
-    
+
     let json2 = """
     {
       "User": {

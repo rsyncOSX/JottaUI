@@ -55,7 +55,7 @@ struct OutputJottaStatusView: View {
                 TableColumn("Path", value: \.Path)
                     // TableColumn("DeviceID", value: \.DeviceID)
                     .width(min: 120, max: 400)
-                
+
                 TableColumn("WaitingForScan") { data in
                     Text(String(data.WaitingForScan))
                 }
@@ -115,7 +115,7 @@ struct OutputJottaStatusView: View {
         dateFormatter.dateFormat = "yy-MM-dd HH:mm"
         return dateFormatter.string(from: date)
     }
-    
+
     let dateinseconds: (Int) -> String = { (s: Int) -> String in
         let date = Date(timeIntervalSince1970: TimeInterval(s))
         let dateFormatter = DateFormatter()

@@ -113,7 +113,7 @@ struct NavigationJottaCliLogfileView: View {
             }
         }
     }
-    
+
     func sortdirectionstring() -> String {
         if sortdirection {
             return " - most recent at TOP"

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct JottaStatusOutputView: View {
     @Binding var completedjottastatustextview: Bool
-    
+
     @State private var showprogressview = false
     @State private var jottaclioutput = ObservableJottaOutput()
 
@@ -45,7 +45,6 @@ struct JottaStatusOutputView: View {
             .onAppear {
                 scan()
             }
-            
         }
     }
 
@@ -58,7 +57,6 @@ struct JottaStatusOutputView: View {
 }
 
 extension JottaStatusOutputView {
-    
     func scan() {
         let arguments = ["status"]
         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -70,7 +68,7 @@ extension JottaStatusOutputView {
                                      processtermination: processtermination)
         process.executeProcess()
     }
-    
+
     func webview() {
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -78,7 +76,7 @@ extension JottaStatusOutputView {
                                      arguments: arguments)
         process.executeProcess()
     }
-    
+
     func abort() {
         InterruptProcess()
     }
