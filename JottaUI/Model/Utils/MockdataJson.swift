@@ -318,10 +318,10 @@ struct MockdataJson {
           }
         },
         "Brand": "Jottacloud",
-        "Hostname": "mac.lan",
+        "Hostname": "Thomas-sin-MacBook-Pro.local",
         "AccountInfo": {
           "Capacity": 1000000000000,
-          "Usage": 427131812696,
+          "Usage": 440492071454,
           "Subscription": 1,
           "CanUpgrade": true,
           "UpgradeHint": true,
@@ -329,24 +329,83 @@ struct MockdataJson {
           "ProductNameLocalized": "Home subscription 1 TB"
         },
         "device": {
-          "Name": "macmini.lan",
+          "Name": "mac.lan",
           "Type": 12
         }
       },
       "Backups": [
         {
+          "Name": "GitDocuments",
+          "Path": "/Users/thomas/GitDocuments",
+          "Count": {
+            "Files": 1349,
+            "Bytes": 732985094
+          },
+          "Uploading": {},
+          "Errors": {},
+          "DeviceID": "cffe8ca6-65eb-4d33-83b5-42b97e5f9dc9",
+          "ErrorFilesCount": {},
+          "History": [
+            {
+              "Path": "/Users/thomas/GitDocuments",
+              "Upload": {
+                "Started": {},
+                "Completed": {}
+              },
+              "Started": 1752380995,
+              "Ended": 1752380995,
+              "Finished": true,
+              "Total": {
+                "Files": 1349,
+                "Bytes": 732985094
+              }
+            }
+          ],
+          "LastUpdateMS": 1752500120349,
+          "LastScanStartedMS": 1752500120349,
+          "NextBackupMS": 1752503720349
+        },
+        {
+          "Name": "GitHub",
+          "Path": "/Users/thomas/GitHub",
+          "Count": {
+            "Files": 11986,
+            "Bytes": 1556527863
+          },
+          "Uploading": {},
+          "Errors": {},
+          "DeviceID": "cffe8ca6-65eb-4d33-83b5-42b97e5f9dc9",
+          "ErrorFilesCount": {},
+          "History": [
+            {
+              "Path": "/Users/thomas/GitHub",
+              "Upload": {
+                "Started": {},
+                "Completed": {}
+              },
+              "Started": 1752380994,
+              "Ended": 1752380995,
+              "Finished": true,
+              "Total": {
+                "Files": 11802,
+                "Bytes": 1636891580
+              }
+            }
+          ],
+          "LastUpdateMS": 1752500120155,
+          "LastScanStartedMS": 1752500120155,
+          "NextBackupMS": 1752503720155
+        },
+        {
           "Name": "DxO PhotoLab v8",
           "Path": "/Users/thomas/Library/DxO PhotoLab v8",
           "Count": {
-            "Files": 25,
-            "Bytes": 52066070
+            "Files": 41,
+            "Bytes": 119911195
           },
-          "Uploading": {
-            "Files": 3,
-            "Bytes": 15519744
-          },
+          "Uploading": {},
           "Errors": {},
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
+          "DeviceID": "cffe8ca6-65eb-4d33-83b5-42b97e5f9dc9",
           "ErrorFilesCount": {},
           "History": [
             {
@@ -355,252 +414,18 @@ struct MockdataJson {
                 "Started": {},
                 "Completed": {}
               },
-              "Started": 1751527729,
-              "Ended": 1751527729,
+              "Started": 1752380995,
+              "Ended": 1752380995,
               "Finished": true,
               "Total": {
-                "Files": 25,
-                "Bytes": 55464702
+                "Files": 41,
+                "Bytes": 120871587
               }
             }
           ],
-          "LastUpdateMS": 1752403319722,
-          "LastScanStartedMS": 1752403319722,
-          "NextBackupMS": 1752406919722
-        },
-        {
-          "Name": "Affinity",
-          "Path": "/Volumes/MacMini4/Affinity",
-          "Count": {
-            "Files": 920,
-            "Bytes": 58068877687
-          },
-          "Uploading": {},
-          "Errors": {},
-          "WaitingForScan": true,
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
-          "ErrorFilesCount": {},
-          "History": [
-            {
-              "Path": "/Volumes/MacMini4/Affinity",
-              "Upload": {
-                "Started": {},
-                "Completed": {}
-              },
-              "Started": 1751531389,
-              "Ended": 1751531389,
-              "Finished": true,
-              "Total": {
-                "Files": 916,
-                "Bytes": 56913325447
-              }
-            }
-          ],
-          "LastUpdateMS": 1752403317412,
-          "LastScanStartedMS": 1752403317412,
-          "NextBackupMS": 1752406917412
-        },
-        {
-          "Name": "GitDocuments",
-          "Path": "/Volumes/MacMini4/GitDocuments",
-          "Count": {
-            "Files": 1557,
-            "Bytes": 723592682
-          },
-          "Uploading": {},
-          "Errors": {},
-          "WaitingForScan": true,
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
-          "ErrorFilesCount": {},
-          "History": [
-            {
-              "Path": "/Volumes/MacMini4/GitDocuments",
-              "Upload": {
-                "Started": {},
-                "Completed": {}
-              },
-              "Started": 1751533904,
-              "Ended": 1751533904,
-              "Finished": true,
-              "Total": {
-                "Files": 1557,
-                "Bytes": 723592682
-              }
-            }
-          ],
-          "LastUpdateMS": 1752403367859,
-          "LastScanStartedMS": 1752403367859,
-          "NextBackupMS": 1752406967859
-        },
-        {
-          "Name": "GitHub",
-          "Path": "/Volumes/MacMini4/GitHub",
-          "Count": {
-            "Files": 11624,
-            "Bytes": 1226277660
-          },
-          "Uploading": {
-            "Files": 220,
-            "Bytes": 7680058
-          },
-          "Errors": {},
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
-          "ErrorFilesCount": {},
-          "History": [
-            {
-              "Path": "/Volumes/MacMini4/GitHub",
-              "Upload": {
-                "Started": {
-                  "Files": 42,
-                  "Bytes": 724460
-                },
-                "Completed": {
-                  "Files": 42,
-                  "Bytes": 724460
-                }
-              },
-              "Started": 1751527728,
-              "Ended": 1751527729,
-              "Finished": true,
-              "Total": {
-                "Files": 11664,
-                "Bytes": 1168281691
-              }
-            }
-          ],
-          "LastUpdateMS": 1752403317877,
-          "LastScanStartedMS": 1752403317877,
-          "NextBackupMS": 1752406917877
-        },
-        {
-          "Name": "Movies",
-          "Path": "/Volumes/MacMini4/Movies",
-          "Count": {
-            "Files": 317,
-            "Bytes": 91625462698
-          },
-          "Uploading": {
-            "Files": 6,
-            "Bytes": 12954069622
-          },
-          "Errors": {},
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
-          "ErrorFilesCount": {},
-          "History": [
-            {
-              "Path": "/Volumes/MacMini4/Movies",
-              "Upload": {
-                "Started": {},
-                "Completed": {}
-              },
-              "Started": 1751527728,
-              "Ended": 1751527728,
-              "Finished": true,
-              "Total": {
-                "Files": 337,
-                "Bytes": 101723929075
-              }
-            }
-          ],
-          "LastUpdateMS": 1752403317823,
-          "LastScanStartedMS": 1752403317823,
-          "NextBackupMS": 1752406917823
-        },
-        {
-          "Name": "Pictures_jpg",
-          "Path": "/Volumes/MacMini4/Pictures_jpg",
-          "Count": {
-            "Files": 2311,
-            "Bytes": 4142705596
-          },
-          "Uploading": {},
-          "Errors": {},
-          "WaitingForScan": true,
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
-          "ErrorFilesCount": {},
-          "History": [
-            {
-              "Path": "/Volumes/MacMini4/Pictures_jpg",
-              "Upload": {
-                "Started": {},
-                "Completed": {}
-              },
-              "Started": 1751533903,
-              "Ended": 1751533903,
-              "Finished": true,
-              "Total": {
-                "Files": 2311,
-                "Bytes": 4142705596
-              }
-            }
-          ],
-          "LastUpdateMS": 1752403367987,
-          "LastScanStartedMS": 1752403367987,
-          "NextBackupMS": 1752406967987
-        },
-        {
-          "Name": "Pictures_raw",
-          "Path": "/Volumes/MacMini4/Pictures_raw",
-          "Count": {
-            "Files": 8469,
-            "Bytes": 156306661853
-          },
-          "Uploading": {},
-          "Errors": {},
-          "WaitingForScan": true,
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
-          "ErrorFilesCount": {},
-          "History": [
-            {
-              "Path": "/Volumes/MacMini4/Pictures_raw",
-              "Upload": {
-                "Started": {},
-                "Completed": {}
-              },
-              "Started": 1751531388,
-              "Ended": 1751531388,
-              "Finished": true,
-              "Total": {
-                "Files": 8268,
-                "Bytes": 152679797993
-              }
-            }
-          ],
-          "LastUpdateMS": 1752403317589,
-          "LastScanStartedMS": 1752403317589,
-          "NextBackupMS": 1752406917589
-        },
-        {
-          "Name": "Pictures_raw_2004_2020",
-          "Path": "/Volumes/MacMini4/Pictures_raw_2004_2020",
-          "Count": {
-            "Files": 3870,
-            "Bytes": 82365564649
-          },
-          "Uploading": {},
-          "Errors": {},
-          "WaitingForScan": true,
-          "DeviceID": "9b62d6a0-e8b5-449a-9125-e6a3d3dc5d4d",
-          "ErrorFilesCount": {},
-          "History": [
-            {
-              "Path": "/Volumes/MacMini4/Pictures_raw_2004_2020",
-              "Upload": {
-                "Started": {},
-                "Completed": {}
-              },
-              "Started": 1751533903,
-              "Ended": 1751533903,
-              "Finished": true,
-              "Total": {
-                "Files": 3870,
-                "Bytes": 82365564649
-              }
-            }
-          ],
-          "LastUpdateMS": 1752403367915,
-          "LastScanStartedMS": 1752403367915,
-          "NextBackupMS": 1752406967915
+          "LastUpdateMS": 1752500120330,
+          "LastScanStartedMS": 1752500120330,
+          "NextBackupMS": 1752503720330
         }
       ],
       "Sync": {
@@ -608,11 +433,10 @@ struct MockdataJson {
         "RemoteCount": {}
       },
       "State": {
-        "BackupWorking": true,
         "RestoreWorking": true,
         "Uploading": {},
         "Downloading": {},
-        "LastTokenRefresh": 1752401317
+        "LastTokenRefresh": 1752497842
       }
     }
     """
