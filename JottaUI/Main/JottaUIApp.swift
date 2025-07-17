@@ -17,6 +17,9 @@ struct JottaUIApp: App {
         }
         .commands {
             SidebarCommands()
+            
+            ImportCommand()
+            
         }
     }
 }

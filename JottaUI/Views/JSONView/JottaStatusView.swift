@@ -29,6 +29,10 @@ struct JottaStatusView: View {
 
     @State private var mockdata: Bool = false
     @State private var scan: Bool = false
+    
+    @State private var focusimport: Bool = false
+    @State private var importajsonfile: Bool = false
+    @State private var importfile: String = ""
 
     var body: some View {
         NavigationStack(path: $statuspath) {
@@ -69,6 +73,17 @@ struct JottaStatusView: View {
                     if showprogressview {
                         ProgressView()
                     }
+                    
+                    if scan {
+                        MessageView(mytext: "Scan is completed", size: .title3)
+                            .padding()
+                            .onAppear {
+                                Task {
+                                    try await Task.sleep(seconds: 0.5)
+                                    scan = false
+                                }
+                            }
+                    }
                 }
             }
             .padding()
@@ -99,16 +114,16 @@ struct JottaStatusView: View {
                     .help("View logfile")
                 }
             }
-            .sheet(isPresented: $scan) {
-                MessageView(mytext: "Scan is completed", size: .title3)
-                    .padding()
-                    .onAppear {
-                        Task {
-                            try await Task.sleep(seconds: 0.5)
-                            scan = false
-                        }
-                    }
+            .sheet(isPresented: $importajsonfile) {
+                ImportView(focusimport: $focusimport, importfile: $importfile)
             }
+            .onChange(of: focusimport) {
+                importajsonfile = focusimport
+            }
+            .onChange(of: importfile) {
+                print(importfile)
+            }
+            .focusedSceneValue(\.importtasks, $focusimport)
         }
     }
 
