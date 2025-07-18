@@ -37,8 +37,8 @@ struct OutputJottaStatusView: View {
                         ValueSchemeView(200, jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set")
                         ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
 
-                        ValueSchemeView(200, String(jsondata.accountinfo?.Capacity ?? 0))
-                        ValueSchemeView(200, String(jsondata.accountinfo?.Usage ?? 0))
+                        ValueSchemeView(200, jsondata.formatted_number(jsondata.accountinfo?.Capacity ?? 0))
+                        ValueSchemeView(200, jsondata.formatted_number(jsondata.accountinfo?.Usage ?? 0))
                         ValueSchemeView(200, String(jsondata.accountinfo?.Subscription ?? 0))
 
                         ValueSchemeView(200, String(jsondata.accountinfo?.CanUpgrade ?? false))
@@ -66,7 +66,7 @@ struct OutputJottaStatusView: View {
                     .width(min: 80, max: 200)
 
                 TableColumn("Files") { data in
-                    Text(String(data.Count.Files))
+                    Text(jsondata.formatted_number(data.Count.Files))
                 }
                 .width(min: 40, max: 80)
                 .alignment(.trailing)

@@ -119,4 +119,8 @@ final class ObservableJSONStatus {
     func setJSONData(_ data: Data) {
         jsondata = try? JSON(data: data)
     }
+    
+    func formatted_number(_ number: Int) -> String {
+        NumberFormatter.localizedString(from: NSNumber(value: number), number: NumberFormatter.Style.decimal)
+    }
 }
