@@ -28,10 +28,12 @@ struct JottaStatusView: View {
     @State private var completed: Bool = false
 
     @State private var scan: Bool = false
-    
+
+    @State private var importorexport: Bool = false
+    @State private var focusexport: Bool = false
     @State private var focusimport: Bool = false
     @State private var importajsonfile: Bool = false
-    @State private var importfile: String = ""
+    @State private var filenameimport: String = ""
 
     var body: some View {
         NavigationStack(path: $statuspath) {
@@ -55,7 +57,7 @@ struct JottaStatusView: View {
                 if showprogressview {
                     ProgressView()
                 }
-                
+
                 if scan {
                     MessageView(mytext: "Scan is completed", size: .title3)
                         .padding()
@@ -73,7 +75,6 @@ struct JottaStatusView: View {
                 makeView(view: which.task)
             }
             .toolbar {
-               
                 ToolbarItem {
                     Button {
                         webview()
@@ -92,16 +93,24 @@ struct JottaStatusView: View {
                     .help("View logfile")
                 }
             }
-            .sheet(isPresented: $importajsonfile) {
-                ImportView(focusimport: $focusimport, importfile: $importfile)
+            .sheet(isPresented: $importorexport) {
+                if focusexport {
+                    ExportView(focusexport: $focusexport)
+                } else {
+                    ImportView(focusimport: $focusimport, importfile: $filenameimport)
+                }
+            }
+            .onChange(of: focusexport) {
+                importorexport = focusexport
             }
             .onChange(of: focusimport) {
-                importajsonfile = focusimport
+                importorexport = focusimport
             }
-            .onChange(of: importfile) {
-                readimportfile(file: importfile)
+            .onChange(of: filenameimport) {
+                readimportfile(file: filenameimport)
             }
             .focusedSceneValue(\.importtasks, $focusimport)
+            .focusedSceneValue(\.exporttasks, $focusexport)
         }
     }
 
@@ -139,11 +148,10 @@ extension JottaStatusView {
     func abort() {
         InterruptProcess()
     }
-    
+
     func executescan() {
         let arguments = ["scan"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-
         // Start progressview
         showprogressview = true
         let process = ProcessCommand(command: command,
@@ -155,7 +163,6 @@ extension JottaStatusView {
     func executejsonstatus() {
         let arguments = ["status", "--json"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-
         // Start progressview
         showprogressview = true
         let process = ProcessCommand(command: command,
@@ -166,7 +173,6 @@ extension JottaStatusView {
 
     func processterminationjson(_ stringoutput: [String]?) {
         showprogressview = false
-
         jsondata.setJSONstring(stringoutput)
         jsondata.debugJSONdata()
         statuspath.append(Status(task: .completedview))
@@ -179,7 +185,7 @@ extension JottaStatusView {
             executejsonstatus()
         }
     }
-    
+
     func readimportfile(file: String) {
         var data: Data?
         let url = URL(fileURLWithPath: file, isDirectory: false)

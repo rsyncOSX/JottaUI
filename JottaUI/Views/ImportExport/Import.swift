@@ -1,5 +1,5 @@
 //
-//  ImportView.swift
+//  Import.swift
 //  RsyncUI
 //
 //  Created by Thomas Evensen on 21/07/2024.
@@ -32,8 +32,8 @@ struct ImportView: View {
                                   case let .success(url):
                                       importfile = url.relativePath
                                       guard importfile.isEmpty == false else { return }
-                                        focusimport = false
-                                        dismiss()
+                                      focusimport = false
+                                      dismiss()
                                   case let .failure(error):
                                       SharedReference.shared.errorobject?.alert(error: error)
                                   }

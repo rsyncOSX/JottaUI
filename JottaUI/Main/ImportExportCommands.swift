@@ -1,5 +1,5 @@
 //
-//  ImportCommand.swift
+//  ImportExportCommands.swift
 //  JottaUI
 //
 //  Created by Thomas Evensen on 17/07/2025.
@@ -7,14 +7,28 @@
 
 import SwiftUI
 
-struct ImportCommand: Commands {
+struct ImportExportCommands: Commands {
+    @FocusedBinding(\.exporttasks) private var exporttasks
     @FocusedBinding(\.importtasks) private var importtasks
 
     var body: some Commands {
         CommandGroup(replacing: CommandGroupPlacement.importExport) {
-            Menu("Import") {
+            Menu("Export & Import") {
+                ExporttasksButton(exporttasks: $exporttasks)
                 ImporttasksButton(importtasks: $importtasks)
             }
+        }
+    }
+}
+
+struct ExporttasksButton: View {
+    @Binding var exporttasks: Bool?
+
+    var body: some View {
+        Button {
+            exporttasks = true
+        } label: {
+            Label("Export", systemImage: "play.fill")
         }
     }
 }
@@ -40,7 +54,11 @@ struct FocusedImporttasksBinding: FocusedValueKey {
 }
 
 extension FocusedValues {
-    
+    var exporttasks: FocusedExporttasksBinding.Value? {
+        get { self[FocusedExporttasksBinding.self] }
+        set { self[FocusedExporttasksBinding.self] = newValue }
+    }
+
     var importtasks: FocusedImporttasksBinding.Value? {
         get { self[FocusedImporttasksBinding.self] }
         set { self[FocusedImporttasksBinding.self] = newValue }
