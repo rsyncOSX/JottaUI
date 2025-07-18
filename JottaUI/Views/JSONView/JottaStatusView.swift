@@ -27,7 +27,6 @@ struct JottaStatusView: View {
     @State private var jottaclioutput = ObservableJottaOutput()
     @State private var completed: Bool = false
 
-    @State private var mockdata: Bool = false
     @State private var scan: Bool = false
     
     @State private var focusimport: Bool = false
@@ -37,53 +36,35 @@ struct JottaStatusView: View {
     var body: some View {
         NavigationStack(path: $statuspath) {
             ZStack {
-                if mockdata {
-                    HStack {
-                        Button {
-                            mockprocesstermination()
-                        } label: {
-                            Text("Status by Mockdata 1")
-                        }
-                        .buttonStyle(ColorfulButtonStyle())
-
-                        Button {
-                            mockprocesstermination2()
-                        } label: {
-                            Text("Status by Mockdata 2")
-                        }
-                        .buttonStyle(ColorfulButtonStyle())
+                HStack {
+                    Button {
+                        executejsonstatus()
+                    } label: {
+                        Text("Status")
                     }
-                } else {
-                    HStack {
-                        Button {
-                            executejsonstatus()
-                        } label: {
-                            Text("Status")
-                        }
-                        .buttonStyle(ColorfulButtonStyle())
+                    .buttonStyle(ColorfulButtonStyle())
 
-                        Button {
-                            executescan()
-                        } label: {
-                            Text("Scan")
-                        }
-                        .buttonStyle(ColorfulButtonStyle())
+                    Button {
+                        executescan()
+                    } label: {
+                        Text("Scan")
                     }
+                    .buttonStyle(ColorfulButtonStyle())
+                }
 
-                    if showprogressview {
-                        ProgressView()
-                    }
-                    
-                    if scan {
-                        MessageView(mytext: "Scan is completed", size: .title3)
-                            .padding()
-                            .onAppear {
-                                Task {
-                                    try await Task.sleep(seconds: 0.5)
-                                    scan = false
-                                }
+                if showprogressview {
+                    ProgressView()
+                }
+                
+                if scan {
+                    MessageView(mytext: "Scan is completed", size: .title3)
+                        .padding()
+                        .onAppear {
+                            Task {
+                                try await Task.sleep(seconds: 0.5)
+                                scan = false
                             }
-                    }
+                        }
                 }
             }
             .padding()
@@ -92,10 +73,7 @@ struct JottaStatusView: View {
                 makeView(view: which.task)
             }
             .toolbar {
-                ToolbarItem {
-                    ToggleView(text: "Mockdata", binding: $mockdata)
-                }
-
+               
                 ToolbarItem {
                     Button {
                         webview()
@@ -121,7 +99,7 @@ struct JottaStatusView: View {
                 importajsonfile = focusimport
             }
             .onChange(of: importfile) {
-                print(importfile)
+                readimportfile(file: importfile)
             }
             .focusedSceneValue(\.importtasks, $focusimport)
         }
@@ -201,18 +179,19 @@ extension JottaStatusView {
             executejsonstatus()
         }
     }
-
-    func mockprocesstermination() {
-        let data = Data(MockdataJson().json.utf8)
-        jsondata.setJSONData(data)
-        jsondata.debugJSONdata()
-        statuspath.append(Status(task: .completedview))
-    }
-
-    func mockprocesstermination2() {
-        let data = Data(MockdataJson().json2.utf8)
-        jsondata.setJSONData(data)
-        jsondata.debugJSONdata()
-        statuspath.append(Status(task: .completedview))
+    
+    func readimportfile(file: String) {
+        var data: Data?
+        let url = URL(fileURLWithPath: file, isDirectory: false)
+        do {
+            data = try Data(contentsOf: url)
+            if let data {
+                jsondata.setJSONData(data)
+                jsondata.debugJSONdata()
+                statuspath.append(Status(task: .completedview))
+            }
+        } catch {
+            return
+        }
     }
 }
