@@ -27,8 +27,6 @@ struct JottaStatusView: View {
     @State private var jottaclioutput = ObservableJottaOutput()
     @State private var completed: Bool = false
 
-    @State private var scan: Bool = false
-
     @State private var importorexport: Bool = false
     @State private var focusexport: Bool = false
     @State private var focusimport: Bool = false
@@ -37,36 +35,16 @@ struct JottaStatusView: View {
 
     var body: some View {
         NavigationStack(path: $statuspath) {
-            ZStack {
-                HStack {
-                    Button {
-                        executejsonstatus()
-                    } label: {
-                        Text("Status")
-                    }
-                    .buttonStyle(ColorfulButtonStyle())
-
-                    Button {
-                        executescan()
-                    } label: {
-                        Text("Scan")
-                    }
-                    .buttonStyle(ColorfulButtonStyle())
+            HStack {
+                Button {
+                    executescan()
+                } label: {
+                    Text("Status")
                 }
+                .buttonStyle(ColorfulButtonStyle())
 
                 if showprogressview {
                     ProgressView()
-                }
-
-                if scan {
-                    MessageView(mytext: "Scan is completed", size: .title3)
-                        .padding()
-                        .onAppear {
-                            Task {
-                                try await Task.sleep(seconds: 0.5)
-                                scan = false
-                            }
-                        }
                 }
             }
             .padding()
@@ -163,8 +141,6 @@ extension JottaStatusView {
     func executejsonstatus() {
         let arguments = ["status", "--json"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-        // Start progressview
-        showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
                                      processtermination: processterminationjson)
@@ -179,11 +155,7 @@ extension JottaStatusView {
     }
 
     func processtermination(_: [String]?) {
-        showprogressview = false
-        Task {
-            try await Task.sleep(for: .seconds(1))
-            executejsonstatus()
-        }
+        executejsonstatus()
     }
 
     func readimportfile(file: String) {
