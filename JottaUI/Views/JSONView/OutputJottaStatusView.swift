@@ -74,13 +74,13 @@ struct OutputJottaStatusView: View {
                 TableColumn("Started") { data in
                     Text(String(dateinseconds(data.history.Started)))
                 }
-                .width(min: 60, max: 100)
+                .width(min: 120, max: 150)
                 .alignment(.trailing)
 
                 TableColumn("Ended") { data in
                     Text(String(dateinseconds(data.history.Ended)))
                 }
-                .width(min: 60, max: 100)
+                .width(min: 120, max: 150)
                 .alignment(.trailing)
 
                 TableColumn("Finished") { data in
@@ -92,17 +92,17 @@ struct OutputJottaStatusView: View {
                 TableColumn("LastUpdateMS") { data in
                     Text(dateinmilliseconds(data.LastUpdateMS))
                 }
-                .width(min: 80, max: 100)
-
+                .width(min: 120, max: 150)
+/*
                 TableColumn("NextBackupMS") { data in
                     Text(dateinmilliseconds(data.NextBackupMS))
                 }
                 .width(min: 80, max: 100)
-
+*/
                 TableColumn("LastScanStartedMS") { data in
                     Text(dateinmilliseconds(data.LastScanStartedMS))
                 }
-                .width(min: 80, max: 100)
+                .width(min: 120, max: 150)
             }
         }
         .padding()
@@ -112,7 +112,10 @@ struct OutputJottaStatusView: View {
         let date = Date(timeIntervalSince1970: TimeInterval(ms) / 1000.0)
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "yy-MM-dd HH:mm"
+        // dateFormatter.dateFormat = "yy-MM-dd HH:mm"
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         return dateFormatter.string(from: date)
     }
 
@@ -120,7 +123,10 @@ struct OutputJottaStatusView: View {
         let date = Date(timeIntervalSince1970: TimeInterval(s))
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "yy-MM-dd HH:mm"
+        // dateFormatter.dateFormat = "yy-MM-dd HH:mm"
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         return dateFormatter.string(from: date)
     }
 }
