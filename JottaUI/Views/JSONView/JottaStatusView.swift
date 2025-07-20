@@ -36,15 +36,18 @@ struct JottaStatusView: View {
     var body: some View {
         NavigationStack(path: $statuspath) {
             HStack {
-                Button {
-                    executescan()
-                } label: {
-                    Text("Status")
-                }
-                .buttonStyle(ColorfulButtonStyle())
-
+                
                 if showprogressview {
+                    
                     ProgressView()
+                    
+                } else {
+                    Button {
+                        executescan()
+                    } label: {
+                        Text("Status")
+                    }
+                    .buttonStyle(ColorfulButtonStyle())
                 }
             }
             .padding()
