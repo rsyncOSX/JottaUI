@@ -33,8 +33,6 @@ struct JottaStatusView: View {
     @State private var importajsonfile: Bool = false
     @State private var filenameimport: String = ""
 
-    @State private var selectedhelpcommand: TypeofCommands?
-
     var body: some View {
         NavigationStack(path: $statuspath) {
             HStack {
@@ -56,13 +54,6 @@ struct JottaStatusView: View {
                 makeView(view: which.task)
             }
             .toolbar {
-                ToolbarItem {
-                    pickerselecttypeofhelptask
-                        .onChange(of: selectedhelpcommand) {
-                            help()
-                        }
-                }
-
                 ToolbarItem {
                     Button {
                         webview()
@@ -125,44 +116,10 @@ struct JottaStatusView: View {
             OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
         }
     }
-
-    var pickerselecttypeofhelptask: some View {
-        Picker(NSLocalizedString("", comment: "") + ":",
-               selection: $selectedhelpcommand)
-        {
-            Text("Help on command")
-                .tag(nil as TypeofCommands?)
-            ForEach(TypeofCommands.allCases) { Text($0.description)
-                .tag($0)
-            }
-        }
-        .pickerStyle(DefaultPickerStyle())
-    }
 }
 
 extension JottaStatusView {
-    func help() {
-        if let selectedhelpcommand {
-            let arguments = [selectedhelpcommand.rawValue, "--help"]
-            let command = FullpathJottaCli().jottaclipathandcommand()
-
-            // Start progressview
-            showprogressview = true
-            let process = ProcessCommand(command: command,
-                                         arguments: arguments,
-                                         processtermination: processterminationhelp)
-            process.executeProcess()
-        }
-    }
-
-    func processterminationhelp(_ stringoutput: [String]?) {
-        showprogressview = false
-        Task {
-            jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
-            statuspath.append(Status(task: .helpview))
-        }
-    }
-
+    
     func webview() {
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
