@@ -19,16 +19,26 @@ struct JottaStatusOutputView: View {
                 if showprogressview {
                     ProgressView()
                 } else {
-                    Button {
-                        scan()
-                    } label: {
-                        Text("Status")
+                    HStack {
+                        Button {
+                            scan()
+                        } label: {
+                            Text("Status")
+                        }
+                        .buttonStyle(ColorfulButtonStyle())
+                        
+                        Button {
+                            list()
+                        } label: {
+                            Text("List")
+                        }
+                        .buttonStyle(ColorfulButtonStyle())
                     }
-                    .buttonStyle(ColorfulButtonStyle())
+                    
                 }
             }
             .padding()
-            .navigationTitle("Jotta status (Jotta-client output)")
+            .navigationTitle("Jotta status (text)")
             .navigationDestination(isPresented: $completedjottastatustextview) {
                 OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
@@ -41,9 +51,6 @@ struct JottaStatusOutputView: View {
                     }
                     .help("Jottacloud Web")
                 }
-            }
-            .onAppear {
-                scan()
             }
         }
     }
@@ -59,6 +66,18 @@ struct JottaStatusOutputView: View {
 extension JottaStatusOutputView {
     func scan() {
         let arguments = ["status"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+
+        // Start progressview
+        showprogressview = true
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments,
+                                     processtermination: processtermination)
+        process.executeProcess()
+    }
+    
+    func list() {
+        let arguments = ["list"]
         let command = FullpathJottaCli().jottaclipathandcommand()
 
         // Start progressview
