@@ -93,12 +93,12 @@ struct OutputJottaStatusView: View {
                     Text(dateinmilliseconds(data.LastUpdateMS))
                 }
                 .width(min: 120, max: 150)
-/*
-                TableColumn("NextBackupMS") { data in
-                    Text(dateinmilliseconds(data.NextBackupMS))
-                }
-                .width(min: 80, max: 100)
-*/
+                /*
+                 TableColumn("NextBackupMS") { data in
+                     Text(dateinmilliseconds(data.NextBackupMS))
+                 }
+                 .width(min: 80, max: 100)
+                 */
                 TableColumn("LastScanStartedMS") { data in
                     Text(dateinmilliseconds(data.LastScanStartedMS))
                 }

@@ -8,41 +8,38 @@
 import SwiftUI
 
 enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible {
-    case select
-    
     case add
     case archive
     case completion
     case config
-    
+
     case download
     case dump
     case help
     case ignores
-    
+
     case list
     case logfile
     case login
     case logout
-    
+
     case ls
     case observe
     case pause
     case rem
-    
+
     case resume
     case scan
     case share
     case status
-    
+
     case sync
     case tail
     case trash
     case version
-    
+
     case web
     case webhook
-    
 
     var id: String { rawValue }
     var description: String { rawValue.localizedLowercase }
@@ -53,7 +50,7 @@ struct JottaStatusOutputView: View {
 
     @State private var showprogressview = false
     @State private var jottaclioutput = ObservableJottaOutput()
-    @State private var selectedhelpcommand = TypeofCommands.select
+    @State private var selectedhelpcommand: TypeofCommands?
 
     var body: some View {
         NavigationStack {
@@ -61,20 +58,12 @@ struct JottaStatusOutputView: View {
                 if showprogressview {
                     ProgressView()
                 } else {
-                    HStack {
-                        Button {
-                            scan()
-                        } label: {
-                            Text("Status")
-                        }
-                        .buttonStyle(ColorfulButtonStyle())
-                        
-                        pickerselecttypeofhelptask
-                            .onChange(of: selectedhelpcommand) {
-                                guard selectedhelpcommand != .select else { return }
-                                help()
-                            }
-                        }
+                    Button {
+                        scan()
+                    } label: {
+                        Text("Status")
+                    }
+                    .buttonStyle(ColorfulButtonStyle())
                 }
             }
             .padding()
@@ -83,6 +72,13 @@ struct JottaStatusOutputView: View {
                 OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
             .toolbar {
+                ToolbarItem {
+                    pickerselecttypeofhelptask
+                        .onChange(of: selectedhelpcommand) {
+                            help()
+                        }
+                }
+
                 ToolbarItem {
                     Button {
                         webview()
@@ -101,34 +97,36 @@ struct JottaStatusOutputView: View {
                 abort()
             })
     }
-    
+
     var pickerselecttypeofhelptask: some View {
-        Picker(NSLocalizedString("Help on", comment: "") + ":",
+        Picker(NSLocalizedString("", comment: "") + ":",
                selection: $selectedhelpcommand)
         {
+            Text("Help on command")
+                .tag(nil as TypeofCommands?)
             ForEach(TypeofCommands.allCases) { Text($0.description)
                 .tag($0)
             }
         }
         .pickerStyle(DefaultPickerStyle())
-        .frame(width: 160)
     }
 }
 
 extension JottaStatusOutputView {
-    
     func help() {
-        let arguments = [selectedhelpcommand.rawValue, "--help"]
-        let command = FullpathJottaCli().jottaclipathandcommand()
+        if let selectedhelpcommand {
+            let arguments = [selectedhelpcommand.rawValue, "--help"]
+            let command = FullpathJottaCli().jottaclipathandcommand()
 
-        // Start progressview
-        showprogressview = true
-        let process = ProcessCommand(command: command,
-                                     arguments: arguments,
-                                     processtermination: processtermination)
-        process.executeProcess()
+            // Start progressview
+            showprogressview = true
+            let process = ProcessCommand(command: command,
+                                         arguments: arguments,
+                                         processtermination: processterminationhelp)
+            process.executeProcess()
+        }
     }
-    
+
     func scan() {
         let arguments = ["status"]
         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -137,10 +135,10 @@ extension JottaStatusOutputView {
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
-                                     processtermination: processtermination)
+                                     processtermination: processterminationhelp)
         process.executeProcess()
     }
-    
+
     func list() {
         let arguments = ["list"]
         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -149,7 +147,7 @@ extension JottaStatusOutputView {
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
-                                     processtermination: processtermination)
+                                     processtermination: processterminationhelp)
         process.executeProcess()
     }
 
@@ -165,7 +163,7 @@ extension JottaStatusOutputView {
         InterruptProcess()
     }
 
-    func processtermination(_ stringoutput: [String]?) {
+    func processterminationhelp(_ stringoutput: [String]?) {
         showprogressview = false
         Task {
             jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
