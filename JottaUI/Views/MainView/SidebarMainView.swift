@@ -21,7 +21,7 @@ struct SidebarMainView: View {
     // Status JSON
     @State var statuspath: [Status] = []
     // Status text
-    @State var completedjottastatustextview: Bool = false
+    @State var completedjottastatusview: Bool = true
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -36,7 +36,7 @@ struct SidebarMainView: View {
                 }
             }
             .listStyle(.sidebar)
-            .disabled(statuspath.isEmpty == false || completedjottastatustextview == true)
+            .disabled(statuspath.isEmpty == false || completedjottastatusview == false)
 
             MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 
@@ -58,7 +58,7 @@ struct SidebarMainView: View {
         case .logfile:
             NavigationJottaCliLogfileView()
         case .status:
-            JottaStatusView(statuspath: $statuspath, completedjottastatustextview: $completedjottastatustextview)
+            JottaStatusView(statuspath: $statuspath, completedjottastatusview: $completedjottastatusview)
         case .add_catalogs_backup:
             AddCatalogsForBackup()
         case .Jotta_cli_help:

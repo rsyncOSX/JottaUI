@@ -21,7 +21,7 @@ struct Status: Hashable, Identifiable {
 
 struct JottaStatusView: View {
     @Binding var statuspath: [Status]
-    @Binding var completedjottastatustextview: Bool
+    @Binding var completedjottastatusview: Bool
 
     @State private var jsondata = ObservableJSONStatus()
     @State private var showprogressview = false
@@ -45,6 +45,8 @@ struct JottaStatusView: View {
                 } else {
                     HStack {
                         Button {
+                            completedjottastatusview = false
+                            
                             if jsonstatus {
                                 executescan()
                             } else {
@@ -170,6 +172,7 @@ extension JottaStatusView {
 
     func processterminationjson(_ stringoutput: [String]?) {
         showprogressview = false
+        completedjottastatusview = true
         jsondata.setJSONstring(stringoutput)
         jsondata.debugJSONdata()
         statuspath.append(Status(task: .completedview))
@@ -191,7 +194,7 @@ extension JottaStatusView {
             
             Task {
                 jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
-                completedjottastatustextview = true
+                completedjottastatusview = true
                 statuspath.append(Status(task: .statustextview))
             }
         }
