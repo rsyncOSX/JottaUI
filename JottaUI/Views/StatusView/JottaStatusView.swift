@@ -10,7 +10,7 @@ import OSLog
 import SwiftUI
 
 enum DestinationView: String, Identifiable {
-    case completedview, logfileview, statustextview
+    case statusjsonview, logfileview, statustextview
     var id: String { rawValue }
 }
 
@@ -117,10 +117,14 @@ struct JottaStatusView: View {
     @MainActor @ViewBuilder
     func makeView(view: DestinationView) -> some View {
         switch view {
-        case .completedview:
+        case .statusjsonview:
             OutputJottaStatusView(jsondata: $jsondata)
                 .onDisappear {
                     jsondata.backups.removeAll()
+                    
+                    if jsonstatus {
+                        jsonstatus = false
+                    }
                 }
 
         case .logfileview:
@@ -175,7 +179,7 @@ extension JottaStatusView {
         completedjottastatusview = true
         jsondata.setJSONstring(stringoutput)
         jsondata.debugJSONdata()
-        statuspath.append(Status(task: .completedview))
+        statuspath.append(Status(task: .statusjsonview))
     }
 
     func processtermination(_ stringoutput: [String]?) {
@@ -208,7 +212,7 @@ extension JottaStatusView {
             if let data {
                 jsondata.setJSONData(data)
                 jsondata.debugJSONdata()
-                statuspath.append(Status(task: .completedview))
+                statuspath.append(Status(task: .statusjsonview))
             }
         } catch {
             return
