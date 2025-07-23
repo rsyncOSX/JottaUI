@@ -21,6 +21,7 @@ struct Status: Hashable, Identifiable {
 
 struct JottaStatusView: View {
     @Binding var statuspath: [Status]
+    @Binding var completedjottastatustextview: Bool
 
     @State private var jsondata = ObservableJSONStatus()
     @State private var showprogressview = false
@@ -120,6 +121,19 @@ struct JottaStatusView: View {
 
 extension JottaStatusView {
     
+    // For text view
+    func executestatus() {
+        let arguments = ["status"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+
+        // Start progressview
+        showprogressview = true
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments,
+                                     processtermination: processtermination)
+        process.executeProcess()
+    }
+    
     func webview() {
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -132,6 +146,7 @@ extension JottaStatusView {
         InterruptProcess()
     }
 
+    // Execute a scan before JSON view
     func executescan() {
         let arguments = ["scan"]
         let command = FullpathJottaCli().jottaclipathandcommand()
