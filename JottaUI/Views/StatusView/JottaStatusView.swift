@@ -10,7 +10,7 @@ import OSLog
 import SwiftUI
 
 enum DestinationView: String, Identifiable {
-    case completedview, logfileview, helpview
+    case completedview, logfileview, statustextview
     var id: String { rawValue }
 }
 
@@ -28,6 +28,8 @@ struct JottaStatusView: View {
     @State private var jottaclioutput = ObservableJottaOutput()
     @State private var completed: Bool = false
 
+    @State private var jsonstatus: Bool = true
+
     @State private var importorexport: Bool = false
     @State private var focusexport: Bool = false
     @State private var focusimport: Bool = false
@@ -41,12 +43,21 @@ struct JottaStatusView: View {
                     ProgressView()
 
                 } else {
-                    Button {
-                        executescan()
-                    } label: {
-                        Text("Status")
+                    HStack {
+                        Button {
+                            if jsonstatus {
+                                executescan()
+                            } else {
+                                executestatus()
+                            }
+                        } label: {
+                            Text("Status")
+                        }
+                        .buttonStyle(ColorfulButtonStyle())
+
+                        ToggleView(text: NSLocalizedString("JSON", comment: ""), binding: $jsonstatus)
                     }
-                    .buttonStyle(ColorfulButtonStyle())
+                    .frame(width: 200)
                 }
             }
             .padding()
@@ -113,14 +124,13 @@ struct JottaStatusView: View {
         case .logfileview:
             NavigationJottaUILogfileView()
 
-        case .helpview:
+        case .statustextview:
             OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
         }
     }
 }
 
 extension JottaStatusView {
-    
     // For text view
     func executestatus() {
         let arguments = ["status"]
@@ -133,7 +143,7 @@ extension JottaStatusView {
                                      processtermination: processtermination)
         process.executeProcess()
     }
-    
+
     func webview() {
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -158,15 +168,6 @@ extension JottaStatusView {
         process.executeProcess()
     }
 
-    func executejsonstatus() {
-        let arguments = ["status", "--json"]
-        let command = FullpathJottaCli().jottaclipathandcommand()
-        let process = ProcessCommand(command: command,
-                                     arguments: arguments,
-                                     processtermination: processterminationjson)
-        process.executeProcess()
-    }
-
     func processterminationjson(_ stringoutput: [String]?) {
         showprogressview = false
         jsondata.setJSONstring(stringoutput)
@@ -174,8 +175,26 @@ extension JottaStatusView {
         statuspath.append(Status(task: .completedview))
     }
 
-    func processtermination(_: [String]?) {
-        executejsonstatus()
+    func processtermination(_ stringoutput: [String]?) {
+        
+        if jsonstatus {
+            
+            let arguments = ["status", "--json"]
+            let command = FullpathJottaCli().jottaclipathandcommand()
+            let process = ProcessCommand(command: command,
+                                         arguments: arguments,
+                                         processtermination: processterminationjson)
+            process.executeProcess()
+            
+        } else {
+            showprogressview = false
+            
+            Task {
+                jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
+                completedjottastatustextview = true
+                statuspath.append(Status(task: .statustextview))
+            }
+        }
     }
 
     func readimportfile(file: String) {

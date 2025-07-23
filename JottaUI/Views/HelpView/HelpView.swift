@@ -46,7 +46,6 @@ enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible
 }
 
 struct HelpView: View {
-    
     @State private var showhelp: Bool = false
     @State private var showprogressview = false
     @State private var jottaclioutput = ObservableJottaOutput()
@@ -100,7 +99,7 @@ extension HelpView {
             process.executeProcess()
         }
     }
-    
+
     func processterminationhelp(_ stringoutput: [String]?) {
         showprogressview = false
         Task {
