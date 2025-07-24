@@ -46,7 +46,7 @@ struct JottaStatusView: View {
                     HStack {
                         Button {
                             completedjottastatusview = false
-                            
+
                             if jsonstatus {
                                 executescan()
                             } else {
@@ -121,7 +121,7 @@ struct JottaStatusView: View {
             OutputJottaStatusView(jsondata: $jsondata)
                 .onDisappear {
                     jsondata.backups.removeAll()
-                    
+
                     if jsonstatus {
                         jsonstatus = false
                     }
@@ -183,19 +183,17 @@ extension JottaStatusView {
     }
 
     func processtermination(_ stringoutput: [String]?) {
-        
         if jsonstatus {
-            
             let arguments = ["status", "--json"]
             let command = FullpathJottaCli().jottaclipathandcommand()
             let process = ProcessCommand(command: command,
                                          arguments: arguments,
                                          processtermination: processterminationjson)
             process.executeProcess()
-            
+
         } else {
             showprogressview = false
-            
+
             Task {
                 jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
                 completedjottastatusview = true

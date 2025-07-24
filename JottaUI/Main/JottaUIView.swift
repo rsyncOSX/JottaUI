@@ -16,7 +16,7 @@ struct JottaUIView: View {
         VStack {
             if start {
                 VStack {
-                    Text("JottaUI a GUI for Jotta-client")
+                    Text("JottaUI a GUI\nfor Jotta-client")
                         .font(.largeTitle)
                 }
                 .onAppear(perform: {
