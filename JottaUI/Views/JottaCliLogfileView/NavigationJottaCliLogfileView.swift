@@ -26,13 +26,13 @@ struct NavigationJottaCliLogfileView: View {
                 if let logfilerecords {
                     Table(logfilerecords) {
                         TableColumn("Time stamp") { data in
-                            let stringdate = data.logdate?.string_from_date() ?? "No date"
+                            let stringdate = data.logrecordlogdate?.string_from_date() ?? "No date"
                             Text(stringdate)
                         }
                         .width(min: 100, max: 150)
 
                         TableColumn("Logfile form Jotta-client" + ": \(logfilerecords.count) rows" + sortdirectionstring()) { data in
-                            Text(data.line)
+                            Text(data.logrecordline)
                         }
                     }
                 } else {
@@ -57,7 +57,9 @@ struct NavigationJottaCliLogfileView: View {
             Task {
                 updateaction = true
                 if filterstring.isEmpty == false {
-                    logfilerecords = logfilerecords?.filter { $0.line.contains(filterstring) }
+                    // Must read all logrecords before filter
+                    let alllogrecords = await ActorGenerateJottaCliLogfileforview().generatedata()
+                    logfilerecords = alllogrecords.filter { $0.logrecordline.contains(filterstring) }
                 } else {
                     logfilerecords = await ActorGenerateJottaCliLogfileforview().generatedata()
                 }
@@ -78,7 +80,13 @@ struct NavigationJottaCliLogfileView: View {
             Task {
                 guard reset == false else { return }
                 updateaction = true
-                logfilerecords = await ActorGenerateJottaCliLogfileforview().sortlogdata(sortdirection)
+                if filterstring.isEmpty == false {
+                    // Must read all logrecords before filter
+                    let alllogrecords = await ActorGenerateJottaCliLogfileforview().sortlogdata(sortdirection)
+                    logfilerecords = alllogrecords.filter { $0.logrecordline.contains(filterstring) }
+                } else {
+                    logfilerecords = await ActorGenerateJottaCliLogfileforview().sortlogdata(sortdirection)
+                }
                 updateaction = false
             }
         }

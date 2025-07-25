@@ -17,7 +17,7 @@ struct NavigationJottaUILogfileView: View {
         VStack {
             Table(logfilerecords ?? []) {
                 TableColumn("Logfile") { data in
-                    Text(data.line)
+                    Text(data.logrecordline)
                 }
             }
             .onChange(of: resetloggfile) {

@@ -10,8 +10,8 @@ import Observation
 
 struct LogfileRecords: Identifiable {
     let id = UUID()
-    var line: String
-    var logdate: Date?
+    var logrecordline: String
+    var logrecordlogdate: Date?
 }
 
 @Observable @MainActor

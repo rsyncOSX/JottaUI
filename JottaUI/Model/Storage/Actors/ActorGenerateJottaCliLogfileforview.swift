@@ -16,7 +16,7 @@ actor ActorGenerateJottaCliLogfileforview {
                 let parts = record.split(separator: " ")
                 if parts.count > 3 {
                     let dateString = String(parts[1] + " " + parts[2])
-                    return LogfileRecords(line: record, logdate: dateString.date_from_string())
+                    return LogfileRecords(logrecordline: record, logrecordlogdate: dateString.date_from_string())
                 } else {
                     return nil
                 }
@@ -34,7 +34,7 @@ actor ActorGenerateJottaCliLogfileforview {
                 let parts = record.split(separator: " ")
                 if parts.count > 3 {
                     let dateString = String(parts[1] + " " + parts[2])
-                    return LogfileRecords(line: record, logdate: dateString.date_from_string())
+                    return LogfileRecords(logrecordline: record, logrecordlogdate: dateString.date_from_string())
                 } else {
                     return nil
                 }
@@ -42,14 +42,14 @@ actor ActorGenerateJottaCliLogfileforview {
 
             if direction {
                 return logdata.sorted { record1, record2 -> Bool in
-                    if let date1 = record1.logdate, let date2 = record2.logdate {
+                    if let date1 = record1.logrecordlogdate, let date2 = record2.logrecordlogdate {
                         return date1 > date2
                     }
                     return false
                 }
             } else {
                 return logdata.sorted { record1, record2 -> Bool in
-                    if let date1 = record1.logdate, let date2 = record2.logdate {
+                    if let date1 = record1.logrecordlogdate, let date2 = record2.logrecordlogdate {
                         return date1 < date2
                     }
                     return false
