@@ -31,7 +31,7 @@ struct NavigationJottaCliLogfileView: View {
                         }
                         .width(min: 100, max: 150)
 
-                        TableColumn("Logfile form Jotta-client" + ": \(logfilerecords.count) rows" + sortdirectionstring()) { data in
+                        TableColumn("Logfile Jotta-client" + ": \(logfilerecords.count) rows" + sortdirectionstring()) { data in
                             Text(data.logrecordline)
                         }
                     }
