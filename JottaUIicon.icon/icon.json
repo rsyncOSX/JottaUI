@@ -9,9 +9,8 @@
     {
       "layers" : [
         {
-          "glass" : true,
-          "image-name" : "icon_512x512@2x_cloud 2.png",
-          "name" : "icon_512x512@2x_cloud 2"
+          "image-name" : "cloud 3.png",
+          "name" : "cloud 3"
         },
         {
           "blend-mode" : "normal",
