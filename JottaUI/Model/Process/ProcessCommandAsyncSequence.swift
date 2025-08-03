@@ -150,30 +150,3 @@ extension ProcessCommandAsyncSequence {
         Logger.process.info("ProcessCommandAsyncSequence: process = nil and termination discovered")
     }
 }
-
-
-/*
- var sequenceFileHandlerTask: Task<Void, Never>?
- var sequenceTerminationTask: Task<Void, Never>?
-
- func executeProcess() {
-     ...
-     sequenceFileHandlerTask = Task {
-         for await _ in sequencefilehandler {
-             await self.datahandle(pipe)
-         }
-     }
-     sequenceTerminationTask = Task {
-         for await _ in sequencetermination {
-             try await Task.sleep(seconds: 0.5)
-             await self.termination()
-         }
-     }
- }
-
- func termination() async {
-     ...
-     sequenceFileHandlerTask?.cancel()
-     sequenceTerminationTask?.cancel()
- }
- */
