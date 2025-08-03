@@ -17,7 +17,7 @@ final class ProcessCommand {
     var processtermination: ([String]?) -> Void
     // Output
     var output = [String]()
-    // Command to be executed, normally rsync
+    // Command to be executed
     var command: String?
     // Arguments to command
     var arguments: [String]?
