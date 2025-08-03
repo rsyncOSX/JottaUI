@@ -24,6 +24,10 @@ final class ProcessCommandAsyncSequence {
     var checkforerror = CheckForError()
     // If one of the arguments are ["--json"] skip check for errors
     var oneargumentisjson: [Bool]?
+    
+    let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
+    let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: nil)
+   
 
     func executeProcess() {
         if let command, let arguments, arguments.count > 0 {
@@ -36,46 +40,24 @@ final class ProcessCommandAsyncSequence {
             task.standardError = pipe
             let outHandle = pipe.fileHandleForReading
             outHandle.waitForDataInBackgroundAndNotify()
-            
+            /*
             let center = NotificationCenter.default
             let sequencefilehandler = center.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
             let sequencetermination = center.notifications(named: Process.didTerminateNotification, object: nil)
-            
+            */
             Task {
-                    for await notification in sequencefilehandler {
+                for await _ in sequencefilehandler {
                         await self.datahandle(pipe)
                     }
                 }
             
             Task {
-                    for await notification in sequencetermination {
+                for await _ in sequencetermination {
                         try await Task.sleep(seconds: 0.5)
                         await self.termination()
                     }
                 }
 
-            /*
-            notificationsfilehandle =
-                NotificationCenter.default.addObserver(forName: NSNotification.Name.NSFileHandleDataAvailable,
-                                                       object: nil, queue: .main)
-                { _ in
-                    Task {
-                        await self.datahandle(pipe)
-                    }
-                }
-
-            notificationstermination =
-                NotificationCenter.default.addObserver(forName: Process.didTerminateNotification,
-                                                       object: task, queue: .main)
-                { _ in
-                    Task {
-                        // Debounce termination for 500 ms
-                        try await Task.sleep(seconds: 0.5)
-                        await self.termination()
-                    }
-                }
-             */
-            
             SharedReference.shared.process = task
             do {
                 try task.run()
@@ -157,14 +139,12 @@ extension ProcessCommandAsyncSequence {
             }
         }
         SharedReference.shared.process = nil
-        /*
-        NotificationCenter.default.removeObserver(notificationsfilehandle as Any,
+        NotificationCenter.default.removeObserver(sequencefilehandler as Any,
                                                   name: NSNotification.Name.NSFileHandleDataAvailable,
                                                   object: nil)
-        NotificationCenter.default.removeObserver(notificationstermination as Any,
+        NotificationCenter.default.removeObserver(sequencetermination as Any,
                                                   name: Process.didTerminateNotification,
                                                   object: nil)
-         */
-        Logger.process.info("ProcessRsyncObserving: process = nil and termination discovered")
+        Logger.process.info("ProcessCommandAsyncSequence: process = nil and termination discovered")
     }
 }
