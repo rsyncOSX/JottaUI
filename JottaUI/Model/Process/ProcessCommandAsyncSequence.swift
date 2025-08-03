@@ -27,7 +27,8 @@ final class ProcessCommandAsyncSequence {
     
     let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
     let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: nil)
-   
+    var sequenceFileHandlerTask: Task<Void, Never>?
+    var sequenceTerminationTask: Task<Void, Never>?
 
     func executeProcess() {
         if let command, let arguments, arguments.count > 0 {
@@ -40,25 +41,24 @@ final class ProcessCommandAsyncSequence {
             task.standardError = pipe
             let outHandle = pipe.fileHandleForReading
             outHandle.waitForDataInBackgroundAndNotify()
-            /*
-            let center = NotificationCenter.default
-            let sequencefilehandler = center.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
-            let sequencetermination = center.notifications(named: Process.didTerminateNotification, object: nil)
-            */
-            Task {
-                for await _ in sequencefilehandler {
-                        await self.datahandle(pipe)
-                    }
-                }
             
-            Task {
+            sequenceFileHandlerTask = Task {
+                for await _ in sequencefilehandler {
+                    await self.datahandle(pipe)
+                }
+            }
+            
+            sequenceTerminationTask = Task {
                 for await _ in sequencetermination {
+                    Task {
                         try await Task.sleep(seconds: 0.5)
                         await self.termination()
                     }
                 }
-
+            }
+            
             SharedReference.shared.process = task
+            
             do {
                 try task.run()
             } catch let e {
@@ -145,6 +145,35 @@ extension ProcessCommandAsyncSequence {
         NotificationCenter.default.removeObserver(sequencetermination as Any,
                                                   name: Process.didTerminateNotification,
                                                   object: nil)
+        sequenceFileHandlerTask?.cancel()
+        sequenceTerminationTask?.cancel()
         Logger.process.info("ProcessCommandAsyncSequence: process = nil and termination discovered")
     }
 }
+
+
+/*
+ var sequenceFileHandlerTask: Task<Void, Never>?
+ var sequenceTerminationTask: Task<Void, Never>?
+
+ func executeProcess() {
+     ...
+     sequenceFileHandlerTask = Task {
+         for await _ in sequencefilehandler {
+             await self.datahandle(pipe)
+         }
+     }
+     sequenceTerminationTask = Task {
+         for await _ in sequencetermination {
+             try await Task.sleep(seconds: 0.5)
+             await self.termination()
+         }
+     }
+ }
+
+ func termination() async {
+     ...
+     sequenceFileHandlerTask?.cancel()
+     sequenceTerminationTask?.cancel()
+ }
+ */
