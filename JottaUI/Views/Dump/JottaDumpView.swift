@@ -97,7 +97,6 @@ extension JottaDumpView {
     func processtermination(_ stringoutput: [String]?) {
         showprogressview = false
         jsondata.setJSONstring(stringoutput)
-        jsondata.debugJSONdata()
         statusdumppath.append(StatusDump(task:.statusdumpview ))
     }
 }
