@@ -145,8 +145,8 @@ extension JottaStatusView {
         // Start progressview
         showprogressview = true
         let process = ProcessCommandAsyncSequence(command: command,
-                                     arguments: arguments,
-                                     processtermination: processtermination)
+                                                  arguments: arguments,
+                                                  processtermination: processtermination)
         process.executeProcess()
     }
 
@@ -154,7 +154,7 @@ extension JottaStatusView {
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         let process = ProcessCommandAsyncSequence(command: command,
-                                     arguments: arguments)
+                                                  arguments: arguments)
         process.executeProcess()
     }
 
@@ -169,8 +169,8 @@ extension JottaStatusView {
         // Start progressview
         showprogressview = true
         let process = ProcessCommandAsyncSequence(command: command,
-                                     arguments: arguments,
-                                     processtermination: processtermination)
+                                                  arguments: arguments,
+                                                  processtermination: processtermination)
         process.executeProcess()
     }
 
@@ -187,8 +187,8 @@ extension JottaStatusView {
             let arguments = ["status", "--json"]
             let command = FullpathJottaCli().jottaclipathandcommand()
             let process = ProcessCommandAsyncSequence(command: command,
-                                         arguments: arguments,
-                                         processtermination: processterminationjson)
+                                                      arguments: arguments,
+                                                      processtermination: processterminationjson)
             process.executeProcess()
 
         } else {

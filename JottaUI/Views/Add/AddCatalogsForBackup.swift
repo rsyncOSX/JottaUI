@@ -13,37 +13,25 @@ struct AddCatalogsForBackup: View {
     @State private var catalogadded: Bool = false
 
     var body: some View {
-        VStack {
-            Form {
-                Section {
-                    HStack {
-                        setpathforrestore
+        HStack {
+            catalogforbackup
 
-                        OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
-                    }
-                } header: {
-                    Text("Catalog for backup")
-                }
-                .formStyle(.grouped)
-            }
+            OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
 
-            if catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) {
-                Form {
-                    Button {
-                        let catalogsforbackup = catalogsforbackup.catalogsforbackup
-                        let arguments = ["add", catalogsforbackup]
-                        let command = FullpathJottaCli().jottaclipathandcommand()
-                        // Start progressview
-                        let process = ProcessCommandAsyncSequence(command: command,
-                                                     arguments: arguments,
-                                                     processtermination: processtermination)
-                        process.executeProcess()
-                    } label: {
-                        Text("Add catalog")
-                    }
-                    .buttonStyle(ColorfulButtonStyle())
-                }
+            Button {
+                let catalogsforbackup = catalogsforbackup.catalogsforbackup
+                let arguments = ["add", catalogsforbackup]
+                let command = FullpathJottaCli().jottaclipathandcommand()
+                // Start progressview
+                let process = ProcessCommandAsyncSequence(command: command,
+                                                          arguments: arguments,
+                                                          processtermination: processtermination)
+                process.executeProcess()
+            } label: {
+                Text("Add")
             }
+            .buttonStyle(ColorfulButtonStyle())
+            .disabled(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) == false)
         }
         .confirmationDialog(
             "Catalog for backup added",
@@ -56,10 +44,10 @@ struct AddCatalogsForBackup: View {
         }
     }
 
-    var setpathforrestore: some View {
-        EditValueScheme(400, NSLocalizedString("Catalog for backup", comment: ""),
-                        $catalogsforbackup.catalogsforbackup,
-                        catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup))
+    var catalogforbackup: some View {
+        EditValueErrorScheme(400, NSLocalizedString("Catalog for backup", comment: ""),
+                             $catalogsforbackup.catalogsforbackup,
+                             catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup))
             .foregroundColor(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) ? Color.white : Color.red)
             .onChange(of: catalogsforbackup.catalogsforbackup) {
                 Task {

@@ -13,6 +13,8 @@ struct ExportView: View {
     @Binding var focusexport: Bool
 
     @State var exportcatalog: String = Homepath().userHomeDirectoryPath ?? ""
+    @State private var path: String = ""
+
     @State var filenameexport: String = "export"
 
     @State private var isShowingDialog: Bool = false
@@ -21,14 +23,44 @@ struct ExportView: View {
     var body: some View {
         VStack {
             HStack {
-                Button("Export") {
-                    executeexport()
+                if exportcatalog.hasSuffix("/") {
+                    Text(exportcatalog)
+                        .foregroundColor(.secondary)
+                } else {
+                    Text(exportcatalog + "/")
+                        .foregroundColor(.secondary)
                 }
+
+                setfilename
+
+                Text(".json")
+                    .foregroundColor(.secondary)
+
+                OpencatalogView(selecteditem: $exportcatalog, catalogs: true)
+
+                Button("Export") {
+                    if exportcatalog.hasSuffix("/") == true {
+                        path = exportcatalog + filenameexport + ".json"
+                    } else {
+                        path = exportcatalog + "/" + filenameexport + ".json"
+                    }
+
+                    guard exportcatalog.isEmpty == false, filenameexport.isEmpty == false else {
+                        focusexport = false
+                        return
+                    }
+
+                    executeexport()
+
+                    focusexport = false
+                }
+                .help("Export tasks")
                 .buttonStyle(ColorfulButtonStyle())
+
+                Spacer()
 
                 Button("Dismiss") {
                     focusexport = false
-                    dismiss()
                 }
                 .buttonStyle(ColorfulButtonStyle())
             }
@@ -41,6 +73,13 @@ struct ExportView: View {
                 exportcatalog += "/"
             }
         }
+        .frame(width: 600)
+    }
+
+    var setfilename: some View {
+        EditValueScheme(150, NSLocalizedString("Filename export", comment: ""),
+                        $filenameexport)
+            .textContentType(.none)
     }
 
     func executeexport() {
@@ -48,18 +87,12 @@ struct ExportView: View {
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
         let process = ProcessCommandAsyncSequence(command: command,
-                                     arguments: arguments,
-                                     processtermination: processterminationexport)
+                                                  arguments: arguments,
+                                                  processtermination: processterminationexport)
         process.executeProcess()
     }
 
     func processterminationexport(_ stringoutput: [String]?) {
-        var path = ""
-        if exportcatalog.hasSuffix("/") == true {
-            path = exportcatalog + filenameexport + ".json"
-        } else {
-            path = exportcatalog + "/" + filenameexport + ".json"
-        }
         guard exportcatalog.isEmpty == false, filenameexport.isEmpty == false else {
             focusexport = false
             return
@@ -77,6 +110,7 @@ struct ExportView: View {
         }
 
         focusexport = false
+
         dismiss()
     }
 }

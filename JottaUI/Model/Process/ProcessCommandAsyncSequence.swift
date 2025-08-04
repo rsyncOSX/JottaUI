@@ -5,7 +5,6 @@
 //  Created by Thomas Evensen on 03/08/2025.
 //
 
-
 import Foundation
 import OSLog
 
@@ -24,7 +23,7 @@ final class ProcessCommandAsyncSequence {
     var checkforerror = CheckForError()
     // If one of the arguments are ["--json"] skip check for errors
     var oneargumentisjson: [Bool]?
-    
+
     let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
     let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: nil)
     var sequenceFileHandlerTask: Task<Void, Never>?
@@ -41,13 +40,13 @@ final class ProcessCommandAsyncSequence {
             task.standardError = pipe
             let outHandle = pipe.fileHandleForReading
             outHandle.waitForDataInBackgroundAndNotify()
-            
+
             sequenceFileHandlerTask = Task {
                 for await _ in sequencefilehandler {
                     await self.datahandle(pipe)
                 }
             }
-            
+
             sequenceTerminationTask = Task {
                 for await _ in sequencetermination {
                     Task {
@@ -56,9 +55,9 @@ final class ProcessCommandAsyncSequence {
                     }
                 }
             }
-            
+
             SharedReference.shared.process = task
-            
+
             do {
                 try task.run()
             } catch let e {

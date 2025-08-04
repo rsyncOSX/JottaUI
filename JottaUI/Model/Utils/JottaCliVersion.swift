@@ -15,8 +15,8 @@ final class JottaCliVersion {
         let clicommand = FullpathJottaCli().jottaclipathandcommand()
 
         let command = ProcessCommandAsyncSequence(command: clicommand,
-                                     arguments: arguments,
-                                     processtermination: processtermination)
+                                                  arguments: arguments,
+                                                  processtermination: processtermination)
         command.executeProcess()
     }
 
