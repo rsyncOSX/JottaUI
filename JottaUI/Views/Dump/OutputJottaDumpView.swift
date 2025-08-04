@@ -9,12 +9,20 @@
 import SwiftUI
 
 struct OutputJottaDumpView: View {
-    @Binding var jsondata: ObservableDUMPOutput
+    
+    let tabledate: [Backuproot]
 
     var body: some View {
         VStack(alignment: .center) {
             
-            Text("Table")
+            Table(tabledate) {
+                TableColumn("BackupRoot", value: \.backuproot)
+                    // TableColumn("DeviceID", value: \.DeviceID)
+                    .width(min: 120, max: 400)
+
+                TableColumn("Folder", value: \.folder)
+                    .width(min: 80, max: 200)
+            }
             
         }
         .padding()

@@ -10,14 +10,17 @@ import Observation
 
 @Observable
 final class ObservableDUMPOutput {
-    @ObservationIgnored var backuproot: [Backuproot]?
     
-    func setJSONstring(_ stringdata: [String]?) {
+    func setJSONstring(_ stringdata: [String]?) -> [Backuproot]? {
+        var backuproot: [Backuproot]?
         Task {
             if let stringdata {
                 async let data = ActorConvertDumpData().convertStringToData(stringdata)
-                let test = await ActorConvertDumpData().convertDataToBackup(data)
+                backuproot = await ActorConvertDumpData().convertDataToBackup(data)
+                return backuproot
             }
+            return nil
         }
+        return nil
     }
 }

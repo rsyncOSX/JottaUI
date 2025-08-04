@@ -26,6 +26,9 @@ struct JottaDumpView: View {
     @State private var jsondata = ObservableDUMPOutput()
     @State private var showprogressview = false
     @State private var completed: Bool = false
+    
+    @State private var tabledata: [Backuproot]?
+    @State private var showtable: Bool = false
 
     var body: some View {
         NavigationStack(path: $statusdumppath) {
@@ -51,8 +54,13 @@ struct JottaDumpView: View {
             }
             .padding()
             .navigationTitle("Jotta DUMP (JSON)")
-            .navigationDestination(for: StatusDump.self) { which in
-                makeView(view: which.task)
+            .navigationDestination(isPresented: $showtable) {
+                if let tabledata  {
+                    OutputJottaDumpView(tabledate: tabledata)
+                }
+            }
+            .onChange(of: tabledata?.count) {
+                showtable = true
             }
         }
     }
@@ -62,14 +70,6 @@ struct JottaDumpView: View {
             .onAppear(perform: {
                 abort()
             })
-    }
-
-    @MainActor @ViewBuilder
-    func makeView(view: DestinationDumpView) -> some View {
-        switch view {
-        case .statusdumpview:
-            OutputJottaDumpView(jsondata: $jsondata)
-        }
     }
 }
 
@@ -93,7 +93,7 @@ extension JottaDumpView {
     
     func processtermination(_ stringoutput: [String]?) {
         showprogressview = false
-        jsondata.setJSONstring(stringoutput)
+        tabledata = jsondata.setJSONstring(stringoutput)
         statusdumppath.append(StatusDump(task:.statusdumpview ))
     }
 }
