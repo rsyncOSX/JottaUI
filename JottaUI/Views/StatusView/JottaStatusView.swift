@@ -144,7 +144,7 @@ extension JottaStatusView {
 
         // Start progressview
         showprogressview = true
-        let process = ProcessCommand(command: command,
+        let process = ProcessCommandAsyncSequence(command: command,
                                      arguments: arguments,
                                      processtermination: processtermination)
         process.executeProcess()
@@ -153,7 +153,7 @@ extension JottaStatusView {
     func webview() {
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-        let process = ProcessCommand(command: command,
+        let process = ProcessCommandAsyncSequence(command: command,
                                      arguments: arguments)
         process.executeProcess()
     }
@@ -168,7 +168,7 @@ extension JottaStatusView {
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
         showprogressview = true
-        let process = ProcessCommand(command: command,
+        let process = ProcessCommandAsyncSequence(command: command,
                                      arguments: arguments,
                                      processtermination: processtermination)
         process.executeProcess()
@@ -186,7 +186,7 @@ extension JottaStatusView {
         if jsonstatus {
             let arguments = ["status", "--json"]
             let command = FullpathJottaCli().jottaclipathandcommand()
-            let process = ProcessCommand(command: command,
+            let process = ProcessCommandAsyncSequence(command: command,
                                          arguments: arguments,
                                          processtermination: processterminationjson)
             process.executeProcess()

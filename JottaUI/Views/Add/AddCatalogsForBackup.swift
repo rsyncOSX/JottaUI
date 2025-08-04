@@ -34,7 +34,7 @@ struct AddCatalogsForBackup: View {
                         let arguments = ["add", catalogsforbackup]
                         let command = FullpathJottaCli().jottaclipathandcommand()
                         // Start progressview
-                        let process = ProcessCommand(command: command,
+                        let process = ProcessCommandAsyncSequence(command: command,
                                                      arguments: arguments,
                                                      processtermination: processtermination)
                         process.executeProcess()
