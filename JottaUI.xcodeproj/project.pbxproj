@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E926F7482E3D1FDF001FC800 /* AppIcon .icon in Resources */ = {isa = PBXBuildFile; fileRef = E926F7472E3D1FDF001FC800 /* AppIcon .icon */; };
+		E926F7482E3D1FDF001FC800 /* JottaUIicon.icon in Resources */ = {isa = PBXBuildFile; fileRef = E926F7472E3D1FDF001FC800 /* JottaUIicon.icon */; };
 		E99DE0F926A32F8B00A08A69 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = E99DE0F826A32F8B00A08A69 /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		E926F7472E3D1FDF001FC800 /* AppIcon .icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "AppIcon .icon"; sourceTree = "<group>"; };
+		E926F7472E3D1FDF001FC800 /* JottaUIicon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = JottaUIicon.icon; sourceTree = "<group>"; };
 		E961CC062D33B3C400A5F5A5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E985C5C325F3AC0700CB895C /* JottaUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JottaUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E99DE0F826A32F8B00A08A69 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 		E985C5BA25F3AC0700CB895C = {
 			isa = PBXGroup;
 			children = (
-				E926F7472E3D1FDF001FC800 /* AppIcon .icon */,
+				E926F7472E3D1FDF001FC800 /* JottaUIicon.icon */,
 				E99DE0F826A32F8B00A08A69 /* Credits.rtf */,
 				E9EF75A62D2D6DC70039D1D4 /* JottaUI */,
 				E961CC032D33B3C400A5F5A5 /* Frameworks */,
@@ -150,7 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E99DE0F926A32F8B00A08A69 /* Credits.rtf in Resources */,
-				E926F7482E3D1FDF001FC800 /* AppIcon .icon in Resources */,
+				E926F7482E3D1FDF001FC800 /* JottaUIicon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +299,7 @@
 		E985C5ED25F3AC0800CB895C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = JottaUIicon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = JottaUI/JottaUI.entitlements;
@@ -332,7 +332,7 @@
 		E985C5EE25F3AC0800CB895C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = JottaUIicon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = JottaUI/JottaUI.entitlements;
