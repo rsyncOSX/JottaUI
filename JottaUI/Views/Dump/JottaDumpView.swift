@@ -23,7 +23,6 @@ struct StatusDump: Hashable, Identifiable {
 struct JottaDumpView: View {
     @Binding var statusdumppath: [StatusDump]
 
-    @State private var jsondata = ObservableDUMPOutput()
     @State private var showprogressview = false
     @State private var completed: Bool = false
     
@@ -93,7 +92,13 @@ extension JottaDumpView {
     
     func processtermination(_ stringoutput: [String]?) {
         showprogressview = false
-        tabledata = jsondata.setJSONstring(stringoutput)
-        statusdumppath.append(StatusDump(task:.statusdumpview ))
+        
+        Task {
+            if let stringoutput {
+                async let data = ActorConvertDumpData().convertStringToData(stringoutput)
+                tabledata = await ActorConvertDumpData().convertDataToBackup(data)
+                statusdumppath.append(StatusDump(task:.statusdumpview ))
+            }
+        }
     }
 }

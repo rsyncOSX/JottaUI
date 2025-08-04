@@ -14,7 +14,6 @@ struct OutputJottaDumpView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            
             Table(tabledate) {
                 TableColumn("BackupRoot", value: \.backuproot)
                     // TableColumn("DeviceID", value: \.DeviceID)
@@ -23,7 +22,6 @@ struct OutputJottaDumpView: View {
                 TableColumn("Folder", value: \.folder)
                     .width(min: 80, max: 200)
             }
-            
         }
         .padding()
     }
