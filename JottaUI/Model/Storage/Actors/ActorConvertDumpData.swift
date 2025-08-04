@@ -24,20 +24,37 @@ actor ActorConvertDumpData {
     
     @concurrent
     nonisolated func convertDataToBackup(_ dataarray: [Data]) async -> [Backuproot] {
+        
         Logger.process.info("ActorConvertDumpData: convertDataToBackup() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
         var converted = [Backuproot]()
         for i in 0 ..< dataarray.count {
             
+            var fileitem: Files?
+            var fileitems: [Files]?
+            var backuprootitem: Backuproot?
+            
             let jsondata = try? JSON(data: dataarray[i])
             
-            print(jsondata?["folder"])
-            print(jsondata?["backuproot"])
-            
             if let files: [JSON] = jsondata?["files"].arrayValue {
+                fileitems = [Files]()
                 for file in files {
-                    print(file["md5"])
-                    print(file["size"].intValue)
-                    print(file["name"])
+                    fileitem = Files(name: file["name"].stringValue,
+                                  md5: file["md5"].stringValue,
+                                  size: file["size"].intValue)
+                    if let fileitem {
+                        fileitems?.append(fileitem)
+                    }
+                    
+                }
+            }
+            if let fileitems,
+                let backuproot = jsondata?["backuproot"].stringValue,
+                let folder = jsondata?["folder"].stringValue {
+                backuprootitem = Backuproot(backuproot: backuproot,
+                                        folder: folder,
+                                        files: fileitems)
+                if let backuprootitem {
+                    converted.append(backuprootitem)
                 }
             }
         }

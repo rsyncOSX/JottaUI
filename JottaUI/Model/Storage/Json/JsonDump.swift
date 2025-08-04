@@ -7,13 +7,15 @@
 
 import Foundation
 
-struct Backuproot {
+struct Backuproot: Identifiable {
+    let id = UUID()
     var backuproot: String
     var folder: String
     var files: [Files]
 }
 
-struct Files {
+struct Files: Identifiable {
+    let id = UUID()
     var name: String
     var md5: String
     var size: Int

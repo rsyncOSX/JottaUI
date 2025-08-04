@@ -69,9 +69,6 @@ struct JottaDumpView: View {
         switch view {
         case .statusdumpview:
             OutputJottaDumpView(jsondata: $jsondata)
-                .onDisappear {
-                    jsondata.backups.removeAll()
-                }
         }
     }
 }

@@ -10,7 +10,7 @@ import Observation
 
 @Observable
 final class ObservableDUMPOutput {
-    @ObservationIgnored var backups: [Backuproot] = []
+    @ObservationIgnored var backuproot: [Backuproot]?
     
     func setJSONstring(_ stringdata: [String]?) {
         Task {
