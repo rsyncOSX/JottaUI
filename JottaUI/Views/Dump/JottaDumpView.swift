@@ -22,7 +22,6 @@ struct StatusDump: Hashable, Identifiable {
 
 struct JottaDumpView: View {
     @Binding var statusdumppath: [StatusDump]
-    @Binding var completedjottadumpview: Bool
 
     @State private var jsondata = ObservableDUMPOutput()
     @State private var showprogressview = false
@@ -38,8 +37,7 @@ struct JottaDumpView: View {
                 } else {
                     HStack {
                         Button {
-                            completedjottadumpview = false
-
+                            
                             executedump()
                             
                         } label: {
@@ -98,7 +96,6 @@ extension JottaDumpView {
     
     func processtermination(_ stringoutput: [String]?) {
         showprogressview = false
-        completedjottadumpview = true
         jsondata.setJSONstring(stringoutput)
         jsondata.debugJSONdata()
         statusdumppath.append(StatusDump(task:.statusdumpview ))
