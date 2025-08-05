@@ -22,9 +22,9 @@ struct SidebarMainView: View {
     @State var statuspath: [Status] = []
     // Status text
     @State var completedjottastatusview: Bool = true
-    // Status Dumpview
-    @State var statusdumpview: [StatusDump] = []
-
+    // Show dumptabel
+    @State private var showdumptabletable: Bool = false
+    
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             // Only show profile picker if there are other profiles
@@ -38,7 +38,7 @@ struct SidebarMainView: View {
                 }
             }
             .listStyle(.sidebar)
-            .disabled(statuspath.isEmpty == false || completedjottastatusview == false || statusdumpview.isEmpty == false)
+            .disabled(statuspath.isEmpty == false || completedjottastatusview == false || showdumptabletable == true )
 
             MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 
@@ -66,7 +66,7 @@ struct SidebarMainView: View {
         case .Jotta_cli_help:
             HelpView()
         case .dump:
-            JottaDumpView(statusdumppath: $statusdumpview)
+            JottaDumpView(showdumptabletable: $showdumptabletable)
         }
     }
 }

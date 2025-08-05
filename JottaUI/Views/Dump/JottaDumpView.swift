@@ -9,27 +9,16 @@ import Foundation
 import OSLog
 import SwiftUI
 
-enum DestinationDumpView: String, Identifiable {
-    case statusdumpview
-    var id: String { rawValue }
-}
-
-struct StatusDump: Hashable, Identifiable {
-    let id = UUID()
-    var task: DestinationDumpView
-}
-
 struct JottaDumpView: View {
-    @Binding var statusdumppath: [StatusDump]
+    
+    @Binding var showdumptabletable: Bool
 
     @State private var showprogressview = false
     @State private var completed: Bool = false
-
     @State private var tabledata: [Files]?
-    @State private var showtable: Bool = false
 
     var body: some View {
-        NavigationStack(path: $statusdumppath) {
+        NavigationStack {
             HStack {
                 if showprogressview {
                     ProgressView()
@@ -49,13 +38,13 @@ struct JottaDumpView: View {
             }
             .padding()
             .navigationTitle("Jotta DUMP (JSON)")
-            .navigationDestination(isPresented: $showtable) {
+            .navigationDestination(isPresented: $showdumptabletable) {
                 if let tabledata {
                     OutputJottaDumpView(tabledate: tabledata)
                 }
             }
             .onChange(of: tabledata?.count) {
-                showtable = true
+                showdumptabletable = true
             }
         }
     }
@@ -87,13 +76,12 @@ extension JottaDumpView {
     }
 
     func processtermination(_ stringoutput: [String]?) {
-        showprogressview = false
-
+        
         Task {
             if let stringoutput {
                 async let data = ActorConvertDumpData().convertStringToData(stringoutput)
                 tabledata = await ActorConvertDumpData().convertDataToBackup(data)
-                statusdumppath.append(StatusDump(task: .statusdumpview))
+                showprogressview = false
             }
         }
     }
