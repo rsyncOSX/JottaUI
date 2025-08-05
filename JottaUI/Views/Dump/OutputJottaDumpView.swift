@@ -10,8 +10,7 @@ import SwiftUI
 struct OutputJottaDumpView: View {
     
     // Filterstring
-    @Binding var filterstring: String
-    
+    @State private var filterstring: String = ""
     @State private var selectedItemID: Files.ID?
     
     let tabledate: [Files]
@@ -19,28 +18,56 @@ struct OutputJottaDumpView: View {
     var body: some View {
         VStack(alignment: .center) {
             Table(tabledate, selection: $selectedItemID) {
-                TableColumn("BackupRoot", value: \.backuproot)
-                    // TableColumn("DeviceID", value: \.DeviceID)
-                    .width(min: 80, max: 400)
-
-                TableColumn("Folder", value: \.folder)
-                    .width(min: 80, max: 300)
-                
-                TableColumn("Name", value: \.name)
-                    .width(min: 80, max: 300)
-                
+                TableColumn("BackupRoot") { data in
+                    cellWithHighlight(data: data) {
+                        Text(data.backuproot)
+                    }
+                }
+                .width(min: 80, max: 400)
+                TableColumn("Folder") { data in
+                    cellWithHighlight(data: data) {
+                        Text(data.folder)
+                    }
+                }
+                .width(min: 80, max: 400)
+                TableColumn("Name") { data in
+                    cellWithHighlight(data: data) {
+                        Text(data.name)
+                    }
+                }
+                .width(min: 80, max: 400)
                 TableColumn("Size") { data in
-                    Text(formatted_number(data.size))
+                    cellWithHighlight(data: data) {
+                        Text(formatted_number(data.size))
+                    }
                 }
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
-                
-                TableColumn("MD5", value: \.md5)
-                    .width(min: 80, max: 400)
+                TableColumn("MD5") { data in
+                    cellWithHighlight(data: data) {
+                        Text(data.md5)
+                    }
+                }
+                .width(min: 80, max: 400)
             }
         }
         .padding()
         .searchable(text: $filterstring)
+    }
+    
+    @ViewBuilder
+    func cellWithHighlight(data: Files, @ViewBuilder content: () -> some View) -> some View {
+        let highlight = !filterstring.isEmpty &&
+            (
+                data.backuproot.localizedCaseInsensitiveContains(filterstring) ||
+                data.folder.localizedCaseInsensitiveContains(filterstring) ||
+                data.name.localizedCaseInsensitiveContains(filterstring) ||
+                data.md5.localizedCaseInsensitiveContains(filterstring)
+            )
+        content()
+            .padding(.vertical, 2)
+            .background(highlight ? Color.yellow.opacity(0.3) : Color.clear)
+            .cornerRadius(3)
     }
     
     func formatted_number(_ number: Int) -> String {
@@ -48,3 +75,25 @@ struct OutputJottaDumpView: View {
     }
 }
 
+/*
+ Table(tabledate, selection: $selectedItemID) {
+                 TableColumn("BackupRoot", value: \.backuproot)
+                     // TableColumn("DeviceID", value: \.DeviceID)
+                     .width(min: 80, max: 400)
+
+                 TableColumn("Folder", value: \.folder)
+                     .width(min: 80, max: 300)
+                 
+                 TableColumn("Name", value: \.name)
+                     .width(min: 80, max: 300)
+                 
+                 TableColumn("Size") { data in
+                     Text(formatted_number(data.size))
+                 }
+                 .width(min: 40, max: 80)
+                 .alignment(.trailing)
+                 
+                 TableColumn("MD5", value: \.md5)
+                     .width(min: 80, max: 400)
+             }
+ */

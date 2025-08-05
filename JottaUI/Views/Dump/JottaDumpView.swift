@@ -17,7 +17,6 @@ struct JottaDumpView: View {
     @State private var completed: Bool = false
     @State private var tabledata: [Files]?
     
-    @State private var filterstring: String = ""
 
     var body: some View {
         NavigationStack {
@@ -42,7 +41,7 @@ struct JottaDumpView: View {
             .navigationTitle("Jotta DUMP (JSON)")
             .navigationDestination(isPresented: $showdumptabletable) {
                 if let tabledata {
-                    OutputJottaDumpView(filterstring: $filterstring, tabledate: tabledata)
+                    OutputJottaDumpView(tabledate: tabledata)
                 }
             }
         }
