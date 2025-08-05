@@ -10,13 +10,11 @@ import OSLog
 import SwiftUI
 
 struct JottaDumpView: View {
-    
     @Binding var showdumptabletable: Bool
 
     @State private var showprogressview = false
     @State private var completed: Bool = false
     @State private var tabledata: [Files]?
-    
 
     var body: some View {
         NavigationStack {

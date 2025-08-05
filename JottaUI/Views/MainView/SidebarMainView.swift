@@ -24,12 +24,10 @@ struct SidebarMainView: View {
     @State var completedjottastatusview: Bool = true
     // Show dumptabel
     @State private var showdumptabletable: Bool = false
-    
+
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            // Only show profile picker if there are other profiles
-            // Id default only, do not show profile picker
-
+            
             Divider()
 
             List(Sidebaritems.allCases, selection: $selectedview) { item in
@@ -38,7 +36,7 @@ struct SidebarMainView: View {
                 }
             }
             .listStyle(.sidebar)
-            .disabled(statuspath.isEmpty == false || completedjottastatusview == false || showdumptabletable == true )
+            .disabled(statuspath.isEmpty == false || completedjottastatusview == false || showdumptabletable == true)
 
             MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 
