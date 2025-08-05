@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct OutputJottaDumpView: View {
+    
+    // Filterstring
+    @State private var filterstring: String = ""
+    
     let tabledate: [Files]
 
     var body: some View {
@@ -34,6 +38,7 @@ struct OutputJottaDumpView: View {
             }
         }
         .padding()
+        .searchable(text: $filterstring)
     }
     
     func formatted_number(_ number: Int) -> String {
