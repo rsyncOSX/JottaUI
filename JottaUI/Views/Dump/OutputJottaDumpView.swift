@@ -12,11 +12,13 @@ struct OutputJottaDumpView: View {
     // Filterstring
     @Binding var filterstring: String
     
+    @State private var selectedItemID: Files.ID?
+    
     let tabledate: [Files]
 
     var body: some View {
         VStack(alignment: .center) {
-            Table(tabledate) {
+            Table(tabledate, selection: $selectedItemID) {
                 TableColumn("BackupRoot", value: \.backuproot)
                     // TableColumn("DeviceID", value: \.DeviceID)
                     .width(min: 80, max: 400)
@@ -25,7 +27,7 @@ struct OutputJottaDumpView: View {
                     .width(min: 80, max: 300)
                 
                 TableColumn("Name", value: \.name)
-                    .width(min: 80, max: 200)
+                    .width(min: 80, max: 300)
                 
                 TableColumn("Size") { data in
                     Text(formatted_number(data.size))
