@@ -38,7 +38,7 @@ struct SidebarMainView: View {
                 }
             }
             .listStyle(.sidebar)
-            .disabled(statuspath.isEmpty == false || completedjottastatusview == false)
+            .disabled(statuspath.isEmpty == false || completedjottastatusview == false || statusdumpview.isEmpty == false)
 
             MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 
@@ -90,7 +90,7 @@ struct SidebarRow: View {
         case .Jotta_cli_help:
             "questionmark"
         case .dump:
-            "arrowshape.turn.up.backward.fill"
+            "arrow.down.app.fill"
         }
     }
 }

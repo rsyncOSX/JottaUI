@@ -9,7 +9,6 @@ import Foundation
 import OSLog
 
 actor ActorConvertDumpData {
-    
     @concurrent
     nonisolated func convertStringToData(_ stringarray: [String]) async -> [Data] {
         Logger.process.info("ActorConvertDumpData: convertStringToData() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
@@ -21,48 +20,33 @@ actor ActorConvertDumpData {
         }
         return convertedData
     }
-    
+
     @concurrent
-    nonisolated func convertDataToBackup(_ dataarray: [Data]) async -> [Backuproot] {
-        
+    nonisolated func convertDataToBackup(_ dataarray: [Data]) async -> [Files] {
         Logger.process.info("ActorConvertDumpData: convertDataToBackup() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
-        var converted = [Backuproot]()
+        var converted = [Files]()
         for i in 0 ..< dataarray.count {
-            
             var fileitem: Files?
-            var fileitems: [Files]?
-            var backuprootitem: Backuproot?
-            
             let jsondata = try? JSON(data: dataarray[i])
-            
-            if let files: [JSON] = jsondata?["files"].arrayValue {
-                fileitems = [Files]()
+
+            let backuproot = jsondata?["backuproot"].stringValue
+            let folder = jsondata?["folder"].stringValue
+
+            if let files: [JSON] = jsondata?["files"].arrayValue,
+               let backuproot, let folder
+            {
                 for file in files {
-                    fileitem = Files(name: file["name"].stringValue,
-                                  md5: file["md5"].stringValue,
-                                  size: file["size"].intValue)
+                    fileitem = Files(backuproot: backuproot,
+                                     folder: folder,
+                                     name: file["name"].stringValue,
+                                     md5: file["md5"].stringValue,
+                                     size: file["size"].intValue)
                     if let fileitem {
-                        fileitems?.append(fileitem)
+                        converted.append(fileitem)
                     }
-                    
-                }
-            }
-            if let fileitems,
-                let backuproot = jsondata?["backuproot"].stringValue,
-                let folder = jsondata?["folder"].stringValue {
-                backuprootitem = Backuproot(backuproot: backuproot,
-                                        folder: folder,
-                                        files: fileitems)
-                if let backuprootitem {
-                    converted.append(backuprootitem)
                 }
             }
         }
         return converted
-    }
-    
-    
-    func formatted_number(_ number: Int) -> String {
-        NumberFormatter.localizedString(from: NSNumber(value: number), number: NumberFormatter.Style.decimal)
     }
 }

@@ -5,7 +5,6 @@
 //  Created by Thomas Evensen on 04/08/2025.
 //
 
-
 import Foundation
 import OSLog
 import SwiftUI
@@ -25,28 +24,25 @@ struct JottaDumpView: View {
 
     @State private var showprogressview = false
     @State private var completed: Bool = false
-    
-    @State private var tabledata: [Backuproot]?
+
+    @State private var tabledata: [Files]?
     @State private var showtable: Bool = false
 
     var body: some View {
         NavigationStack(path: $statusdumppath) {
             HStack {
                 if showprogressview {
-                    
                     ProgressView()
 
                 } else {
                     HStack {
                         Button {
-                            
                             executedump()
-                            
+
                         } label: {
                             Text("Dump")
                         }
                         .buttonStyle(ColorfulButtonStyle())
-
                     }
                     .frame(width: 200)
                 }
@@ -54,7 +50,7 @@ struct JottaDumpView: View {
             .padding()
             .navigationTitle("Jotta DUMP (JSON)")
             .navigationDestination(isPresented: $showtable) {
-                if let tabledata  {
+                if let tabledata {
                     OutputJottaDumpView(tabledate: tabledata)
                 }
             }
@@ -89,15 +85,15 @@ extension JottaDumpView {
     func abort() {
         InterruptProcess()
     }
-    
+
     func processtermination(_ stringoutput: [String]?) {
         showprogressview = false
-        
+
         Task {
             if let stringoutput {
                 async let data = ActorConvertDumpData().convertStringToData(stringoutput)
                 tabledata = await ActorConvertDumpData().convertDataToBackup(data)
-                statusdumppath.append(StatusDump(task:.statusdumpview ))
+                statusdumppath.append(StatusDump(task: .statusdumpview))
             }
         }
     }
