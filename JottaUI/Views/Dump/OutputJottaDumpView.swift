@@ -16,8 +16,12 @@ struct OutputJottaDumpView: View {
 
     var body: some View {
         VStack(alignment: .center) {
+            
+            Text("The Search field is case sensitive and will ONLY highlight matches in \(Text("Yellow").foregroundColor(.yellow))")
+                .font(.title2)
+            
             Table(tabledate, selection: $selectedItemID) {
-                TableColumn("BackupRoot") { data in
+                TableColumn("BackupRoot - number of rows: \(tabledate.count)") { data in
                     cellWithHighlight(data: data) {
                         Text(data.backuproot)
                     }
@@ -54,24 +58,6 @@ struct OutputJottaDumpView: View {
         .searchable(text: $filterstring)
     }
 
-    /*
-     // Not Case sensitive
-     @ViewBuilder
-     func cellWithHighlight(data: Files, @ViewBuilder content: () -> some View) -> some View {
-         let highlight = !filterstring.isEmpty &&
-             (
-                 data.backuproot.localizedCaseInsensitiveContains(filterstring) ||
-                 data.folder.localizedCaseInsensitiveContains(filterstring) ||
-                 data.name.localizedCaseInsensitiveContains(filterstring) ||
-                 data.md5.localizedCaseInsensitiveContains(filterstring)
-             )
-         content()
-             .padding(.vertical, 2)
-             .background(highlight ? Color.yellow.opacity(0.3) : Color.clear)
-             .cornerRadius(3)
-     }
-     */
-
     @ViewBuilder
     // Case sensitive
     func cellWithHighlight(data: Files, @ViewBuilder content: () -> some View) -> some View {
@@ -92,3 +78,21 @@ struct OutputJottaDumpView: View {
         NumberFormatter.localizedString(from: NSNumber(value: number), number: NumberFormatter.Style.decimal)
     }
 }
+
+/*
+ // Not Case sensitive
+ @ViewBuilder
+ func cellWithHighlight(data: Files, @ViewBuilder content: () -> some View) -> some View {
+     let highlight = !filterstring.isEmpty &&
+         (
+             data.backuproot.localizedCaseInsensitiveContains(filterstring) ||
+             data.folder.localizedCaseInsensitiveContains(filterstring) ||
+             data.name.localizedCaseInsensitiveContains(filterstring) ||
+             data.md5.localizedCaseInsensitiveContains(filterstring)
+         )
+     content()
+         .padding(.vertical, 2)
+         .background(highlight ? Color.yellow.opacity(0.3) : Color.clear)
+         .cornerRadius(3)
+ }
+ */
