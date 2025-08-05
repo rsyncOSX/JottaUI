@@ -10,7 +10,7 @@ import SwiftUI
 struct OutputJottaDumpView: View {
     
     // Filterstring
-    @State private var filterstring: String = ""
+    @Binding var filterstring: String
     
     let tabledate: [Files]
 

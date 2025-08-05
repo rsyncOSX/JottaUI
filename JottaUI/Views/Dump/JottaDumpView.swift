@@ -16,6 +16,8 @@ struct JottaDumpView: View {
     @State private var showprogressview = false
     @State private var completed: Bool = false
     @State private var tabledata: [Files]?
+    
+    @State private var filterstring: String = ""
 
     var body: some View {
         NavigationStack {
@@ -40,11 +42,8 @@ struct JottaDumpView: View {
             .navigationTitle("Jotta DUMP (JSON)")
             .navigationDestination(isPresented: $showdumptabletable) {
                 if let tabledata {
-                    OutputJottaDumpView(tabledate: tabledata)
+                    OutputJottaDumpView(filterstring: $filterstring, tabledate: tabledata)
                 }
-            }
-            .onChange(of: tabledata?.count) {
-                showdumptabletable = true
             }
         }
     }
@@ -62,8 +61,6 @@ extension JottaDumpView {
     func executedump() {
         let arguments = ["dump"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-
-        // Start progressview
         showprogressview = true
         let process = ProcessCommandAsyncSequence(command: command,
                                                   arguments: arguments,
@@ -76,12 +73,12 @@ extension JottaDumpView {
     }
 
     func processtermination(_ stringoutput: [String]?) {
-        
         Task {
             if let stringoutput {
                 async let data = ActorConvertDumpData().convertStringToData(stringoutput)
                 tabledata = await ActorConvertDumpData().convertDataToBackup(data)
                 showprogressview = false
+                showdumptabletable = true
             }
         }
     }
