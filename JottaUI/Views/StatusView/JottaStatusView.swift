@@ -63,7 +63,7 @@ struct JottaStatusView: View {
                 }
             }
             .padding()
-            .navigationTitle("Jotta status (JSON)")
+            .navigationTitle("Jotta status")
             .navigationDestination(for: Status.self) { which in
                 makeView(view: which.task)
             }
