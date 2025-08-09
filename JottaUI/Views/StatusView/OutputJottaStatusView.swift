@@ -35,14 +35,12 @@ struct OutputJottaStatusView: View {
                 Form {
                     Section {
                         ValueSchemeView(200, jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set")
-                        ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
-
-                        ValueSchemeView(200, jsondata.formatted_number(jsondata.accountinfo?.Capacity ?? 0))
-                        ValueSchemeView(200, jsondata.formatted_number(jsondata.accountinfo?.Usage ?? 0))
-                        ValueSchemeView(200, String(jsondata.accountinfo?.Subscription ?? 0))
-
-                        ValueSchemeView(200, String(jsondata.accountinfo?.CanUpgrade ?? false))
-                        ValueSchemeView(200, String(jsondata.accountinfo?.UpgradeHint ?? false))
+                        // ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
+                        ValueSchemeView(200, "available " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Capacity ?? 0) + " GiB")
+                        ValueSchemeView(200, "used " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Usage ?? 0) + " GiB" )
+                        // ValueSchemeView(200, String(jsondata.accountinfo?.Subscription ?? 0))
+                        // ValueSchemeView(200, String(jsondata.accountinfo?.CanUpgrade ?? false))
+                        // ValueSchemeView(200, String(jsondata.accountinfo?.UpgradeHint ?? false))
 
                     } header: {
                         Text("Account data")
@@ -56,13 +54,13 @@ struct OutputJottaStatusView: View {
                     // TableColumn("DeviceID", value: \.DeviceID)
                     .width(min: 120, max: 400)
 
-                TableColumn("WaitingForScan") { data in
+                TableColumn("Wait scan") { data in
                     Text(String(data.WaitingForScan))
                 }
                 .width(min: 50, max: 100)
                 .alignment(.trailing)
 
-                TableColumn("Name", value: \.Name)
+                TableColumn("Catalogs", value: \.Name)
                     .width(min: 80, max: 200)
 
                 TableColumn("Files") { data in
@@ -71,13 +69,13 @@ struct OutputJottaStatusView: View {
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
 
-                TableColumn("Started") { data in
+                TableColumn("Start") { data in
                     Text(String(dateinseconds(data.history.Started)))
                 }
                 .width(min: 120, max: 150)
                 .alignment(.trailing)
 
-                TableColumn("Ended") { data in
+                TableColumn("End") { data in
                     Text(String(dateinseconds(data.history.Ended)))
                 }
                 .width(min: 120, max: 150)
@@ -89,7 +87,7 @@ struct OutputJottaStatusView: View {
                 .width(min: 50, max: 50)
                 .alignment(.trailing)
 
-                TableColumn("LastUpdateMS") { data in
+                TableColumn("Last update") { data in
                     Text(dateinmilliseconds(data.LastUpdateMS))
                 }
                 .width(min: 120, max: 150)
@@ -99,7 +97,7 @@ struct OutputJottaStatusView: View {
                  }
                  .width(min: 80, max: 100)
                  */
-                TableColumn("LastScanStartedMS") { data in
+                TableColumn("Last scan") { data in
                     Text(dateinmilliseconds(data.LastScanStartedMS))
                 }
                 .width(min: 120, max: 150)
