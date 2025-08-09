@@ -164,7 +164,7 @@ extension JottaStatusView {
 
     // Execute a scan before JSON view
     func executescan() {
-        let arguments = ["scan"]
+        let arguments = ["scan","-v"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
         showprogressview = true
@@ -173,7 +173,7 @@ extension JottaStatusView {
                                                   processtermination: processtermination)
         process.executeProcess()
     }
-
+    
     func processterminationjson(_ stringoutput: [String]?) {
         showprogressview = false
         completedjottastatusview = true

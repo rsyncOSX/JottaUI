@@ -22,13 +22,6 @@ struct OutputJottaStatusView: View {
                     } header: {
                         Text("User data")
                     }
-
-                    Section {
-                        ValueSchemeView(200, jsondata.device?.Name ?? "Device name not set")
-                        ValueSchemeView(200, String(jsondata.device?.Type ?? 0))
-                    } header: {
-                        Text("Device data")
-                    }
                 }
                 .formStyle(.grouped)
 
