@@ -10,6 +10,14 @@ import OSLog
 
 @MainActor
 struct Homepath {
+    // Mac serialnumber
+    var macserialnumber: String? {
+        if SharedReference.shared.macserialnumber == nil {
+            SharedReference.shared.macserialnumber = Macserialnumber().getMacSerialNumber()
+        }
+        return SharedReference.shared.macserialnumber
+    }
+
     var userHomeDirectoryPath: String? {
         let pw = getpwuid(getuid())
         if let home = pw?.pointee.pw_dir {

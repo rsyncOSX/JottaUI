@@ -30,7 +30,7 @@ struct OutputJottaStatusView: View {
                         ValueSchemeView(200, jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set")
                         // ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
                         ValueSchemeView(200, "available " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Capacity ?? 0) + " GiB")
-                        ValueSchemeView(200, "used " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Usage ?? 0) + " GiB")
+                        ValueSchemeView(200, "used " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Usage ?? 0) + " GiB" )
                         // ValueSchemeView(200, String(jsondata.accountinfo?.Subscription ?? 0))
                         // ValueSchemeView(200, String(jsondata.accountinfo?.CanUpgrade ?? false))
                         // ValueSchemeView(200, String(jsondata.accountinfo?.UpgradeHint ?? false))
@@ -62,19 +62,17 @@ struct OutputJottaStatusView: View {
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
 
-                /*
-                 TableColumn("Start") { data in
-                     Text(String(dateinseconds(data.history.Started)))
-                 }
-                 .width(min: 120, max: 150)
-                 .alignment(.trailing)
+                TableColumn("Start") { data in
+                    Text(String(dateinseconds(data.history.Started)))
+                }
+                .width(min: 120, max: 150)
+                .alignment(.trailing)
 
-                 TableColumn("End") { data in
-                     Text(String(dateinseconds(data.history.Ended)))
-                 }
-                 .width(min: 120, max: 150)
-                 .alignment(.trailing)
-                  */
+                TableColumn("End") { data in
+                    Text(String(dateinseconds(data.history.Ended)))
+                }
+                .width(min: 120, max: 150)
+                .alignment(.trailing)
 
                 TableColumn("Finished") { data in
                     Text(String(data.history.Finished))
@@ -86,14 +84,12 @@ struct OutputJottaStatusView: View {
                     Text(dateinmilliseconds(data.LastUpdateMS))
                 }
                 .width(min: 120, max: 150)
-
                 /*
                  TableColumn("NextBackupMS") { data in
                      Text(dateinmilliseconds(data.NextBackupMS))
                  }
                  .width(min: 80, max: 100)
                  */
-
                 TableColumn("Last scan") { data in
                     Text(dateinmilliseconds(data.LastScanStartedMS))
                 }

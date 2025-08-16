@@ -34,7 +34,7 @@ actor ActorJottaUILogToFile {
                 do {
                     try logfiledata.write(to: logfileURL)
                     Logger.process.info("LogToFile: writeloggfile() logfile \(logfileURL.path, privacy: .public)")
-                    let checker = FileSize()
+                    let checker = ActorFileSize()
                     Task {
                         do {
                             if let size = try await checker.filesize() {
