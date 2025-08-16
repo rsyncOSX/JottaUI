@@ -50,7 +50,7 @@ struct OutputJottaStatusView: View {
                 TableColumn("Wait scan") { data in
                     Text(String(data.WaitingForScan))
                 }
-                .width(min: 50, max: 100)
+                .width(min: 70, max: 70)
                 .alignment(.trailing)
 
                 TableColumn("Catalogs", value: \.Name)
@@ -61,7 +61,7 @@ struct OutputJottaStatusView: View {
                 }
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
-
+/*
                 TableColumn("Start") { data in
                     Text(String(dateinseconds(data.history.Started)))
                 }
@@ -73,7 +73,7 @@ struct OutputJottaStatusView: View {
                 }
                 .width(min: 120, max: 150)
                 .alignment(.trailing)
-
+*/
                 TableColumn("Finished") { data in
                     Text(String(data.history.Finished))
                 }
