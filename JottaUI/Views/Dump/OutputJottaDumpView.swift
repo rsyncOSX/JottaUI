@@ -16,10 +16,9 @@ struct OutputJottaDumpView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            
             Text("The Search field is case sensitive and will ONLY highlight matches in \(Text("Yellow").foregroundColor(.yellow))")
                 .font(.title2)
-            
+
             Table(tabledate, selection: $selectedItemID) {
                 TableColumn("BackupRoot - number of rows: \(tabledate.count)") { data in
                     cellWithHighlight(data: data) {

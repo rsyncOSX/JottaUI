@@ -27,7 +27,6 @@ struct SidebarMainView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            
             Divider()
 
             List(Sidebaritems.allCases, selection: $selectedview) { item in

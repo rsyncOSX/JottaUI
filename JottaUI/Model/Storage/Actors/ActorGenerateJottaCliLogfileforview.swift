@@ -29,7 +29,7 @@ actor ActorGenerateJottaCliLogfileforview {
                 }
                 return false
             }
-            
+
         } else {
             return []
         }
@@ -51,7 +51,7 @@ actor ActorGenerateJottaCliLogfileforview {
             }
 
             if direction {
-                // Most recent at op
+                // Most recent at top
                 return logdata.sorted { record1, record2 -> Bool in
                     if let date1 = record1.logrecordlogdate, let date2 = record2.logrecordlogdate {
                         return date1 > date2
