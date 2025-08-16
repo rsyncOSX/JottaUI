@@ -29,7 +29,7 @@ actor ActorGenerateJottaCliLogfileforview {
                 }
                 return false
             }
-            
+
         } else {
             return []
         }

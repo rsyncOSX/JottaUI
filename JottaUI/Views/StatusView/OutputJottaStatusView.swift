@@ -30,7 +30,7 @@ struct OutputJottaStatusView: View {
                         ValueSchemeView(200, jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set")
                         // ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
                         ValueSchemeView(200, "available " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Capacity ?? 0) + " GiB")
-                        ValueSchemeView(200, "used " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Usage ?? 0) + " GiB" )
+                        ValueSchemeView(200, "used " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Usage ?? 0) + " GiB")
                         // ValueSchemeView(200, String(jsondata.accountinfo?.Subscription ?? 0))
                         // ValueSchemeView(200, String(jsondata.accountinfo?.CanUpgrade ?? false))
                         // ValueSchemeView(200, String(jsondata.accountinfo?.UpgradeHint ?? false))
