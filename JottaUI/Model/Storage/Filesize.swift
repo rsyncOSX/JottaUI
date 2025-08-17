@@ -1,24 +1,21 @@
 //
-//  ActorFileSize.swift
-//  RsyncUI
+//  Filesize.swift
+//  JottaUI
 //
-//  Created by Thomas Evensen on 19/06/2025.
+//  Created by Thomas Evensen on 17/08/2025.
 //
 
 import Foundation
 import OSLog
 
-actor ActorFileSize {
-    // Only logfile is checked for size, URL-file for logfile is evaluated within function
+struct FileSize {
 
-    @concurrent
-    nonisolated func filesize() async throws -> NSNumber? {
+    @Sendable func filesize() async throws -> NSNumber? {
         let path = Homepath()
         let fm = FileManager.default
         if let homepath = await path.userHomeDirectoryPath {
             let logfilepath = SharedConstants().jottaUIlogfile
             let logfileString = homepath.appending(logfilepath) + SharedConstants().jottaUIlogfile
-
             guard fm.locationExists(at: logfileString, kind: .file) == true else { return nil }
 
             let homepathURL = URL(fileURLWithPath: homepath)

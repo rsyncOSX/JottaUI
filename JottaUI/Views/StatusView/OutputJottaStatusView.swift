@@ -61,19 +61,19 @@ struct OutputJottaStatusView: View {
                 }
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
-/*
-                TableColumn("Start") { data in
-                    Text(String(dateinseconds(data.history.Started)))
-                }
-                .width(min: 120, max: 150)
-                .alignment(.trailing)
+                /*
+                 TableColumn("Start") { data in
+                     Text(String(dateinseconds(data.history.Started)))
+                 }
+                 .width(min: 120, max: 150)
+                 .alignment(.trailing)
 
-                TableColumn("End") { data in
-                    Text(String(dateinseconds(data.history.Ended)))
-                }
-                .width(min: 120, max: 150)
-                .alignment(.trailing)
-*/
+                 TableColumn("End") { data in
+                     Text(String(dateinseconds(data.history.Ended)))
+                 }
+                 .width(min: 120, max: 150)
+                 .alignment(.trailing)
+                 */
                 TableColumn("Finished") { data in
                     Text(String(data.history.Finished))
                 }
