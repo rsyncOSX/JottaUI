@@ -1,5 +1,5 @@
 //
-//  ActorGenerateJottaCliLogfileforview.swift
+//  ActorJottaCliLogfile.swift
 //  JottaUI
 //
 //  Created by Thomas Evensen on 02/07/2025.
@@ -7,10 +7,10 @@
 
 import OSLog
 
-actor ActorGenerateJottaCliLogfileforview {
+actor ActorJottaCliLogfile {
     @concurrent
-    nonisolated func generatedata() async -> [LogfileRecords] {
-        Logger.process.info("ActorGenerateJottaCliLogfileforview: generatedata() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+    nonisolated func jottaclilogfile() async -> [LogfileRecords] {
+        Logger.process.info("ActorJottaCliLogfile: jottaclilogfile() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
         if let data = await ActorReadJottaCliLogfile().readloggfile() {
             let logdata = data.compactMap { record in
                 let parts = record.split(separator: " ")
@@ -36,8 +36,8 @@ actor ActorGenerateJottaCliLogfileforview {
     }
 
     @concurrent
-    nonisolated func sortlogdata(_ direction: Bool) async -> [LogfileRecords] {
-        Logger.process.info("ActorGenerateJottaCliLogfileforview: sortlogdata() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+    nonisolated func sortjottaclilogfile(_ direction: Bool) async -> [LogfileRecords] {
+        Logger.process.info("ActorJottaCliLogfile: sortjottaclilogfile() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
         if let data = await ActorReadJottaCliLogfile().readloggfile() {
             let logdata = data.compactMap { record in
                 let parts = record.split(separator: " ")

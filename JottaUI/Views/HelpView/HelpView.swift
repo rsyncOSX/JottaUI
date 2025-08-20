@@ -104,7 +104,7 @@ extension HelpView {
     func processterminationhelp(_ stringoutput: [String]?) {
         showprogressview = false
         Task {
-            jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
+            jottaclioutput.output = await ActorCreateOutputforview().createaoutput(stringoutput)
             showhelp = true
         }
     }

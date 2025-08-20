@@ -27,7 +27,7 @@ struct NavigationJottaUILogfileView: View {
         .padding()
         .onAppear {
             Task {
-                logfilerecords = await ActorGenerateJottaUILogfileforview().generatedata()
+                logfilerecords = await ActorCreateOutputforview().createoutputlogdata()
             }
         }
         .toolbar {
@@ -47,7 +47,7 @@ struct NavigationJottaUILogfileView: View {
 
         Task {
             await ActorJottaUILogToFile(true)
-            logfilerecords = await ActorGenerateJottaUILogfileforview().generatedata()
+            logfilerecords = await ActorCreateOutputforview().createoutputlogdata()
         }
     }
 

@@ -195,7 +195,7 @@ extension JottaStatusView {
             showprogressview = false
 
             Task {
-                jottaclioutput.output = await ActorCreateOutputJottaCliforview().createaoutputforview(stringoutput)
+                jottaclioutput.output = await ActorCreateOutputforview().createaoutput(stringoutput)
                 completedjottastatusview = true
                 statuspath.append(Status(task: .statustextview))
             }
