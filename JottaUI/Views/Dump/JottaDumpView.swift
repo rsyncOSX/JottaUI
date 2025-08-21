@@ -15,6 +15,8 @@ struct JottaDumpView: View {
     @State private var showprogressview = false
     @State private var completed: Bool = false
     @State private var tabledata: [Files]?
+    
+    @State private var excludegitcatalogs: Bool = true
 
     var body: some View {
         NavigationStack {
@@ -31,6 +33,15 @@ struct JottaDumpView: View {
                             Text("Dump")
                         }
                         .buttonStyle(ColorfulButtonStyle())
+                        
+                        Toggle("Exclude ./git", isOn: $excludegitcatalogs)
+                            .toggleStyle(.switch)
+                            
+                            .onTapGesture {
+                                withAnimation(Animation.easeInOut(duration: true ? 0.35 : 0)) {
+                                    excludegitcatalogs.toggle()
+                                }
+                            }
                     }
                     .frame(width: 200)
                 }
@@ -73,7 +84,7 @@ extension JottaDumpView {
         Task {
             if let stringoutput {
                 async let data = ActorConvertDumpData().convertStringToData(stringoutput)
-                tabledata = await ActorConvertDumpData().convertDataToBackup(data)
+                tabledata = await ActorConvertDumpData().convertDataToBackup(data, excludegitcatalogs)
                 showprogressview = false
                 showdumptabletable = true
             }

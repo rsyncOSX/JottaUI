@@ -9,6 +9,9 @@ import Foundation
 import OSLog
 
 actor ActorConvertDumpData {
+    
+    let gitcatalog = "/.git"
+    
     @concurrent
     nonisolated func convertStringToData(_ stringarray: [String]) async -> [Data] {
         Logger.process.info("ActorConvertDumpData: convertStringToData() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
@@ -22,7 +25,7 @@ actor ActorConvertDumpData {
     }
 
     @concurrent
-    nonisolated func convertDataToBackup(_ dataarray: [Data]) async -> [Files] {
+    nonisolated func convertDataToBackup(_ dataarray: [Data], _ excludegit: Bool) async -> [Files] {
         Logger.process.info("ActorConvertDumpData: convertDataToBackup() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
         var converted = [Files]()
         for i in 0 ..< dataarray.count {
@@ -41,7 +44,9 @@ actor ActorConvertDumpData {
                                      name: file["name"].stringValue,
                                      md5: file["md5"].stringValue,
                                      size: file["size"].intValue)
-                    if let fileitem {
+                    if let fileitem, excludegit == false {
+                        converted.append(fileitem)
+                    } else if let fileitem, fileitem.folder.contains(gitcatalog) == false {
                         converted.append(fileitem)
                     }
                 }
