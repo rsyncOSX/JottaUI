@@ -86,7 +86,7 @@ struct ExportView: View {
         let arguments = ["status", "--json"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
-        let process = ProcessCommandAsyncSequence(command: command,
+        let process = ProcessCommand(command: command,
                                                   arguments: arguments,
                                                   processtermination: processterminationexport)
         process.executeProcess()

@@ -59,7 +59,7 @@ extension JottaDumpView {
         let arguments = ["dump"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         showprogressview = true
-        let process = ProcessCommandAsyncSequence(command: command,
+        let process = ProcessCommand(command: command,
                                                   arguments: arguments,
                                                   processtermination: processtermination)
         process.executeProcess()

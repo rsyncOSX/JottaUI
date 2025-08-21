@@ -1,5 +1,5 @@
 //
-//  ProcessCommandAsyncSequence.swift
+//  ProcessCommand.swift
 //  JottaUI
 //
 //  Created by Thomas Evensen on 03/08/2025.
@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 @MainActor
-final class ProcessCommandAsyncSequence {
+final class ProcessCommand {
     // Process termination and filehandler closures
     var processtermination: ([String]?) -> Void
     // Command to be executed
@@ -65,8 +65,8 @@ final class ProcessCommandAsyncSequence {
                 propogateerror(error: error)
             }
             if let launchPath = task.launchPath, let arguments = task.arguments {
-                Logger.process.info("ProcessCommandAsyncSequence: \(launchPath, privacy: .public)")
-                Logger.process.info("ProcessCommandAsyncSequence: \(arguments.joined(separator: "\n"), privacy: .public)")
+                Logger.process.info("ProcessCommand: \(launchPath, privacy: .public)")
+                Logger.process.info("ProcessCommand: \(arguments.joined(separator: "\n"), privacy: .public)")
             }
         }
     }
@@ -91,7 +91,7 @@ final class ProcessCommandAsyncSequence {
                      arguments: [String]?)
     {
         let processtermination: ([String]?) -> Void = { _ in
-            Logger.process.info("ProcessCommandAsyncSequence: You SEE this message only when Process() is terminated")
+            Logger.process.info("ProcessCommand: You SEE this message only when Process() is terminated")
         }
         self.init(command: command,
                   arguments: arguments,
@@ -99,11 +99,11 @@ final class ProcessCommandAsyncSequence {
     }
 
     deinit {
-        Logger.process.info("ProcessCommandAsyncSequence: DEINIT")
+        Logger.process.info("ProcessCommand: DEINIT")
     }
 }
 
-extension ProcessCommandAsyncSequence {
+extension ProcessCommand {
     func datahandle(_ pipe: Pipe) async {
         let outHandle = pipe.fileHandleForReading
         let data = outHandle.availableData
@@ -146,6 +146,6 @@ extension ProcessCommandAsyncSequence {
                                                   object: nil)
         sequenceFileHandlerTask?.cancel()
         sequenceTerminationTask?.cancel()
-        Logger.process.info("ProcessCommandAsyncSequence: process = nil and termination discovered")
+        Logger.process.info("ProcessCommand: process = nil and termination discovered")
     }
 }
