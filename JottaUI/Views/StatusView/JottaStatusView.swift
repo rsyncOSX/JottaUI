@@ -59,7 +59,8 @@ struct JottaStatusView: View {
                                 .imageScale(.large)
                         }
 
-                        ToggleView(text: NSLocalizedString("JSON", comment: ""), binding: $jsonstatus)
+                        Toggle("JSON", isOn: $jsonstatus)
+                            .toggleStyle(.switch)
                     }
                     .frame(width: 200)
                 }
@@ -166,7 +167,7 @@ extension JottaStatusView {
 
     // Execute a scan before JSON view
     func executescan() {
-        let arguments = ["scan", "-v"]
+        let arguments = ["scan"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
         showprogressview = true
