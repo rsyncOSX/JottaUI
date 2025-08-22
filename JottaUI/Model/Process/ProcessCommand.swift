@@ -22,7 +22,7 @@ final class ProcessCommand {
     var errordiscovered: Bool = false
     var checkforerror = CheckForError()
     // If one of the arguments are ["--json"] skip check for errors
-    var oneargumentisjson: [Bool]?
+    var oneargumentisjsonordump: [Bool]?
 
     let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
     let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: nil)
@@ -82,8 +82,8 @@ final class ProcessCommand {
         self.command = command
         self.arguments = arguments
         self.processtermination = processtermination
-        oneargumentisjson = arguments?.compactMap { line in
-            line.contains("--json") ? true : nil
+        oneargumentisjsonordump = arguments?.compactMap { line in
+            line.contains("--json") || line.contains("dump") ? true : nil
         }
     }
 
@@ -111,7 +111,7 @@ extension ProcessCommand {
             if let str = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                 str.enumerateLines { line, _ in
                     
-                    if self.errordiscovered == false {
+                    if self.errordiscovered == false, self.oneargumentisjsonordump == nil {
                         do {
                             try self.checkforerror.checkforerror(line)
                         } catch let e {
