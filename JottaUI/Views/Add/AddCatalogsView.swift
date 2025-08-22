@@ -108,6 +108,6 @@ struct AddCatalogsView: View {
     }
 
     func processtermination(_: [String]?,  _ errordiscovered: Bool) {
-        catalogadded = errordiscovered
+        catalogadded = !errordiscovered
     }
 }
