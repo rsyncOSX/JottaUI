@@ -17,6 +17,8 @@ struct JottaDumpView: View {
     @State private var tabledata: [Files]?
 
     @State private var excludegitcatalogs: Bool = true
+    // Not used yet
+    @State private var errordiscovered: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -31,6 +33,7 @@ struct JottaDumpView: View {
 
                         } label: {
                             Image(systemName: "arrowshape.down.circle.fill")
+                                .imageScale(.large)
                         }
 
                         Toggle("Excl ./git", isOn: $excludegitcatalogs)
@@ -78,7 +81,7 @@ extension JottaDumpView {
         InterruptProcess()
     }
 
-    func processtermination(_ stringoutput: [String]?) {
+    func processtermination(_ stringoutput: [String]?, _ errordiscovered: Bool) {
         Task {
             if let stringoutput {
                 async let data = ActorConvertDumpData().convertStringToData(stringoutput)

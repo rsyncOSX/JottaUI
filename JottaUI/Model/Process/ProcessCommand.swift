@@ -11,7 +11,7 @@ import OSLog
 @MainActor
 final class ProcessCommand {
     // Process termination and filehandler closures
-    var processtermination: ([String]?) -> Void
+    var processtermination: ([String]?, Bool) -> Void
     // Command to be executed
     var command: String?
     // Arguments to command
@@ -77,7 +77,7 @@ final class ProcessCommand {
 
     init(command: String?,
          arguments: [String]?,
-         processtermination: @escaping ([String]?) -> Void)
+         processtermination: @escaping ([String]?, Bool) -> Void)
     {
         self.command = command
         self.arguments = arguments
@@ -90,7 +90,7 @@ final class ProcessCommand {
     convenience init(command: String?,
                      arguments: [String]?)
     {
-        let processtermination: ([String]?) -> Void = { _ in
+        let processtermination: ([String]?, Bool) -> Void = { _,_  in
             Logger.process.info("ProcessCommand: You SEE this message only when Process() is terminated")
         }
         self.init(command: command,
@@ -128,7 +128,7 @@ extension ProcessCommand {
     }
 
     func termination() async {
-        processtermination(output)
+        processtermination(output, errordiscovered)
         if errordiscovered, let command {
             Task {
                 await ActorJottaUILogToFile(command: command,

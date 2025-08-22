@@ -31,7 +31,7 @@ final class JottaCliVersion {
 }
 
 extension JottaCliVersion {
-    func processtermination(_ stringoutput: [String]?) {
+    func processtermination(_ stringoutput: [String]?, _ errordiscovered: Bool = false) {
         guard stringoutput?.count ?? 0 > 0 else { return }
         let jottacliversion = stringoutput?.filter { $0.hasPrefix("jotta-cli version") }.first ?? ""
         let jottadversion = stringoutput?.filter { $0.hasPrefix("jottad version") }.first ?? ""

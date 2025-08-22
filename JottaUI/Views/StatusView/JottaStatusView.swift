@@ -35,6 +35,8 @@ struct JottaStatusView: View {
     @State private var focusimport: Bool = false
     @State private var importajsonfile: Bool = false
     @State private var filenameimport: String = ""
+    
+    @State private var errordiscovered: Bool = false
 
     var body: some View {
         NavigationStack(path: $statuspath) {
@@ -54,6 +56,7 @@ struct JottaStatusView: View {
                             }
                         } label: {
                             Image(systemName: "checkmark.circle.fill")
+                                .imageScale(.large)
                         }
 
                         ToggleView(text: NSLocalizedString("JSON", comment: ""), binding: $jsonstatus)
@@ -173,7 +176,7 @@ extension JottaStatusView {
         process.executeProcess()
     }
 
-    func processterminationjson(_ stringoutput: [String]?) {
+    func processterminationjson(_ stringoutput: [String]?, _ errordiscovered: Bool) {
         showprogressview = false
         completedjottastatusview = true
         jsondata.setJSONstring(stringoutput)
@@ -181,7 +184,7 @@ extension JottaStatusView {
         statuspath.append(Status(task: .statusjsonview))
     }
 
-    func processtermination(_ stringoutput: [String]?) {
+    func processtermination(_ stringoutput: [String]?, _ errordiscovered: Bool) {
         if jsonstatus {
             let arguments = ["status", "--json"]
             let command = FullpathJottaCli().jottaclipathandcommand()

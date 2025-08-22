@@ -20,6 +20,8 @@ struct AddCatalogsView: View {
     @State private var catalogsforbackup = ObservableCatalogsforbackup()
     @State private var catalogadded: Bool = false
     @State private var jottatask = JottaTask.backup
+    
+    @State private var errordiscovered: Bool = false
 
     var body: some View {
         HStack {
@@ -58,6 +60,7 @@ struct AddCatalogsView: View {
 
                 } label: {
                     Image(systemName: "plus.circle.fill")
+                        .imageScale(.large)
                 }
                 .disabled(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) == false)
             
@@ -104,7 +107,7 @@ struct AddCatalogsView: View {
         }
     }
 
-    func processtermination(_: [String]?) {
-        catalogadded = true
+    func processtermination(_: [String]?,  _ errordiscovered: Bool) {
+        catalogadded = errordiscovered
     }
 }
