@@ -72,7 +72,7 @@ struct NavigationJottaCliLogfileView: View {
                 updateaction = true
                 logfilerecords = await ActorJottaCliLogfile().jottaclilogfile()
                 reset = false
-                sortdirection = false
+                sortdirection = true
                 updateaction = false
             }
         }
