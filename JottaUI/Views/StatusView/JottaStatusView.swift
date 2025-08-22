@@ -53,9 +53,8 @@ struct JottaStatusView: View {
                                 executestatus()
                             }
                         } label: {
-                            Text("Status")
+                            Image(systemName: "checkmark.circle.fill")
                         }
-                        .buttonStyle(ColorfulButtonStyle())
 
                         ToggleView(text: NSLocalizedString("JSON", comment: ""), binding: $jsonstatus)
                     }

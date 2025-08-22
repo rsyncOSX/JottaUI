@@ -27,7 +27,6 @@ struct AddCatalogsView: View {
 
             OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
 
-            VStack(alignment: .center) {
                 Picker(NSLocalizedString("Task", comment: ""),
                        selection: $jottatask)
                 {
@@ -36,7 +35,7 @@ struct AddCatalogsView: View {
                     }
                 }
                 .pickerStyle(DefaultPickerStyle())
-                .frame(width: 200)
+                .frame(width: 150)
 
                 Button {
                     let catalogsforbackup = catalogsforbackup.catalogsforbackup
@@ -58,11 +57,10 @@ struct AddCatalogsView: View {
                     }
 
                 } label: {
-                    Text("Add")
+                    Image(systemName: "plus.circle.fill")
                 }
-                .buttonStyle(ColorfulButtonStyle())
                 .disabled(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) == false)
-            }
+            
         }
         .confirmationDialog(
             confirmation,
@@ -72,11 +70,12 @@ struct AddCatalogsView: View {
                 catalogsforbackup.catalogsforbackup = ""
                 catalogadded = false
             }
+            .buttonStyle(ColorfulButtonStyle())
         }
     }
 
     var catalogforbackup: some View {
-        EditValueErrorScheme(400, NSLocalizedString(defaultstring, comment: ""),
+        EditValueErrorScheme(300, NSLocalizedString(defaultstring, comment: ""),
                              $catalogsforbackup.catalogsforbackup,
                              catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup))
             .foregroundColor(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) ? Color.white : Color.red)
@@ -84,9 +83,6 @@ struct AddCatalogsView: View {
                 Task {
                     guard catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) else {
                         return
-                    }
-                    if catalogsforbackup.catalogsforbackup.hasSuffix("/") == false {
-                        catalogsforbackup.catalogsforbackup.append("/")
                     }
                 }
             }

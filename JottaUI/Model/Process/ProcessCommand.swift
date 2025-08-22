@@ -110,9 +110,8 @@ extension ProcessCommand {
         if data.count > 0 {
             if let str = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                 str.enumerateLines { line, _ in
-                    if self.errordiscovered == false,
-                       self.oneargumentisjson == nil
-                    {
+                    
+                    if self.errordiscovered == false {
                         do {
                             try self.checkforerror.checkforerror(line)
                         } catch let e {
@@ -121,7 +120,6 @@ extension ProcessCommand {
                             self.propogateerror(error: error)
                         }
                     }
-
                     self.output.append(line)
                 }
             }

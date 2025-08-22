@@ -30,11 +30,10 @@ struct JottaDumpView: View {
                             executedump()
 
                         } label: {
-                            Text("Dump")
+                            Image(systemName: "arrowshape.down.circle.fill")
                         }
-                        .buttonStyle(ColorfulButtonStyle())
 
-                        Toggle("Exclude ./git", isOn: $excludegitcatalogs)
+                        Toggle("Excl ./git", isOn: $excludegitcatalogs)
                             .toggleStyle(.switch)
                             .onTapGesture {
                                 withAnimation(Animation.easeInOut(duration: true ? 0.35 : 0)) {
