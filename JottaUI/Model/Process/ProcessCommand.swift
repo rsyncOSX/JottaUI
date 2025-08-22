@@ -111,7 +111,7 @@ extension ProcessCommand {
             if let str = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                 str.enumerateLines { line, _ in
                     
-                    if self.errordiscovered == false, self.oneargumentisjsonordump == nil {
+                    if self.errordiscovered == false, self.oneargumentisjsonordump?.count == 0 {
                         do {
                             try self.checkforerror.checkforerror(line)
                         } catch let e {
