@@ -18,7 +18,7 @@ actor ActorCreateOutputforview {
         }
         return []
     }
-    
+
     @concurrent
     nonisolated func createoutputlogdata() async -> [LogfileRecords] {
         Logger.process.info("ActorCreateOutputforview: createoutputlogdata() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")

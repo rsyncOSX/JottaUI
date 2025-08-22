@@ -87,8 +87,8 @@ struct ExportView: View {
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
         let process = ProcessCommand(command: command,
-                                                  arguments: arguments,
-                                                  processtermination: processterminationexport)
+                                     arguments: arguments,
+                                     processtermination: processterminationexport)
         process.executeProcess()
     }
 

@@ -9,9 +9,8 @@ import Foundation
 import OSLog
 
 actor ActorConvertDumpData {
-    
     let gitcatalog = "/.git"
-    
+
     @concurrent
     nonisolated func convertStringToData(_ stringarray: [String]) async -> [Data] {
         Logger.process.info("ActorConvertDumpData: convertStringToData() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")

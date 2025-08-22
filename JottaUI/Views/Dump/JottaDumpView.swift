@@ -15,7 +15,7 @@ struct JottaDumpView: View {
     @State private var showprogressview = false
     @State private var completed: Bool = false
     @State private var tabledata: [Files]?
-    
+
     @State private var excludegitcatalogs: Bool = true
 
     var body: some View {
@@ -33,10 +33,9 @@ struct JottaDumpView: View {
                             Text("Dump")
                         }
                         .buttonStyle(ColorfulButtonStyle())
-                        
+
                         Toggle("Exclude ./git", isOn: $excludegitcatalogs)
                             .toggleStyle(.switch)
-                            
                             .onTapGesture {
                                 withAnimation(Animation.easeInOut(duration: true ? 0.35 : 0)) {
                                     excludegitcatalogs.toggle()
@@ -71,8 +70,8 @@ extension JottaDumpView {
         let command = FullpathJottaCli().jottaclipathandcommand()
         showprogressview = true
         let process = ProcessCommand(command: command,
-                                                  arguments: arguments,
-                                                  processtermination: processtermination)
+                                     arguments: arguments,
+                                     processtermination: processtermination)
         process.executeProcess()
     }
 

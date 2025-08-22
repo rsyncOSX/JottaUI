@@ -9,7 +9,6 @@ import Foundation
 import OSLog
 
 struct FileSize {
-
     @Sendable func filesize() async throws -> NSNumber? {
         let path = Homepath()
         let fm = FileManager.default
