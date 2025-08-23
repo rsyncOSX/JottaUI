@@ -20,7 +20,7 @@ struct AddCatalogsView: View {
     @State private var catalogsforbackup = ObservableCatalogsforbackup()
     @State private var catalogadded: Bool = false
     @State private var jottatask = JottaTask.backup
-    
+
     @State private var errordiscovered: Bool = false
 
     var body: some View {
@@ -29,42 +29,41 @@ struct AddCatalogsView: View {
 
             OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
 
-                Picker(NSLocalizedString("Task", comment: ""),
-                       selection: $jottatask)
-                {
-                    ForEach(JottaTask.allCases) { Text($0.description)
-                        .tag($0)
-                    }
+            Picker(NSLocalizedString("Task", comment: ""),
+                   selection: $jottatask)
+            {
+                ForEach(JottaTask.allCases) { Text($0.description)
+                    .tag($0)
                 }
-                .pickerStyle(DefaultPickerStyle())
-                .frame(width: 150)
+            }
+            .pickerStyle(DefaultPickerStyle())
+            .frame(width: 150)
 
-                Button {
-                    let catalogsforbackup = catalogsforbackup.catalogsforbackup
-                    let argumentsbackup = ["add", catalogsforbackup]
-                    let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
-                    let command = FullpathJottaCli().jottaclipathandcommand()
-                    if jottatask == .backup {
-                        let process = ProcessCommand(command: command,
-                                                     arguments: argumentsbackup,
-                                                     processtermination: processtermination)
-                        // Start progressview
-                        process.executeProcess()
-                    } else {
-                        let process = ProcessCommand(command: command,
-                                                     arguments: argumentssync,
-                                                     processtermination: processtermination)
-                        // Start progressview
-                        process.executeProcess()
-                    }
-
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .imageScale(.large)
+            Button {
+                let catalogsforbackup = catalogsforbackup.catalogsforbackup
+                let argumentsbackup = ["add", catalogsforbackup]
+                let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
+                let command = FullpathJottaCli().jottaclipathandcommand()
+                if jottatask == .backup {
+                    let process = ProcessCommand(command: command,
+                                                 arguments: argumentsbackup,
+                                                 processtermination: processtermination)
+                    // Start progressview
+                    process.executeProcess()
+                } else {
+                    let process = ProcessCommand(command: command,
+                                                 arguments: argumentssync,
+                                                 processtermination: processtermination)
+                    // Start progressview
+                    process.executeProcess()
                 }
-                .disabled(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) == false)
-                .buttonStyle(.borderedProminent)
-            
+
+            } label: {
+                Image(systemName: "plus.circle.fill")
+                    .imageScale(.large)
+            }
+            .disabled(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) == false)
+            .buttonStyle(.borderedProminent)
         }
         .confirmationDialog(
             confirmation,
@@ -108,7 +107,7 @@ struct AddCatalogsView: View {
         }
     }
 
-    func processtermination(_: [String]?,  _ errordiscovered: Bool) {
+    func processtermination(_: [String]?, _ errordiscovered: Bool) {
         catalogadded = !errordiscovered
     }
 }

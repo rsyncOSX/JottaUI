@@ -34,7 +34,7 @@ struct JottaDumpView: View {
                         } label: {
                             Image(systemName: "arrowshape.down.circle.fill")
                                 .imageScale(.large)
-                                // .foregroundColor(Color(.blue))
+                            // .foregroundColor(Color(.blue))
                         }
                         .buttonStyle(.borderedProminent)
 
@@ -83,7 +83,7 @@ extension JottaDumpView {
         InterruptProcess()
     }
 
-    func processtermination(_ stringoutput: [String]?, _ errordiscovered: Bool) {
+    func processtermination(_ stringoutput: [String]?, _: Bool) {
         Task {
             if let stringoutput {
                 async let data = ActorConvertDumpData().convertStringToData(stringoutput)

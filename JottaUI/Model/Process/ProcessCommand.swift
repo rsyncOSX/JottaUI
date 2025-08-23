@@ -1,28 +1,19 @@
-//
-//  ProcessCommand.swift
-//  JottaUI
-//
-//  Created by Thomas Evensen on 03/08/2025.
-//
-
 import Foundation
 import OSLog
 
 @MainActor
 final class ProcessCommand {
-    // Process termination and filehandler closures
     var processtermination: ([String]?, Bool) -> Void
-    // Command to be executed
     var command: String?
-    // Arguments to command
     var arguments: [String]?
-    // Output
     var output = [String]()
-    // Check for error
     var errordiscovered: Bool = false
     var checkforerror = CheckForError()
-    // If one of the arguments are ["--json"] skip check for errors
     var oneargumentisjsonordump: [Bool]?
+    var input: String?
+
+    // Store inputPipe as a property
+    private var inputPipe: Pipe?
 
     let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
     let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: nil)
@@ -34,10 +25,16 @@ final class ProcessCommand {
             let task = Process()
             task.launchPath = command
             task.arguments = arguments
-            // Pipe for reading output from Process
+
             let pipe = Pipe()
             task.standardOutput = pipe
             task.standardError = pipe
+
+            // Create and store inputPipe
+            let inputPipe = Pipe()
+            self.inputPipe = inputPipe
+            task.standardInput = inputPipe
+
             let outHandle = pipe.fileHandleForReading
             outHandle.waitForDataInBackgroundAndNotify()
 
@@ -60,6 +57,12 @@ final class ProcessCommand {
 
             do {
                 try task.run()
+                // If you want to send input immediately, write here.
+                // Otherwise, wait for the prompt in datahandle.
+                if let input, input != "" {
+                    inputPipe.fileHandleForWriting.write((input + "\n").data(using: .utf8)!)
+                    // Do NOT close fileHandleForWriting unless you are sure no further input is needed
+                }
             } catch let e {
                 let error = e
                 propogateerror(error: error)
@@ -71,46 +74,12 @@ final class ProcessCommand {
         }
     }
 
-    func propogateerror(error: Error) {
-        SharedReference.shared.errorobject?.alert(error: error)
-    }
-
-    init(command: String?,
-         arguments: [String]?,
-         processtermination: @escaping ([String]?, Bool) -> Void)
-    {
-        self.command = command
-        self.arguments = arguments
-        self.processtermination = processtermination
-        oneargumentisjsonordump = arguments?.compactMap { line in
-            line.contains("--json") || line.contains("dump") ? true : nil
-        }
-    }
-
-    convenience init(command: String?,
-                     arguments: [String]?)
-    {
-        let processtermination: ([String]?, Bool) -> Void = { _,_  in
-            Logger.process.info("ProcessCommand: You SEE this message only when Process() is terminated")
-        }
-        self.init(command: command,
-                  arguments: arguments,
-                  processtermination: processtermination)
-    }
-
-    deinit {
-        Logger.process.info("ProcessCommand: DEINIT")
-    }
-}
-
-extension ProcessCommand {
     func datahandle(_ pipe: Pipe) async {
         let outHandle = pipe.fileHandleForReading
         let data = outHandle.availableData
         if data.count > 0 {
             if let str = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                 str.enumerateLines { line, _ in
-                    
                     if self.errordiscovered == false, self.oneargumentisjsonordump?.count == 0 {
                         do {
                             try self.checkforerror.checkforerror(line)
@@ -121,13 +90,12 @@ extension ProcessCommand {
                         }
                     }
                     self.output.append(line)
-                    // Continue sync setup? [yes]:
-                    // let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
-                    
-                    if line.contains("Continue sync setup?") {
-                        
-                        SharedReference.shared.process?.interrupt()
-                        SharedReference.shared.process = nil
+
+                    // Only write to inputPipe if prompt detected
+                    if line.contains("Continue sync setup?") { // Adjust to your CLI's prompt text!
+                        let reply = self.input ?? "no"
+                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
+                        // DO NOT close here unless done
                     }
                 }
             }
@@ -139,8 +107,7 @@ extension ProcessCommand {
         processtermination(output, errordiscovered)
         if errordiscovered, let command {
             Task {
-                await ActorJottaUILogToFile(command: command,
-                                            stringoutput: output)
+                await ActorJottaUILogToFile(command: command, stringoutput: output)
             }
         }
         SharedReference.shared.process = nil
@@ -153,5 +120,39 @@ extension ProcessCommand {
         sequenceFileHandlerTask?.cancel()
         sequenceTerminationTask?.cancel()
         Logger.process.info("ProcessCommand: process = nil and termination discovered")
+    }
+
+    func propogateerror(error: Error) {
+        SharedReference.shared.errorobject?.alert(error: error)
+    }
+
+    init(command: String?,
+         arguments: [String]?,
+         input: String? = nil,
+         processtermination: @escaping ([String]?, Bool) -> Void)
+    {
+        self.command = command
+        self.arguments = arguments
+        self.input = input
+        self.processtermination = processtermination
+        oneargumentisjsonordump = arguments?.compactMap { line in
+            line.contains("--json") || line.contains("dump") ? true : nil
+        }
+    }
+
+    convenience init(command: String?,
+                     arguments: [String]?)
+    {
+        let processtermination: ([String]?, Bool) -> Void = { _, _ in
+            Logger.process.info("ProcessCommand: You SEE this message only when Process() is terminated")
+        }
+        self.init(command: command,
+                  arguments: arguments,
+                  input: nil,
+                  processtermination: processtermination)
+    }
+
+    deinit {
+        Logger.process.info("ProcessCommand: DEINIT")
     }
 }

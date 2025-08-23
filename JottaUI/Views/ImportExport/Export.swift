@@ -92,7 +92,7 @@ struct ExportView: View {
         process.executeProcess()
     }
 
-    func processterminationexport(_ stringoutput: [String]?, _ errordiscovered: Bool) {
+    func processterminationexport(_ stringoutput: [String]?, _: Bool) {
         guard exportcatalog.isEmpty == false, filenameexport.isEmpty == false else {
             focusexport = false
             return
