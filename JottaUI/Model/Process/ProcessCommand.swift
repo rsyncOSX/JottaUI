@@ -102,6 +102,7 @@ final class ProcessCommand {
                     self.output.append(line)
 
                     // Only write to inputPipe if prompt detected
+                    
                     if line.contains("Continue sync setup?") {
                         let reply = self.input ?? "yes"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
@@ -109,6 +110,11 @@ final class ProcessCommand {
                     
                     if line.contains("Choose error reporting mode") {
                         let reply = self.input ?? "full"
+                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
+                    }
+                    
+                    if line.contains("Continue sync reset") {
+                        let reply = self.input ?? "y"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
                 }
