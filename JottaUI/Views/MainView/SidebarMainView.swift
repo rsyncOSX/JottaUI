@@ -91,7 +91,7 @@ struct SidebarRow: View {
         case .dump:
             "arrowshape.down.circle.fill"
         case .sync:
-            "arrowshape.turn.up.backward.fill"
+            "arrow.trianglehead.2.clockwise.rotate.90.circle.fill"
         }
     }
 }

@@ -45,7 +45,7 @@ struct SyncView: View {
                 process.executeProcess()
 
             } label: {
-                Image(systemName: "plus.circle.fill")
+                Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill")
                     .imageScale(.large)
             }
             .buttonStyle(.borderedProminent)
