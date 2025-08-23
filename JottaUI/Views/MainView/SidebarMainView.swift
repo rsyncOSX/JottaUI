@@ -9,7 +9,7 @@ import OSLog
 import SwiftUI
 
 enum Sidebaritems: String, Identifiable, CaseIterable {
-    case status, catalogs, dump, Jotta_cli_help, logfile
+    case status, catalogs, sync, dump, Jotta_cli_help, logfile
     var id: String { rawValue }
 }
 
@@ -64,6 +64,8 @@ struct SidebarMainView: View {
             HelpView()
         case .dump:
             JottaDumpView(showdumptabletable: $showdumptabletable)
+        case .sync:
+            SyncView()
         }
     }
 }
@@ -88,6 +90,8 @@ struct SidebarRow: View {
             "questionmark"
         case .dump:
             "arrowshape.down.circle.fill"
+        case .sync:
+            "arrowshape.turn.up.backward.fill"
         }
     }
 }
