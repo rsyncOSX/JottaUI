@@ -57,8 +57,9 @@ struct JottaStatusView: View {
                         } label: {
                             Image(systemName: "checkmark.circle.fill")
                                 .imageScale(.large)
-                                .foregroundColor(Color(.blue))
+                                //.foregroundColor(Color(.blue))
                         }
+                        .buttonStyle(.borderedProminent)
 
                         Toggle("JSON", isOn: $jsonstatus)
                             .toggleStyle(.switch)

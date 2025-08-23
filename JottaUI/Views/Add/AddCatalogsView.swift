@@ -61,9 +61,10 @@ struct AddCatalogsView: View {
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .imageScale(.large)
-                        .foregroundColor(Color(.blue))
+                        //.foregroundColor(Color(.blue))
                 }
                 .disabled(catalogsforbackup.verifycatalogsforbackup(catalogsforbackup.catalogsforbackup) == false)
+                .buttonStyle(.borderedProminent)
             
         }
         .confirmationDialog(
