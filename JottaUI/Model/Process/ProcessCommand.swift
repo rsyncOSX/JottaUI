@@ -121,6 +121,14 @@ extension ProcessCommand {
                         }
                     }
                     self.output.append(line)
+                    // Continue sync setup? [yes]:
+                    // let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
+                    
+                    if line.contains("Continue sync setup?") {
+                        
+                        SharedReference.shared.process?.interrupt()
+                        SharedReference.shared.process = nil
+                    }
                 }
             }
             outHandle.waitForDataInBackgroundAndNotify()
