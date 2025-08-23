@@ -117,6 +117,11 @@ final class ProcessCommand {
                         let reply = self.input ?? "y"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
+                    
+                    if line.contains("The existing sync folder on jottacloud.com") {
+                        let reply = self.input ?? "n"
+                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
+                    }
                 }
             }
             outHandle.waitForDataInBackgroundAndNotify()
