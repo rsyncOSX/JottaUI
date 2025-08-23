@@ -89,13 +89,18 @@ final class ProcessCommand {
                             self.propogateerror(error: error)
                         }
                     }
+                    
                     self.output.append(line)
 
                     // Only write to inputPipe if prompt detected
-                    if line.contains("Continue sync setup?") { // Adjust to your CLI's prompt text!
-                        let reply = self.input ?? "no"
+                    if line.contains("Continue sync setup?") {
+                        let reply = self.input ?? "yes"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
-                        // DO NOT close here unless done
+                    }
+                    
+                    if line.contains("Choose error reporting mode") {
+                        let reply = self.input ?? "full"
+                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
                 }
             }
