@@ -34,6 +34,7 @@ struct JottaDumpView: View {
                         } label: {
                             Image(systemName: "arrowshape.down.circle.fill")
                                 .imageScale(.large)
+                                .foregroundColor(Color(.blue))
                         }
 
                         Toggle("Excl ./git", isOn: $excludegitcatalogs)
