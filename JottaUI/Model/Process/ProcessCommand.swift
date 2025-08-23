@@ -1,3 +1,10 @@
+//
+//  ProcessCommand.swift
+//  JottaUI
+//
+//  Created by Thomas Evensen on 03/08/2025.
+//
+
 import Foundation
 import OSLog
 
@@ -15,8 +22,10 @@ final class ProcessCommand {
     // Store inputPipe as a property
     private var inputPipe: Pipe?
 
+    // AsyncSequence handlers
     let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
     let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: nil)
+    // Task handlers
     var sequenceFileHandlerTask: Task<Void, Never>?
     var sequenceTerminationTask: Task<Void, Never>?
 
