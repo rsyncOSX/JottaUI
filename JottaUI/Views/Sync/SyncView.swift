@@ -18,52 +18,61 @@ enum JottaSync: String, CaseIterable, Identifiable, CustomStringConvertible {
 
 struct SyncView: View {
     @State private var synctask = JottaSync.diag
-    @State private var errordiscovered: Bool = false
-    @State private var synctaskapplied: Bool = false
-
+    @State private var jottaclioutput = ObservableJottaOutput()
+    @State private var showprogressview = false
+    @State private var showoutputview: Bool = false
+    
     var body: some View {
-        HStack {
-            Picker(NSLocalizedString("Sync", comment: ""),
-                   selection: $synctask)
-            {
-                ForEach(JottaSync.allCases) { Text($0.description)
-                    .tag($0)
+        NavigationStack {
+            HStack {
+                if showprogressview {
+                    ProgressView()
+                } else {
+                    
+                    Picker(NSLocalizedString("Sync", comment: ""),
+                           selection: $synctask)
+                    {
+                        ForEach(JottaSync.allCases) { Text($0.description)
+                                .tag($0)
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
+                    .frame(width: 150)
+                    
+                    Button {
+                        let argumentssync = ["sync", synctask.description]
+                        let command = FullpathJottaCli().jottaclipathandcommand()
+                        let process = ProcessCommand(command: command,
+                                                     arguments: argumentssync,
+                                                     processtermination: processtermination)
+                        // Start progressview
+                        showprogressview = true
+                        process.executeProcess()
+                        
+                    } label: {
+                        Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill")
+                            .imageScale(.large)
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
             }
-            .pickerStyle(DefaultPickerStyle())
-            .frame(width: 150)
-
-            Button {
-                let argumentssync = ["sync", synctask.description]
-                let command = FullpathJottaCli().jottaclipathandcommand()
-                let process = ProcessCommand(command: command,
-                                             arguments: argumentssync,
-                                             processtermination: processtermination)
-                // Start progressview
-                process.executeProcess()
-
-            } label: {
-                Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill")
-                    .imageScale(.large)
-            }
-            .buttonStyle(.borderedProminent)
-            .confirmationDialog(
-                confirmation,
-                isPresented: $synctaskapplied
-            ) {
-                Button("Close", role: .cancel) {
-                    synctaskapplied = false
-                }
-                .buttonStyle(ColorfulButtonStyle())
+            .navigationTitle("Sync parameters")
+            .navigationDestination(isPresented: $showoutputview) {
+                OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
         }
     }
+        
 
     var confirmation: String {
         synctask.description + " is applied"
     }
-
-    func processtermination(_: [String]?, _: Bool) {
-        synctaskapplied = true
+    
+    func processtermination(_ stringoutput: [String]?, _: Bool) {
+        showprogressview = false
+        Task {
+            jottaclioutput.output = await ActorCreateOutputforview().createaoutput(stringoutput)
+            showoutputview = true
+        }
     }
 }
