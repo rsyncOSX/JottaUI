@@ -1,4 +1,3 @@
-
 import OSLog
 import SwiftUI
 
@@ -18,13 +17,12 @@ enum JottaSync: String, CaseIterable, Identifiable, CustomStringConvertible {
 }
 
 struct SyncView: View {
-
     @State private var synctask = JottaSync.diag
     @State private var errordiscovered: Bool = false
+    @State private var synctaskapplied: Bool = false
 
     var body: some View {
         HStack {
-
             Picker(NSLocalizedString("Sync", comment: ""),
                    selection: $synctask)
             {
@@ -36,7 +34,7 @@ struct SyncView: View {
             .frame(width: 150)
 
             Button {
-                let argumentssync = ["sync",synctask.description]
+                let argumentssync = ["sync", synctask.description]
                 let command = FullpathJottaCli().jottaclipathandcommand()
                 let process = ProcessCommand(command: command,
                                              arguments: argumentssync,
@@ -49,10 +47,23 @@ struct SyncView: View {
                     .imageScale(.large)
             }
             .buttonStyle(.borderedProminent)
+            .confirmationDialog(
+                confirmation,
+                isPresented: $synctaskapplied
+            ) {
+                Button("Close", role: .cancel) {
+                    synctaskapplied = false
+                }
+                .buttonStyle(ColorfulButtonStyle())
+            }
         }
     }
 
-    func processtermination(_ output: [String]?, _ errordiscovered: Bool) {
-        print(output)
+    var confirmation: String {
+        synctask.description + " is applied"
+    }
+
+    func processtermination(_: [String]?, _: Bool) {
+        synctaskapplied = true
     }
 }

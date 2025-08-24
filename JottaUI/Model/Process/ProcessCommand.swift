@@ -98,26 +98,26 @@ final class ProcessCommand {
                             self.propogateerror(error: error)
                         }
                     }
-                    
+
                     self.output.append(line)
 
                     // Only write to inputPipe if prompt detected
-                    
+
                     if line.contains("Continue sync setup?") {
                         let reply = self.input ?? "yes"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
-                    
+
                     if line.contains("Choose error reporting mode") {
                         let reply = self.input ?? "full"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
-                    
+
                     if line.contains("Continue sync reset") {
                         let reply = self.input ?? "y"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
-                    
+
                     if line.contains("The existing sync folder on jottacloud.com") {
                         let reply = self.input ?? "n"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
