@@ -27,8 +27,6 @@ final class SharedReference {
 
     private init() {}
 
-    // Mac serialnumer
-    @ObservationIgnored var macserialnumber: String?
     // let bundleIdentifier: String = "no.blogspot.JottaUI"
     let jottaclient = "jotta-cli"
     let usrlocalbin: String = "/usr/local/bin"
