@@ -37,4 +37,30 @@ extension String {
         dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return dateformatter.date(from: self) ?? Date()
     }
+    
+    func status_from_string() -> Date? {
+        let dateformatter = DateFormatter()
+        dateformatter.locale = Locale(identifier: "en_US_POSIX") // Ensure consistent parsing
+        dateformatter.dateFormat = "EEE MMM dd HH:mm:ss" // Match the string format
+        return dateformatter.date(from: self) ?? Date()
+    }
 }
+
+
+/*
+ /*
+  import Foundation
+
+  let dateString = "Tue Aug 26 12:52:20"
+  let dateFormatter = DateFormatter()
+  dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Ensure consistent parsing
+  dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss" // Match the string format
+
+  if let date = dateFormatter.date(from: dateString) {
+      print("Converted Date: \\(date)")
+  } else {
+      print("Failed to convert date")
+  }
+
+  */
+ */
