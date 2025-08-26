@@ -48,7 +48,13 @@ struct OutputJottaStatusView: View {
                     .width(min: 120, max: 400)
 
                 TableColumn("Wait scan") { data in
-                    Text(String(data.WaitingForScan))
+                    if data.WaitingForScan {
+                        Text(String(data.WaitingForScan))
+                            .foregroundColor(Color.green)
+                    } else {
+                        Text(String(data.WaitingForScan))
+                    }
+                    
                 }
                 .width(min: 70, max: 70)
                 .alignment(.trailing)

@@ -13,7 +13,16 @@ struct OutputJottaStatusOutputView: View {
     var body: some View {
         Table(output) {
             TableColumn("Output from Jotta-cli" + ": \(output.count) rows") { data in
-                Text(data.record)
+                
+                if data.record.contains("Up to date") {
+                    Text(data.record)
+                        .foregroundColor(Color.green)
+                } else if data.record.contains("Transferring") {
+                    Text(data.record)
+                        .foregroundColor(Color.red)
+                } else {
+                    Text(data.record)
+                }
             }
         }
         .padding()
