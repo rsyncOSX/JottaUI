@@ -44,6 +44,8 @@ struct SyncView: View {
                         let command = FullpathJottaCli().jottaclipathandcommand()
                         let process = ProcessCommand(command: command,
                                                      arguments: argumentssync,
+                                                     syncmode: nil,
+                                                     input: nil,
                                                      processtermination: processtermination)
                         // Start progressview
                         showprogressview = true

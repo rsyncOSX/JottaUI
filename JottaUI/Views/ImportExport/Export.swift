@@ -88,6 +88,8 @@ struct ExportView: View {
         // Start progressview
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     syncmode: nil,
+                                     input: nil,
                                      processtermination: processterminationexport)
         process.executeProcess()
     }

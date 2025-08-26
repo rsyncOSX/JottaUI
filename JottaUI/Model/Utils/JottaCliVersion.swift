@@ -16,6 +16,8 @@ final class JottaCliVersion {
 
         let command = ProcessCommand(command: clicommand,
                                      arguments: arguments,
+                                     syncmode: nil,
+                                     input: nil,
                                      processtermination: processtermination)
         command.executeProcess()
     }

@@ -96,6 +96,8 @@ extension HelpView {
             showprogressview = true
             let process = ProcessCommand(command: command,
                                          arguments: arguments,
+                                         syncmode: nil,
+                                         input: nil,
                                          processtermination: processterminationhelp)
             process.executeProcess()
         }

@@ -16,10 +16,21 @@ enum JottaTask: String, CaseIterable, Identifiable, CustomStringConvertible {
     var description: String { rawValue.localizedLowercase.replacingOccurrences(of: "_", with: " ") }
 }
 
+enum SyncMode: String, CaseIterable, Identifiable, CustomStringConvertible {
+    case full
+    case stackonly
+    case off
+
+    var id: String { rawValue }
+    var description: String { rawValue.localizedLowercase.replacingOccurrences(of: "_", with: " ") }
+}
+
+
 struct AddCatalogsView: View {
     @State private var catalogsforbackup = ObservableCatalogsforbackup()
     @State private var catalogadded: Bool = false
     @State private var jottatask = JottaTask.backup
+    @State private var syncmode = SyncMode.full
 
     @State private var errordiscovered: Bool = false
 
@@ -28,31 +39,52 @@ struct AddCatalogsView: View {
             catalogforbackup
 
             OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
-
-            Picker(NSLocalizedString("Task", comment: ""),
-                   selection: $jottatask)
-            {
-                ForEach(JottaTask.allCases) { Text($0.description)
-                    .tag($0)
+            
+            VStack {
+                Picker(NSLocalizedString("Task", comment: ""),
+                       selection: $jottatask)
+                {
+                    ForEach(JottaTask.allCases) { Text($0.description)
+                        .tag($0)
+                    }
+                }
+                .pickerStyle(DefaultPickerStyle())
+                .frame(width: 150)
+                
+                if jottatask == .sync {
+                    
+                    Picker(NSLocalizedString("Mode", comment: ""),
+                           selection: $syncmode)
+                    {
+                        ForEach(SyncMode.allCases) { Text($0.description)
+                            .tag($0)
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
+                    .frame(width: 150)
                 }
             }
-            .pickerStyle(DefaultPickerStyle())
-            .frame(width: 150)
 
+            
             Button {
                 let catalogsforbackup = catalogsforbackup.catalogsforbackup
-                let argumentsbackup = ["add", catalogsforbackup]
-                let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
+                
                 let command = FullpathJottaCli().jottaclipathandcommand()
                 if jottatask == .backup {
+                    let argumentsbackup = ["add", catalogsforbackup]
                     let process = ProcessCommand(command: command,
                                                  arguments: argumentsbackup,
+                                                 syncmode: nil,
+                                                 input: nil,
                                                  processtermination: processtermination)
                     // Start progressview
                     process.executeProcess()
                 } else {
+                    let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
                     let process = ProcessCommand(command: command,
                                                  arguments: argumentssync,
+                                                 syncmode: syncmode.description,
+                                                 input: nil,
                                                  processtermination: processtermination)
                     // Start progressview
                     process.executeProcess()

@@ -151,6 +151,8 @@ extension JottaStatusView {
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     syncmode: nil,
+                                     input: nil,
                                      processtermination: processtermination)
         process.executeProcess()
     }
@@ -175,6 +177,8 @@ extension JottaStatusView {
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     syncmode: nil,
+                                     input: nil,
                                      processtermination: processtermination)
         process.executeProcess()
     }
@@ -193,6 +197,8 @@ extension JottaStatusView {
             let command = FullpathJottaCli().jottaclipathandcommand()
             let process = ProcessCommand(command: command,
                                          arguments: arguments,
+                                         syncmode: nil,
+                                         input: nil,
                                          processtermination: processterminationjson)
             process.executeProcess()
 

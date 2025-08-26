@@ -75,6 +75,8 @@ extension JottaDumpView {
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     syncmode: nil,
+                                     input: nil,
                                      processtermination: processtermination)
         process.executeProcess()
     }

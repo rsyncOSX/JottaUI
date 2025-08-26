@@ -17,7 +17,7 @@ final class ProcessCommand {
     var errordiscovered: Bool = false
     var checkforerror = CheckForError()
     var oneargumentisjsonordump: [Bool]?
-    var input: String?
+   
 
     // Store inputPipe as a property
     private var inputPipe: Pipe?
@@ -28,6 +28,10 @@ final class ProcessCommand {
     // Task handlers
     var sequenceFileHandlerTask: Task<Void, Never>?
     var sequenceTerminationTask: Task<Void, Never>?
+    // Imidiate input
+    private var input: String?
+    // Sync mode, used when setup syncmode
+    private var syncmode: String?
 
     func executeProcess() {
         if let command, let arguments, arguments.count > 0 {
@@ -109,7 +113,7 @@ final class ProcessCommand {
                     }
 
                     if line.contains("Choose error reporting mode") {
-                        let reply = self.input ?? "full"
+                        let reply = self.syncmode ?? "full"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
 
@@ -153,12 +157,22 @@ final class ProcessCommand {
 
     init(command: String?,
          arguments: [String]?,
-         input: String? = nil,
+         syncmode: String?,
+         input: String?,
          processtermination: @escaping ([String]?, Bool) -> Void)
     {
         self.command = command
         self.arguments = arguments
-        self.input = input
+        if syncmode != nil {
+            self.syncmode = syncmode
+        } else {
+            self.syncmode = nil
+        }
+        if input != nil {
+            self.input = input
+        } else {
+            self.input = nil
+        }
         self.processtermination = processtermination
         oneargumentisjsonordump = arguments?.compactMap { line in
             line.contains("--json") || line.contains("dump") ? true : nil
@@ -173,6 +187,7 @@ final class ProcessCommand {
         }
         self.init(command: command,
                   arguments: arguments,
+                  syncmode: nil,
                   input: nil,
                   processtermination: processtermination)
     }
