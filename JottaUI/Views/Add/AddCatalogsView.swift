@@ -25,7 +25,6 @@ enum SyncMode: String, CaseIterable, Identifiable, CustomStringConvertible {
     var description: String { rawValue.localizedLowercase.replacingOccurrences(of: "_", with: " ") }
 }
 
-
 struct AddCatalogsView: View {
     @State private var catalogsforbackup = ObservableCatalogsforbackup()
     @State private var catalogadded: Bool = false
@@ -39,7 +38,7 @@ struct AddCatalogsView: View {
             catalogforbackup
 
             OpencatalogView(selecteditem: $catalogsforbackup.catalogsforbackup, catalogs: true)
-            
+
             VStack {
                 Picker(NSLocalizedString("Task", comment: ""),
                        selection: $jottatask)
@@ -50,9 +49,8 @@ struct AddCatalogsView: View {
                 }
                 .pickerStyle(DefaultPickerStyle())
                 .frame(width: 150)
-                
+
                 if jottatask == .sync {
-                    
                     Picker(NSLocalizedString("Mode", comment: ""),
                            selection: $syncmode)
                     {
@@ -65,10 +63,9 @@ struct AddCatalogsView: View {
                 }
             }
 
-            
             Button {
                 let catalogsforbackup = catalogsforbackup.catalogsforbackup
-                
+
                 let command = FullpathJottaCli().jottaclipathandcommand()
                 if jottatask == .backup {
                     let argumentsbackup = ["add", catalogsforbackup]

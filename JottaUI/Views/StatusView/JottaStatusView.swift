@@ -123,7 +123,7 @@ struct JottaStatusView: View {
     func makeView(view: DestinationView) -> some View {
         switch view {
         case .statusjsonview:
-            OutputJottaStatusView(jsondata: $jsondata)
+            JottaStatusJsonOutputView(jsondata: $jsondata)
                 .onDisappear {
                     jsondata.backups.removeAll()
 

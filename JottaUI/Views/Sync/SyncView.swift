@@ -21,24 +21,23 @@ struct SyncView: View {
     @State private var jottaclioutput = ObservableJottaOutput()
     @State private var showprogressview = false
     @State private var showoutputview: Bool = false
-    
+
     var body: some View {
         NavigationStack {
             HStack {
                 if showprogressview {
                     ProgressView()
                 } else {
-                    
                     Picker(NSLocalizedString("Sync", comment: ""),
                            selection: $synctask)
                     {
                         ForEach(JottaSync.allCases) { Text($0.description)
-                                .tag($0)
+                            .tag($0)
                         }
                     }
                     .pickerStyle(DefaultPickerStyle())
                     .frame(width: 150)
-                    
+
                     Button {
                         let argumentssync = ["sync", synctask.description]
                         let command = FullpathJottaCli().jottaclipathandcommand()
@@ -50,7 +49,7 @@ struct SyncView: View {
                         // Start progressview
                         showprogressview = true
                         process.executeProcess()
-                        
+
                     } label: {
                         Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill")
                             .imageScale(.large)
@@ -64,12 +63,11 @@ struct SyncView: View {
             }
         }
     }
-        
 
     var confirmation: String {
         synctask.description + " is applied"
     }
-    
+
     func processtermination(_ stringoutput: [String]?, _: Bool) {
         showprogressview = false
         Task {

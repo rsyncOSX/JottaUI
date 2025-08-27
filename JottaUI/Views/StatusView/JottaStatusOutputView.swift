@@ -1,5 +1,5 @@
 //
-//  OutputJottaStatusOutputView.swift
+//  JottaStatusOutputView.swift
 //  JottaUI
 //
 //  Created by Thomas Evensen on 20/11/2023.
@@ -13,7 +13,6 @@ struct JottaStatusOutputView: View {
     var body: some View {
         Table(output) {
             TableColumn("Status Jotta-cli" + ": \(output.count) rows") { data in
-                
                 if data.record.contains("------") {
                     Text("")
                 } else {
@@ -28,15 +27,15 @@ struct JottaStatusOutputView: View {
                     }
                 }
             }
-            
+
             TableColumn("Min") { data in
                 var seconds: Double {
-                    if var  date = extractDate(from: data.record), let year = Date().year()  {
+                    if var date = extractDate(from: data.record), let year = Date().year() {
                         date = String(year) + " " + date
                         if let lastbackup = date.status_date_from_string() {
                             return lastbackup.timeIntervalSinceNow * -1
                         }
-                       
+
                     } else {
                         return 0
                     }
@@ -54,7 +53,7 @@ struct JottaStatusOutputView: View {
         }
         .padding()
     }
-    
+
     func extractDate(from text: String) -> String? {
         let pattern = "[A-Za-z]{3} [A-Za-z]{3} \\d{2} \\d{2}:\\d{2}:\\d{2}"
         if let range = text.range(of: pattern, options: .regularExpression) {
@@ -64,4 +63,3 @@ struct JottaStatusOutputView: View {
         }
     }
 }
-

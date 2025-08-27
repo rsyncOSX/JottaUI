@@ -29,7 +29,7 @@ extension Date {
         dateformatter.timeStyle = .short
         return dateformatter.string(from: self)
     }
-    
+
     func year() -> Int? {
         let calendar = Calendar.current
         let dateComponent = (calendar as NSCalendar).components(.year, from: self)
@@ -43,7 +43,7 @@ extension String {
         dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return dateformatter.date(from: self) ?? Date()
     }
-    
+
     func status_date_from_string() -> Date? {
         let dateformatter = DateFormatter()
         // dateformatter.locale = Locale(identifier: "en_US_POSIX") // Ensure consistent parsing
@@ -51,7 +51,6 @@ extension String {
         return dateformatter.date(from: self) ?? Date()
     }
 }
-
 
 /*
  /*

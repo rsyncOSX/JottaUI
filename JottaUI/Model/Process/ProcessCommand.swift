@@ -17,7 +17,6 @@ final class ProcessCommand {
     var errordiscovered: Bool = false
     var checkforerror = CheckForError()
     var oneargumentisjsonordump: [Bool]?
-   
 
     // Store inputPipe as a property
     private var inputPipe: Pipe?

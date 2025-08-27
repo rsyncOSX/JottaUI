@@ -1,5 +1,5 @@
 //
-//  OutputJottaStatusView.swift
+//  JottaStatusJsonOutputView.swift
 //  JottaUI
 //
 //  Created by Thomas Evensen on 05/07/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OutputJottaStatusView: View {
+struct JottaStatusJsonOutputView: View {
     @Binding var jsondata: ObservableJSONStatus
 
     var body: some View {
@@ -54,7 +54,6 @@ struct OutputJottaStatusView: View {
                     } else {
                         Text(String(data.WaitingForScan))
                     }
-                    
                 }
                 .width(min: 70, max: 70)
                 .alignment(.trailing)
