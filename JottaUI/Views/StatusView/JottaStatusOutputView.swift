@@ -41,25 +41,10 @@ struct JottaStatusOutputView: View {
                         }
 
                     } else if data.record.contains("Transferring") {
-                        if seconds > 0 {
-                            let minutessince = String(format: "%.2f", seconds / 60)
-
-                            Text(data.record) + Text(" (\(minutessince) min ago)")
-                                .foregroundColor(Color.red)
-
-                        } else {
-                            Text(data.record)
-                        }
-
+                        Text(data.record)
+                            .foregroundColor(Color.red)
                     } else {
-                        if seconds > 0 {
-                            let minutessince = String(format: "%.2f", seconds / 60)
-
-                            Text(data.record) + Text(" (\(minutessince) min ago)")
-
-                        } else {
-                            Text(data.record)
-                        }
+                        Text(data.record)
                     }
                 }
             }
