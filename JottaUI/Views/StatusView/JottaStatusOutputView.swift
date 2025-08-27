@@ -32,45 +32,49 @@ struct JottaStatusOutputView: View {
                     Text("")
                 } else {
                     if data.record.contains("Up to date") {
-                        HStack {
-                            Text(data.record)
+                        
+                        if seconds > 0 {
+                            
+                            let minutessince = String(format: "%.2f", seconds / 60)
+                            
+                            Text(data.record) + Text(" (\(minutessince) min ago)")
                                 .foregroundColor(Color.green)
                             
-                            if seconds > 0 {
-                                Text(String(format: "%.2f", seconds / 60))
-                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
-                            }
+                        } else {
                             
-                            Spacer()
+                            Text(data.record)
+                                
                         }
+                        
                         
                     } else if data.record.contains("Transferring") {
                         
-                        HStack {
+                        if seconds > 0 {
                             
-                            Text(data.record)
+                            let minutessince = String(format: "%.2f", seconds / 60)
+                            
+                            Text(data.record) + Text(" (\(minutessince) min ago)")
                                 .foregroundColor(Color.red)
                             
-                            if seconds > 0 {
-                                Text(String(format: "%.2f", seconds / 60))
-                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
-                            }
+                        } else {
                             
-                            Spacer()
+                            Text(data.record)
+                                
                         }
                         
                         
+                        
                     } else {
-                        HStack {
+                        if seconds > 0 {
+                            
+                            let minutessince = String(format: "%.2f", seconds / 60)
+                            
+                            Text(data.record) + Text(" (\(minutessince) min ago)")
+                            
+                        } else {
                             
                             Text(data.record)
-                            
-                            if seconds > 0 {
-                                Text(String(format: "%.2f", seconds / 60))
-                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
-                            }
-                            
-                            Spacer()
+                                
                         }
                     }
                 }
