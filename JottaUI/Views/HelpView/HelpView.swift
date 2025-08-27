@@ -67,7 +67,7 @@ struct HelpView: View {
             .padding()
             .navigationTitle("Help view")
             .navigationDestination(isPresented: $showhelp) {
-                OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
+                JottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
         }
     }

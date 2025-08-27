@@ -136,7 +136,7 @@ struct JottaStatusView: View {
             NavigationJottaUILogfileView()
 
         case .statustextview:
-            OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
+            JottaStatusOutputView(output: jottaclioutput.output ?? [])
         }
     }
 }

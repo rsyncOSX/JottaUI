@@ -29,6 +29,12 @@ extension Date {
         dateformatter.timeStyle = .short
         return dateformatter.string(from: self)
     }
+    
+    func year() -> Int? {
+        let calendar = Calendar.current
+        let dateComponent = (calendar as NSCalendar).components(.year, from: self)
+        return dateComponent.year
+    }
 }
 
 extension String {
@@ -38,10 +44,10 @@ extension String {
         return dateformatter.date(from: self) ?? Date()
     }
     
-    func status_from_string() -> Date? {
+    func status_date_from_string() -> Date? {
         let dateformatter = DateFormatter()
-        dateformatter.locale = Locale(identifier: "en_US_POSIX") // Ensure consistent parsing
-        dateformatter.dateFormat = "EEE MMM dd HH:mm:ss" // Match the string format
+        // dateformatter.locale = Locale(identifier: "en_US_POSIX") // Ensure consistent parsing
+        dateformatter.dateFormat = "yyyy EEE MMM dd HH:mm:ss" // Match the string format
         return dateformatter.date(from: self) ?? Date()
     }
 }

@@ -60,7 +60,7 @@ struct SyncView: View {
             }
             .navigationTitle("Sync parameters")
             .navigationDestination(isPresented: $showoutputview) {
-                OutputJottaStatusOutputView(output: jottaclioutput.output ?? [])
+                JottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
         }
     }
