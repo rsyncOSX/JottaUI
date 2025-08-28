@@ -22,8 +22,12 @@ struct SidebarMainView: View {
     @State var statuspath: [Status] = []
     // Status text
     @State var completedjottastatusview: Bool = true
-    // Show dumptabel
+    // Show dumptable
     @State private var showdumptabletable: Bool = false
+    // Set progressview when resetting, filter or reset data
+    // Set as @Binding in NavigationJottaCliLogfileView to enable (or disable)
+    // selecting another main meny when sort and filter logrecords in progress
+    @State private var updateactionlogview: Bool = false
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -35,7 +39,10 @@ struct SidebarMainView: View {
                 }
             }
             .listStyle(.sidebar)
-            .disabled(statuspath.isEmpty == false || completedjottastatusview == false || showdumptabletable == true)
+            .disabled(statuspath.isEmpty == false ||
+                      completedjottastatusview == false ||
+                      showdumptabletable == true ||
+                      updateactionlogview == true)
 
             MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 
@@ -55,7 +62,7 @@ struct SidebarMainView: View {
     func selectView(_ view: Sidebaritems) -> some View {
         switch view {
         case .logfile:
-            NavigationJottaCliLogfileView()
+            NavigationJottaCliLogfileView(updateactionlogview: $updateactionlogview)
         case .status:
             JottaStatusView(statuspath: $statuspath, completedjottastatusview: $completedjottastatusview)
         case .catalogs:

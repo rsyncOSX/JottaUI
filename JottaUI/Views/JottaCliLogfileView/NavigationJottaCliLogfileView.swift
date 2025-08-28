@@ -10,6 +10,8 @@ import Observation
 import SwiftUI
 
 struct NavigationJottaCliLogfileView: View {
+    @Binding var updateactionlogview: Bool
+    
     @State private var logfilerecords: [LogfileRecords]?
     // Filterstring
     @State private var filterstring: String = ""
@@ -18,7 +20,7 @@ struct NavigationJottaCliLogfileView: View {
     // Reset and read logfile again as default
     @State private var reset: Bool = false
     // Set progressview when resetting, filter or reset data
-    @State private var updateaction: Bool = false
+    
 
     var body: some View {
         VStack {
@@ -39,7 +41,7 @@ struct NavigationJottaCliLogfileView: View {
                     ProgressView()
                 }
 
-                if updateaction {
+                if updateactionlogview {
                     ProgressView()
                 }
             }
@@ -48,14 +50,14 @@ struct NavigationJottaCliLogfileView: View {
         .searchable(text: $filterstring)
         .onAppear {
             Task {
-                updateaction = true
+                updateactionlogview = true
                 logfilerecords = await ActorJottaCliLogfile().jottaclilogfile()
-                updateaction = false
+                updateactionlogview = false
             }
         }
         .onChange(of: filterstring) {
             Task {
-                updateaction = true
+                updateactionlogview = true
                 if filterstring.isEmpty == false {
                     // Must read all logrecords before filter
                     let alllogrecords = await ActorJottaCliLogfile().jottaclilogfile()
@@ -63,23 +65,23 @@ struct NavigationJottaCliLogfileView: View {
                 } else {
                     logfilerecords = await ActorJottaCliLogfile().jottaclilogfile()
                 }
-                updateaction = false
+                updateactionlogview = false
             }
         }
         .onChange(of: reset) {
             Task {
                 guard reset == true else { return }
-                updateaction = true
+                updateactionlogview = true
                 logfilerecords = await ActorJottaCliLogfile().jottaclilogfile()
                 reset = false
                 sortdirection = true
-                updateaction = false
+                updateactionlogview = false
             }
         }
         .onChange(of: sortdirection) {
             Task {
                 guard reset == false else { return }
-                updateaction = true
+                updateactionlogview = true
                 if filterstring.isEmpty == false {
                     // Must read all logrecords before filter
                     let alllogrecords = await ActorJottaCliLogfile().sortjottaclilogfile(sortdirection)
@@ -87,7 +89,7 @@ struct NavigationJottaCliLogfileView: View {
                 } else {
                     logfilerecords = await ActorJottaCliLogfile().sortjottaclilogfile(sortdirection)
                 }
-                updateaction = false
+                updateactionlogview = false
             }
         }
         .toolbar {
