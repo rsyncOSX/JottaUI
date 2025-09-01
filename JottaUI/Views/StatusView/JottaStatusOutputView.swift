@@ -52,12 +52,18 @@ struct JottaStatusOutputView: View {
         .padding()
     }
 
-    func extractDate(from text: String) -> String? {
-        let pattern = "[A-Za-z]{3} [A-Za-z]{3} \\d{2} \\d{2}:\\d{2}:\\d{2}"
-        if let range = text.range(of: pattern, options: .regularExpression) {
-            return String(text[range])
-        } else {
-            return nil
+    func extractDate(from string: String) -> String? {
+        // Regular expression to match the date-time pattern
+        let pattern = #"[A-Za-z]{3} [A-Za-z]{3} \d{1,2} \d{2}:\d{2}:\d{2}"#
+        
+        let regex = try? NSRegularExpression(pattern: pattern)
+        let range = NSRange(location: 0, length: string.utf16.count)
+        
+        if let match = regex?.firstMatch(in: string, range: range) {
+            let matchRange = Range(match.range, in: string)!
+            return String(string[matchRange])
         }
+        
+        return nil
     }
 }
