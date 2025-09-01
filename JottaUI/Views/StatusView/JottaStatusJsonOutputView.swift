@@ -22,10 +22,7 @@ struct JottaStatusJsonOutputView: View {
                     } header: {
                         Text("User data")
                     }
-                }
-                .formStyle(.grouped)
-
-                Form {
+                    
                     Section {
                         ValueSchemeView(200, jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set")
                         // ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
@@ -82,6 +79,7 @@ struct JottaStatusJsonOutputView: View {
                 }
                 .width(min: 120, max: 150)
             }
+            .padding()
         }
         .padding()
     }

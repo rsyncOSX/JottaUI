@@ -145,8 +145,6 @@ extension JottaStatusView {
     func executestatus() {
         let arguments = ["status"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-
-        // Start progressview
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
@@ -203,7 +201,6 @@ extension JottaStatusView {
 
         } else {
             showprogressview = false
-
             Task {
                 jottaclioutput.output = await ActorCreateOutputforview().createaoutput(stringoutput)
                 completedjottastatusview = true
