@@ -57,7 +57,6 @@ struct JottaStatusView: View {
                         } label: {
                             Image(systemName: "checkmark.circle.fill")
                                 .imageScale(.large)
-                            // .foregroundColor(Color(.blue))
                         }
                         .buttonStyle(.borderedProminent)
 

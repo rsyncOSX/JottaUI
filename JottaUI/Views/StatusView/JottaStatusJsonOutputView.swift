@@ -44,7 +44,6 @@ struct JottaStatusJsonOutputView: View {
 
             Table(jsondata.backups) {
                 TableColumn("Path", value: \.Path)
-                    // TableColumn("DeviceID", value: \.DeviceID)
                     .width(min: 120, max: 400)
 
                 TableColumn("Wait scan") { data in
@@ -66,19 +65,7 @@ struct JottaStatusJsonOutputView: View {
                 }
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
-                /*
-                 TableColumn("Start") { data in
-                     Text(String(dateinseconds(data.history.Started)))
-                 }
-                 .width(min: 120, max: 150)
-                 .alignment(.trailing)
-
-                 TableColumn("End") { data in
-                     Text(String(dateinseconds(data.history.Ended)))
-                 }
-                 .width(min: 120, max: 150)
-                 .alignment(.trailing)
-                 */
+                
                 TableColumn("Finished") { data in
                     Text(String(data.history.Finished))
                 }
@@ -89,12 +76,7 @@ struct JottaStatusJsonOutputView: View {
                     Text(dateinmilliseconds(data.LastUpdateMS))
                 }
                 .width(min: 120, max: 150)
-                /*
-                 TableColumn("NextBackupMS") { data in
-                     Text(dateinmilliseconds(data.NextBackupMS))
-                 }
-                 .width(min: 80, max: 100)
-                 */
+                
                 TableColumn("Last scan") { data in
                     Text(dateinmilliseconds(data.LastScanStartedMS))
                 }
