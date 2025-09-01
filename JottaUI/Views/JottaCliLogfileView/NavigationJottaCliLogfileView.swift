@@ -11,7 +11,7 @@ import SwiftUI
 
 struct NavigationJottaCliLogfileView: View {
     @Binding var updateactionlogview: Bool
-    
+
     @State private var logfilerecords: [LogfileRecords]?
     // Filterstring
     @State private var filterstring: String = ""
@@ -20,7 +20,6 @@ struct NavigationJottaCliLogfileView: View {
     // Reset and read logfile again as default
     @State private var reset: Bool = false
     // Set progressview when resetting, filter or reset data
-    
 
     var body: some View {
         VStack {

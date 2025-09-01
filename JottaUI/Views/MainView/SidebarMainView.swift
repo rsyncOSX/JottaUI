@@ -40,9 +40,9 @@ struct SidebarMainView: View {
             }
             .listStyle(.sidebar)
             .disabled(statuspath.isEmpty == false ||
-                      completedjottastatusview == false ||
-                      showdumptabletable == true ||
-                      updateactionlogview == true)
+                completedjottastatusview == false ||
+                showdumptabletable == true ||
+                updateactionlogview == true)
 
             MessageView(mytext: SharedReference.shared.jottacliversion ?? "", size: .caption2)
 

@@ -65,7 +65,7 @@ struct JottaStatusJsonOutputView: View {
                 }
                 .width(min: 40, max: 80)
                 .alignment(.trailing)
-                
+
                 TableColumn("Finished") { data in
                     Text(String(data.history.Finished))
                 }
@@ -76,7 +76,7 @@ struct JottaStatusJsonOutputView: View {
                     Text(dateinmilliseconds(data.LastUpdateMS))
                 }
                 .width(min: 120, max: 150)
-                
+
                 TableColumn("Last scan") { data in
                     Text(dateinmilliseconds(data.LastScanStartedMS))
                 }

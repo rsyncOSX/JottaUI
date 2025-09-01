@@ -16,10 +16,10 @@ struct Paths: Identifiable, Codable {
 
 @Observable @MainActor
 final class ObservableCatalogsforbackup {
-    private var jsondata = ObservableJSONStatus()
     
+    private var jsondata: ObservableJSONStatus?
     var paths: [Paths]?
-    
+
     // Catalog for new backup or sync
     var catalogsforbackup: String = ""
     // Mark number of days since last backup
@@ -28,23 +28,23 @@ final class ObservableCatalogsforbackup {
         let fm = FileManager.default
         return fm.fileExists(atPath: path, isDirectory: nil)
     }
-    
+
     func excutestatusjson() {
-            let arguments = ["status", "--json"]
-            let command = FullpathJottaCli().jottaclipathandcommand()
-            let process = ProcessCommand(command: command,
-                                         arguments: arguments,
-                                         syncmode: nil,
-                                         input: nil,
-                                         processtermination: processtermination)
-            process.executeProcess()
-        }
-    
+        let arguments = ["status", "--json"]
+        let command = FullpathJottaCli().jottaclipathandcommand()
+        let process = ProcessCommand(command: command,
+                                     arguments: arguments,
+                                     syncmode: nil,
+                                     input: nil,
+                                     processtermination: processtermination)
+        process.executeProcess()
+    }
+
     func processtermination(_ stringoutput: [String]?, _: Bool) {
-        jsondata.setJSONstring(stringoutput)
-        jsondata.debugJSONdata()
-        
-        paths = jsondata.backups.map { item in
+        jsondata = ObservableJSONStatus()
+        jsondata?.setJSONstring(stringoutput)
+        jsondata?.debugJSONdata()
+        paths = jsondata?.backups.map { item in
             let path = item.Path
             return Paths(path: path)
         }
