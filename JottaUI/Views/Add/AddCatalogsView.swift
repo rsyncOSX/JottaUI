@@ -94,7 +94,7 @@ struct AddCatalogsView: View {
                         Image(systemName: "plus.circle.fill")
                             .imageScale(.large)
                     }
-                    .disabled(observablecatalogsforbackup.verifycatalogsforbackup(observablecatalogsforbackup.catalogsforbackup) == false)
+                    .disabled(observablecatalogsforbackup.verifycatalogsforbackup(observablecatalogsforbackup.catalogsforbackup) == false || jottatask == .select)
                     .buttonStyle(.borderedProminent)
                 }
             } header: {
