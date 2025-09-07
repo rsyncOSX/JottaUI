@@ -40,10 +40,13 @@ struct JottaStatusOutputView: View {
                         }
                     } else if data.record.contains("Transferring") {
                         Text(data.record)
-                            .foregroundColor(Color.red)
-                    } else if data.record.contains("Waiting") {
+                            .foregroundColor(Color.yellow)
+                    }  else if data.record.contains("Waiting") {
                         Text(data.record)
                             .foregroundColor(Color.yellow)
+                    } else if data.record.contains("have not been backed up") {
+                        Text(data.record)
+                            .foregroundColor(Color.red)
                     } else {
                         Text(data.record)
                     }
