@@ -44,6 +44,9 @@ struct JottaStatusOutputView: View {
                     }  else if data.record.contains("Waiting") {
                         Text(data.record)
                             .foregroundColor(Color.yellow)
+                    } else if data.record.contains("Performing updates") {
+                        Text(data.record)
+                            .foregroundColor(Color.yellow)
                     } else if data.record.contains("have not been backed up") {
                         Text(data.record)
                             .foregroundColor(Color.red)
