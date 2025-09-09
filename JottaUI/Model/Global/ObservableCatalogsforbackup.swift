@@ -9,7 +9,7 @@ import Foundation
 import Observation
 
 // Records for paths
-struct Paths: Identifiable, Codable {
+struct Catalogs: Identifiable, Codable {
     var id = UUID()
     var path: String?
 }
@@ -17,7 +17,7 @@ struct Paths: Identifiable, Codable {
 @Observable @MainActor
 final class ObservableCatalogsforbackup {
     private var jsondata: ObservableJSONStatus?
-    var paths: [Paths]?
+    var catalogs: [Catalogs]?
 
     // Catalog for new backup or sync
     var catalogsforbackup: String = ""
@@ -43,9 +43,9 @@ final class ObservableCatalogsforbackup {
         jsondata = ObservableJSONStatus()
         jsondata?.setJSONstring(stringoutput)
         jsondata?.debugJSONdata()
-        paths = jsondata?.backups.map { item in
+        catalogs = jsondata?.backups.map { item in
             let path = item.Path
-            return Paths(path: path)
+            return Catalogs(path: path)
         }
     }
 }

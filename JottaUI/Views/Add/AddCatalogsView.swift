@@ -32,7 +32,7 @@ struct AddCatalogsView: View {
     @State private var jottatask = JottaTask.select
     @State private var syncmode = SyncMode.full
     @State private var errordiscovered: Bool = false
-    @State private var selectedcatalog: Paths.ID?
+    @State private var selectedcatalog: Catalogs.ID?
 
     var body: some View {
         Form {
@@ -103,7 +103,7 @@ struct AddCatalogsView: View {
 
             Section {
                 Button {
-                    observablecatalogsforbackup.paths = nil
+                    observablecatalogsforbackup.catalogs = nil
                     observablecatalogsforbackup.excutestatusjson()
 
                 } label: {
@@ -112,9 +112,9 @@ struct AddCatalogsView: View {
                 }
                 .buttonStyle(.borderedProminent)
 
-                Table(observablecatalogsforbackup.paths ?? [], selection: $selectedcatalog) {
-                    TableColumn("Paths") { path in
-                        Text(path.path ?? "")
+                Table(observablecatalogsforbackup.catalogs ?? [], selection: $selectedcatalog) {
+                    TableColumn("Catalogs") { catalog in
+                        Text(catalog.path ?? "")
                     }
                 }
                 .padding()
