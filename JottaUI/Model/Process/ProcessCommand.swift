@@ -32,6 +32,10 @@ final class ProcessCommand {
     // Sync mode, used when setup syncmode
     private var syncmode: String?
 
+    var strings: SharedStrings {
+        SharedStrings()
+    }
+
     func executeProcess() {
         if let command, let arguments, arguments.count > 0 {
             let task = Process()
@@ -106,22 +110,22 @@ final class ProcessCommand {
 
                     // Only write to inputPipe if prompt detected
 
-                    if line.contains("Continue sync setup?") {
+                    if line.contains(self.strings.continueSyncSetup) {
                         let reply = self.input ?? "yes"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
 
-                    if line.contains("Choose error reporting mode") {
+                    if line.contains(self.strings.chooseErrorReportingMode) {
                         let reply = self.syncmode ?? "full"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
 
-                    if line.contains("Continue sync reset") {
+                    if line.contains(self.strings.continueSyncReset) {
                         let reply = self.input ?? "y"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
 
-                    if line.contains("The existing sync folder on jottacloud.com") {
+                    if line.contains(self.strings.theExistingSyncFolderOnJottacloudCom) {
                         let reply = self.input ?? "n"
                         self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }

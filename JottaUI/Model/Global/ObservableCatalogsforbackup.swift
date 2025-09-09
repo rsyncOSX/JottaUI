@@ -16,7 +16,6 @@ struct Paths: Identifiable, Codable {
 
 @Observable @MainActor
 final class ObservableCatalogsforbackup {
-    
     private var jsondata: ObservableJSONStatus?
     var paths: [Paths]?
 

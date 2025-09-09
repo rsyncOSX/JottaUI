@@ -29,7 +29,7 @@ struct JottaStatusOutputView: View {
                 if data.record.contains("------") {
                     Text("")
                 } else {
-                    if data.record.contains("Up to date") {
+                    if data.record.contains(strings.uptodate) {
                         if seconds > 0 {
                             let minutessince = String(format: "%.2f", seconds / 60)
                             Text(data.record) + Text(" (\(minutessince) min ago)")
@@ -38,16 +38,16 @@ struct JottaStatusOutputView: View {
                         } else {
                             Text(data.record)
                         }
-                    } else if data.record.contains("Transferring") {
+                    } else if data.record.contains(strings.transferring) {
                         Text(data.record)
                             .foregroundColor(Color.yellow)
-                    }  else if data.record.contains("Waiting") {
+                    } else if data.record.contains(strings.waiting) {
                         Text(data.record)
                             .foregroundColor(Color.yellow)
-                    } else if data.record.contains("Performing updates") {
+                    } else if data.record.contains(strings.performingUpdates) {
                         Text(data.record)
                             .foregroundColor(Color.yellow)
-                    } else if data.record.contains("have not been backed up") {
+                    } else if data.record.contains(strings.haveNotBeenBackedUp) {
                         Text(data.record)
                             .foregroundColor(Color.red)
                     } else {
@@ -62,15 +62,19 @@ struct JottaStatusOutputView: View {
     func extractDate(from string: String) -> String? {
         // Regular expression to match the date-time pattern
         let pattern = #"[A-Za-z]{3} [A-Za-z]{3} \d{1,2} \d{2}:\d{2}:\d{2}"#
-        
+
         let regex = try? NSRegularExpression(pattern: pattern)
         let range = NSRange(location: 0, length: string.utf16.count)
-        
+
         if let match = regex?.firstMatch(in: string, range: range) {
             let matchRange = Range(match.range, in: string)!
             return String(string[matchRange])
         }
-        
+
         return nil
+    }
+
+    var strings: SharedStrings {
+        SharedStrings()
     }
 }

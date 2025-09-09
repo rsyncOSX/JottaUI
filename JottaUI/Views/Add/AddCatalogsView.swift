@@ -100,26 +100,24 @@ struct AddCatalogsView: View {
             } header: {
                 Text("Add catalogs for backup and sync")
             }
-            
+
             Section {
-              
-                    Button {
+                Button {
+                    observablecatalogsforbackup.paths = nil
+                    observablecatalogsforbackup.excutestatusjson()
 
-                        observablecatalogsforbackup.paths = nil
-                        observablecatalogsforbackup.excutestatusjson()
+                } label: {
+                    Image(systemName: "tablecells.fill")
+                        .imageScale(.large)
+                }
+                .buttonStyle(.borderedProminent)
 
-                    } label: {
-                        Image(systemName: "tablecells.fill")
-                            .imageScale(.large)
+                Table(observablecatalogsforbackup.paths ?? [], selection: $selectedcatalog) {
+                    TableColumn("Paths") { path in
+                        Text(path.path ?? "")
                     }
-                    .buttonStyle(.borderedProminent)
-
-                    Table(observablecatalogsforbackup.paths ?? [], selection: $selectedcatalog) {
-                        TableColumn("Paths") { path in
-                            Text(path.path ?? "")
-                        }
-                    }
-                    .padding()
+                }
+                .padding()
 
             } header: {
                 Text("View catalogs in backup")

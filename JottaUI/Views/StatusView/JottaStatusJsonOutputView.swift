@@ -22,7 +22,7 @@ struct JottaStatusJsonOutputView: View {
                     } header: {
                         Text("User data")
                     }
-                    
+
                     Section {
                         ValueSchemeView(200, jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set")
                         // ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
@@ -40,7 +40,7 @@ struct JottaStatusJsonOutputView: View {
             }
 
             Table(jsondata.backups) {
-                TableColumn("Path", value: \.Path)
+                TableColumn("Catalogs", value: \.Path)
                     .width(min: 120, max: 400)
 
                 TableColumn("Wait scan") { data in
@@ -53,10 +53,10 @@ struct JottaStatusJsonOutputView: View {
                 }
                 .width(min: 70, max: 70)
                 .alignment(.trailing)
-
-                TableColumn("Catalogs", value: \.Name)
-                    .width(min: 80, max: 200)
-
+                /*
+                 TableColumn("Catalogs", value: \.Name)
+                     .width(min: 80, max: 200)
+                 */
                 TableColumn("Files") { data in
                     Text(jsondata.formatted_number(data.Count.Files))
                 }

@@ -2,12 +2,12 @@ import OSLog
 import SwiftUI
 
 enum JottaSync: String, CaseIterable, Identifiable, CustomStringConvertible {
-    case configure
+    // case configure
     case diag
     case log
-    case move
+    // case move
     case reset
-    case selective
+    // case selective
     case start
     case stop
     case trigger
