@@ -145,7 +145,15 @@ struct AddCatalogsView: View {
                 }
 
             } header: {
-                Text("View catalogs in backup")
+                if observablecatalogsforbackup.catalogs?.count ?? 0 <= 0 {
+                    Text("Catalogs in backup")
+                } else {
+                    HStack {
+                        Text("Catalogs in backup, to delete a catalog select it and press")
+                        Text(Image(systemName: "delete.left"))
+                    }
+                    
+                }
             }
         }
         .formStyle(.grouped)
