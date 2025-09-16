@@ -132,7 +132,7 @@ struct AddCatalogsView: View {
                 }
                 .padding()
                 .confirmationDialog(
-                    Text("Delete \(catalogfordelete))?"),
+                    Text("Delete \(catalogfordelete)?"),
                     isPresented: $confirmdelete
                 ) {
                     Button("Delete") {
@@ -197,6 +197,8 @@ struct AddCatalogsView: View {
 
     func processtermination(_: [String]?, _ errordiscovered: Bool) {
         catalogadded = !errordiscovered
+        observablecatalogsforbackup.catalogs = nil
+        observablecatalogsforbackup.excutestatusjson()
     }
     
     func processterminationdelete(_: [String]?, _ errordiscovered: Bool) {
