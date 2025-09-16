@@ -33,6 +33,9 @@ struct AddCatalogsView: View {
     @State private var syncmode = SyncMode.full
     @State private var errordiscovered: Bool = false
     @State private var selectedcatalog: Catalogs.ID?
+    
+    @State private var confirmdelete: Bool = false
+    @State private var catalogfordelete: String = ""
 
     var body: some View {
         Form {
@@ -117,7 +120,29 @@ struct AddCatalogsView: View {
                         Text(catalog.path ?? "")
                     }
                 }
+                .onChange(of: selectedcatalog) {
+                    if let catalogs = observablecatalogsforbackup.catalogs {
+                        if let index = catalogs.firstIndex(where: { $0.id == selectedcatalog }) {
+                            catalogfordelete = catalogs[index].path ?? ""
+                        } else {
+                            catalogfordelete = ""
+                            selectedcatalog = nil
+                        }
+                    }
+                }
                 .padding()
+                .confirmationDialog(
+                    Text("Delete \(catalogfordelete))?"),
+                    isPresented: $confirmdelete
+                ) {
+                    Button("Delete") {
+                        delete()
+                        confirmdelete = false
+                    }
+                }
+                .onDeleteCommand {
+                    confirmdelete = true
+                }
 
             } header: {
                 Text("View catalogs in backup")
@@ -172,5 +197,23 @@ struct AddCatalogsView: View {
 
     func processtermination(_: [String]?, _ errordiscovered: Bool) {
         catalogadded = !errordiscovered
+    }
+    
+    func processterminationdelete(_: [String]?, _ errordiscovered: Bool) {
+        observablecatalogsforbackup.catalogs = nil
+        observablecatalogsforbackup.excutestatusjson()
+    }
+    
+    func delete() {
+        let command = FullpathJottaCli().jottaclipathandcommand()
+        let argumentssync = ["rem", catalogfordelete]
+        let process = ProcessCommand(command: command,
+                                     arguments: argumentssync,
+                                     syncmode: syncmode.description,
+                                     input: nil,
+                                     processtermination: processterminationdelete)
+        // Start progressview
+        process.executeProcess()
+        
     }
 }
