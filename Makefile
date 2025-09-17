@@ -52,13 +52,13 @@ sign:
 prepare-dmg:
 
 	../create-dmg/create-dmg \
-	    --volname "RsyncUI ver $(VERSION)" \
+	    --volname "JottaUI ver $(VERSION)" \
 	    --background "./images/background.png" \
 	    --window-pos 200 120 \
 	    --window-size 500 320 \
 	    --icon-size 80 \
-	    --icon "RsyncUI.app" 125 175 \
-	    --hide-extension "RsyncUI.app" \
+	    --icon "JottaUI.app" 125 175 \
+	    --hide-extension "JottaUI.app" \
 	    --app-drop-link 375 175 \
 	    --no-internet-enable \
 	    --codesign 93M47F4H9T\
