@@ -43,9 +43,7 @@ struct SidebarMainView: View {
             Divider()
             
             List(menuitems, selection: $selectedview) { item in
-                NavigationLink(value: item.menuitem) {
-                    SidebarRow(sidebaritem: item.menuitem)
-                }
+                NavigationLinkWithHover(item: item, selectedview: $selectedview)
                 
                 if item.menuitem == .Jotta_cli_help ||
                     item.menuitem == .dump ||
@@ -132,6 +130,27 @@ struct SidebarRow: View {
             "arrowshape.down.circle.fill"
         case .sync:
             "arrow.trianglehead.2.clockwise.rotate.90.circle.fill"
+        }
+    }
+}
+
+struct NavigationLinkWithHover: View {
+    let item: MenuItem // Replace with your actual item type
+    @Binding var selectedview:  Sidebaritems // Replace with your selection type
+    @State private var isHovered = false
+    
+    var body: some View {
+        NavigationLink(value: item.menuitem) {
+            SidebarRow(sidebaritem: item.menuitem)
+        }
+        .listRowBackground(
+            Rectangle()
+                .fill(isHovered ? Color.blue.opacity(0.1) : Color.clear)
+        )
+        .onHover { hovering in
+            withAnimation(.easeInOut(duration: 0.15)) {
+                isHovered = hovering
+            }
         }
     }
 }
