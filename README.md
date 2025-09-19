@@ -14,3 +14,8 @@ The jotta-cli command is installed by Homebrew, please refer to Jottacloud´s do
 ![](images/catalogs.png)
 ![](images/logfile.png)
 
+Sometimes the jotta daemon fails to login. I have reported the issue to JottaCloud, but no fix yet. The workaround for me is to log out and log in again. The JottaUI does mark lines with red if there are some errors.
+
+![](images/error.png)
+![](images/errorlog.png)
+![](images/errorfixed.png)
