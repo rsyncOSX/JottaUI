@@ -13,6 +13,7 @@ struct SharedStrings: Sendable {
     let waiting = "Waiting"
     let performingUpdates = "Performing updates"
     let haveNotBeenBackedUp = "have not been backed up"
+    let nobytes = "0 (0bytes)"
 
     // Strings for Process object, strings which requiere a second input
     let continueSyncSetup = "Continue sync setup?"

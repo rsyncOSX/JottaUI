@@ -32,7 +32,7 @@ struct JottaStatusOutputView: View {
                     if data.record.contains(strings.uptodate) {
                         if seconds > 0 {
                             if seconds > 3600 {
-                                let hours = String(format: "%.2f", seconds / (60 * 3600))
+                                let hours = String(format: "%.2f", seconds / 3600)
                                 Text(data.record) + Text(" (\(hours) hours ago)")
                                     .foregroundColor(Color.green)
                             } else {
@@ -53,6 +53,9 @@ struct JottaStatusOutputView: View {
                         Text(data.record)
                             .foregroundColor(Color.yellow)
                     } else if data.record.contains(strings.haveNotBeenBackedUp) {
+                        Text(data.record)
+                            .foregroundColor(Color.red)
+                    } else if data.record.contains(strings.nobytes) {
                         Text(data.record)
                             .foregroundColor(Color.red)
                     } else {
