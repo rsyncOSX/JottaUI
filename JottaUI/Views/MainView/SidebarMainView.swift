@@ -91,15 +91,10 @@ struct SidebarMainView: View {
         }
     }
     
-    // The Sidebar meny is context sensitive. There are three Sidebar meny options
-    // which are context sensitive:
-    // - Snapshots
-    // - Verify remote
-    // - Restore
+    // The Sidebar meny is context sensitive. The Sync is context sensitive
     var menuitems: [MenuItem] {
         Sidebaritems.allCases.compactMap { item in
-            // Return nil if there is one or more snapshot tasks
-            // Do not show the Snapshot sidebar meny
+            // Do not show the Sync in sidebar meny
             if syncisenabled == false,
                item == .sync { return nil }
             
@@ -144,8 +139,8 @@ struct NavigationLinkWithHover: View {
             SidebarRow(sidebaritem: item.menuitem)
         }
         .listRowBackground(
-            Rectangle()
-                .fill(isHovered ? Color.blue.opacity(0.1) : Color.clear)
+            RoundedRectangle(cornerRadius: 20)
+                .fill(isHovered ? Color.blue.opacity(0.2) : Color.clear)
         )
         .onHover { hovering in
             withAnimation(.easeInOut(duration: 0.15)) {
