@@ -139,9 +139,11 @@ struct NavigationLinkWithHover: View {
             SidebarRow(sidebaritem: item.menuitem)
         }
         .listRowBackground(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(isHovered ? Color.blue.opacity(0.2) : Color.clear)
+                .padding(.horizontal, 10)
         )
+        .listRowInsets(EdgeInsets())
         .onHover { hovering in
             withAnimation(.easeInOut(duration: 0.15)) {
                 isHovered = hovering
