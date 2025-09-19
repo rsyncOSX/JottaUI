@@ -22,6 +22,7 @@ struct Status: Hashable, Identifiable {
 struct JottaStatusView: View {
     @Binding var statuspath: [Status]
     @Binding var completedjottastatusview: Bool
+    @Binding var syncisenabled: Bool
 
     @State private var jsondata = ObservableJSONStatus()
     @State private var showprogressview = false
@@ -203,6 +204,7 @@ extension JottaStatusView {
             showprogressview = false
             Task {
                 jottaclioutput.output = await ActorCreateOutputforview().createaoutput(stringoutput)
+                syncisenabled = await ActorCreateOutputforview().syncisenabled(stringoutput ?? [])
                 completedjottastatusview = true
                 statuspath.append(Status(task: .statustextview))
             }

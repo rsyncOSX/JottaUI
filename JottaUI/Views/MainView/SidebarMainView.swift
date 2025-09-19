@@ -13,6 +13,12 @@ enum Sidebaritems: String, Identifiable, CaseIterable {
     var id: String { rawValue }
 }
 
+// The sidebar is context sensitive, it is computed everytime a new profile is loaded
+struct MenuItem: Identifiable, Hashable {
+    var menuitem: Sidebaritems
+    let id = UUID()
+}
+
 struct SidebarMainView: View {
     @Bindable var errorhandling: AlertError
     // Toggle sidebar
@@ -28,15 +34,24 @@ struct SidebarMainView: View {
     // Set as @Binding in NavigationJottaCliLogfileView to enable (or disable)
     // selecting another main meny when sort and filter logrecords in progress
     @State private var updateactionlogview: Bool = false
+    // Sync is enabled
+    @State private var syncisenabled: Bool = false
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
+            
             Divider()
-
-            List(Sidebaritems.allCases, selection: $selectedview) { item in
-                NavigationLink(value: item) {
-                    SidebarRow(sidebaritem: item)
+            
+            List(menuitems, selection: $selectedview) { item in
+                NavigationLink(value: item.menuitem) {
+                    SidebarRow(sidebaritem: item.menuitem)
                 }
+                
+                if item.menuitem == .Jotta_cli_help ||
+                    item.menuitem == .dump ||
+                    item.menuitem == .catalogs
+
+                { Divider() }
             }
             .listStyle(.sidebar)
             .disabled(statuspath.isEmpty == false ||
@@ -64,7 +79,9 @@ struct SidebarMainView: View {
         case .logfile:
             NavigationJottaCliLogfileView(updateactionlogview: $updateactionlogview)
         case .status:
-            JottaStatusView(statuspath: $statuspath, completedjottastatusview: $completedjottastatusview)
+            JottaStatusView(statuspath: $statuspath,
+                            completedjottastatusview: $completedjottastatusview,
+                            syncisenabled: $syncisenabled)
         case .catalogs:
             AddCatalogsView()
         case .Jotta_cli_help:
@@ -73,6 +90,22 @@ struct SidebarMainView: View {
             JottaDumpView(showdumptabletable: $showdumptabletable)
         case .sync:
             SyncView()
+        }
+    }
+    
+    // The Sidebar meny is context sensitive. There are three Sidebar meny options
+    // which are context sensitive:
+    // - Snapshots
+    // - Verify remote
+    // - Restore
+    var menuitems: [MenuItem] {
+        Sidebaritems.allCases.compactMap { item in
+            // Return nil if there is one or more snapshot tasks
+            // Do not show the Snapshot sidebar meny
+            if syncisenabled == false,
+               item == .sync { return nil }
+            
+            return MenuItem(menuitem: item)
         }
     }
 }

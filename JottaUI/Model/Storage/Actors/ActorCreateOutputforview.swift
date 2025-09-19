@@ -8,6 +8,21 @@
 import OSLog
 
 actor ActorCreateOutputforview {
+    
+    @concurrent
+    nonisolated func syncisenabled(_ stringoutput: [String]) async -> Bool {
+        let result: [String]? = stringoutput.compactMap { line in
+            var syncisenabled = String(line)
+            return syncisenabled.replacingOccurrences(of: " ", with: "").contains("sync:") ? line : nil
+        }
+        if result == nil {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    
     @concurrent
     nonisolated func createaoutput(_ stringoutput: [String]?) async -> [JottaCliOutputData] {
         Logger.process.info("ActorCreateOutputforview: createaoutput() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")

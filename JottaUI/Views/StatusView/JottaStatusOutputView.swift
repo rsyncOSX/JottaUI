@@ -31,10 +31,15 @@ struct JottaStatusOutputView: View {
                 } else {
                     if data.record.contains(strings.uptodate) {
                         if seconds > 0 {
-                            let minutessince = String(format: "%.2f", seconds / 60)
-                            Text(data.record) + Text(" (\(minutessince) min ago)")
-                                .foregroundColor(Color.green)
-
+                            if seconds > 3600 {
+                                let hours = String(format: "%.2f", seconds / (60 * 3600))
+                                Text(data.record) + Text(" (\(hours) hours ago)")
+                                    .foregroundColor(Color.green)
+                            } else {
+                                let minutessince = String(format: "%.2f", seconds / 60)
+                                Text(data.record) + Text(" (\(minutessince) min ago)")
+                                    .foregroundColor(Color.green)
+                            }
                         } else {
                             Text(data.record)
                         }
