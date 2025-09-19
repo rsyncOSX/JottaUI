@@ -11,11 +11,11 @@ actor ActorCreateOutputforview {
     
     @concurrent
     nonisolated func syncisenabled(_ stringoutput: [String]) async -> Bool {
-        let result: [String]? = stringoutput.compactMap { line in
-            var syncisenabled = String(line)
+        let result: [String] = stringoutput.compactMap { line in
+            let syncisenabled = String(line)
             return syncisenabled.replacingOccurrences(of: " ", with: "").contains("sync:") ? line : nil
         }
-        if result == nil {
+        if result.isEmpty {
             return false
         } else {
             return true
