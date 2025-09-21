@@ -31,18 +31,11 @@ struct JottaStatusOutputView: View {
                 } else {
                     if data.record.contains(strings.uptodate) {
                         if seconds > 0 {
-                            if seconds > 3600 {
+                            
+                            Text(data.record) + Text(" ( ").foregroundColor(Color.green) +
+                            Text(latest(seconds)).foregroundColor(Color.green) +
+                            Text(" )").foregroundColor(Color.green)
                                 
-                                let hours = String(format: "%.0f", seconds / 3600)
-                                let minutes = String(format: "%.0f", (seconds.truncatingRemainder(dividingBy: 3600)) / 60)
-                                
-                                Text(data.record) + Text(" (\(hours) hours" + " and " + " \(minutes) min ago)")
-                                    .foregroundColor(Color.green)
-                            } else {
-                                let minutessince = String(format: "%.0f", seconds / 60)
-                                Text(data.record) + Text(" (\(minutessince) min ago)")
-                                    .foregroundColor(Color.green)
-                            }
                         } else {
                             Text(data.record)
                         }
@@ -69,8 +62,24 @@ struct JottaStatusOutputView: View {
         }
         .padding()
     }
+    
+    private func latest(_ seconds: Double) -> String {
+        if seconds < 3600 * 24 {
+            if seconds < 60 * 60 {
+                return seconds < 60 ? String(format: "%.0f", seconds / 60) + " min" : String(format: "%.0f", seconds / 60) + " min ago"
+            } else {
+                
+                let hours = String(format: "%.0f", seconds / ( 60 * 60))
+                let minutes = String(format: "%.0f", (seconds.truncatingRemainder(dividingBy: (60 * 60))) / 60)
+                
+                return "\(hours) hour\(seconds/(60 * 60) > 1 ? "" : "s") and \(minutes) min ago"
+            }
+        } else {
+            return seconds < 60 * 60 * 24 ? String(format: "%.0f", seconds / (60 * 60 * 24)) + " day" : String(format: "%.0f", seconds / (60 * 60 * 24)) + " days"
+        }
+    }
 
-    func extractDate(from string: String) -> String? {
+    private func extractDate(from string: String) -> String? {
         // Regular expression to match the date-time pattern
         let pattern = #"[A-Za-z]{3} [A-Za-z]{3} \d{1,2} \d{2}:\d{2}:\d{2}"#
 
