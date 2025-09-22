@@ -72,7 +72,7 @@ struct JottaStatusOutputView: View {
                 let hours = String(format: "%.0f", seconds / ( 60 * 60))
                 let minutes = String(format: "%.0f", (seconds.truncatingRemainder(dividingBy: (60 * 60))) / 60)
                 
-                return "\(hours) hour\(seconds/(60 * 60) > 1 ? "" : "s") and \(minutes) min ago"
+                return "\(hours) hour\(seconds/(60 * 60) > 1 ? "s" : "") and \(minutes) min ago"
             }
         } else {
             return seconds < 60 * 60 * 24 ? String(format: "%.0f", seconds / (60 * 60 * 24)) + " day ago" : String(format: "%.0f", seconds / (60 * 60 * 24)) + " days ago"
