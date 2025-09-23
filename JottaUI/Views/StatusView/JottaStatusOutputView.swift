@@ -31,11 +31,10 @@ struct JottaStatusOutputView: View {
                 } else {
                     if data.record.contains(strings.uptodate) {
                         if seconds > 0 {
-                            
                             Text(data.record) + Text(" ( ").foregroundColor(Color.green) +
-                            Text(latest(seconds)).foregroundColor(Color.green) +
-                            Text(" )").foregroundColor(Color.green)
-                                
+                                Text(latest(seconds)).foregroundColor(Color.green) +
+                                Text(" )").foregroundColor(Color.green)
+
                         } else {
                             Text(data.record)
                         }
@@ -62,17 +61,16 @@ struct JottaStatusOutputView: View {
         }
         .padding()
     }
-    
+
     private func latest(_ seconds: Double) -> String {
         if seconds < 3600 * 24 {
             if seconds < 60 * 60 {
                 return seconds < 60 ? String(format: "%.0f", seconds / 60) + " min ago" : String(format: "%.0f", seconds / 60) + " min ago"
             } else {
-                
-                let hours = String(format: "%.0f", seconds / ( 60 * 60))
-                let minutes = String(format: "%.0f", (seconds.truncatingRemainder(dividingBy: (60 * 60))) / 60)
-                
-                return "\(hours) hour\(seconds/(60 * 60) > 1 ? "s" : "") and \(minutes) min ago"
+                let hours = String(format: "%.0f", seconds / (60 * 60))
+                let minutes = String(format: "%.0f", (seconds.truncatingRemainder(dividingBy: 60 * 60)) / 60)
+
+                return "\(hours) hour\(seconds / (60 * 60) > 1 ? "s" : "") and \(minutes) min ago"
             }
         } else {
             return seconds < 60 * 60 * 24 ? String(format: "%.0f", seconds / (60 * 60 * 24)) + " day ago" : String(format: "%.0f", seconds / (60 * 60 * 24)) + " days ago"

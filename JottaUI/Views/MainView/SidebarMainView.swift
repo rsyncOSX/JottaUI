@@ -39,12 +39,11 @@ struct SidebarMainView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            
             Divider()
-            
+
             List(menuitems, selection: $selectedview) { item in
                 NavigationLinkWithHover(item: item, selectedview: $selectedview)
-                
+
                 if item.menuitem == .Jotta_cli_help ||
                     item.menuitem == .dump ||
                     item.menuitem == .catalogs
@@ -90,14 +89,14 @@ struct SidebarMainView: View {
             SyncView()
         }
     }
-    
+
     // The Sidebar meny is context sensitive. The Sync is context sensitive
     var menuitems: [MenuItem] {
         Sidebaritems.allCases.compactMap { item in
             // Do not show the Sync in sidebar meny
             if syncisenabled == false,
                item == .sync { return nil }
-            
+
             return MenuItem(menuitem: item)
         }
     }
@@ -131,9 +130,9 @@ struct SidebarRow: View {
 
 struct NavigationLinkWithHover: View {
     let item: MenuItem // Replace with your actual item type
-    @Binding var selectedview:  Sidebaritems // Replace with your selection type
+    @Binding var selectedview: Sidebaritems // Replace with your selection type
     @State private var isHovered = false
-    
+
     var body: some View {
         NavigationLink(value: item.menuitem) {
             SidebarRow(sidebaritem: item.menuitem)

@@ -33,7 +33,7 @@ struct AddCatalogsView: View {
     @State private var syncmode = SyncMode.full
     @State private var errordiscovered: Bool = false
     @State private var selectedcatalog: Catalogs.ID?
-    
+
     @State private var confirmdelete: Bool = false
     @State private var catalogfordelete: String = ""
 
@@ -152,7 +152,6 @@ struct AddCatalogsView: View {
                         Text("Catalogs in backup, to delete a catalog select it and press")
                         Text(Image(systemName: "delete.left"))
                     }
-                    
                 }
             }
         }
@@ -208,12 +207,12 @@ struct AddCatalogsView: View {
         observablecatalogsforbackup.catalogs = nil
         observablecatalogsforbackup.excutestatusjson()
     }
-    
-    func processterminationdelete(_: [String]?, _ errordiscovered: Bool) {
+
+    func processterminationdelete(_: [String]?, _: Bool) {
         observablecatalogsforbackup.catalogs = nil
         observablecatalogsforbackup.excutestatusjson()
     }
-    
+
     func delete() {
         let command = FullpathJottaCli().jottaclipathandcommand()
         let argumentssync = ["rem", catalogfordelete]
@@ -224,6 +223,5 @@ struct AddCatalogsView: View {
                                      processtermination: processterminationdelete)
         // Start progressview
         process.executeProcess()
-        
     }
 }
