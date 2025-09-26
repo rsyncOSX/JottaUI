@@ -1,13 +1,9 @@
 //
-//  extstensionDate.swift
+//  extstension.swift
 //  JottaUI
 //
 //  Created by Thomas Evensen on 01/07/2025.
 //
-
-//
-//  extension Date
-//  RsyncOSX
 //
 //  Created by Thomas Evensen on 08/12/2018.
 //  Copyright © 2018 Thomas Evensen. All rights reserved.
@@ -52,20 +48,29 @@ extension String {
     }
 }
 
-/*
- /*
-  import Foundation
+extension Double {
+    func latest() -> String {
+        let seconds = self
 
-  let dateString = "Tue Aug 26 12:52:20"
-  let dateFormatter = DateFormatter()
-  dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Ensure consistent parsing
-  dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss" // Match the string format
-
-  if let date = dateFormatter.date(from: dateString) {
-      print("Converted Date: \\(date)")
-  } else {
-      print("Failed to convert date")
-  }
-
-  */
- */
+        // Less than 1 minute (60 seconds)
+        if seconds < 60 {
+            let secondsValue = Int(seconds)
+            return secondsValue == 1 ? "\(secondsValue) second ago" : "\(secondsValue) seconds ago"
+        }
+        // Less than 1 hour (3600 seconds)
+        else if seconds < 3600 {
+            let minutes = seconds / 60
+            return (minutes < 2 ? String(format: "%.0f min", minutes) : String(format: "%.0f mins", minutes)) + " ago"
+        }
+        // Less than 1 day (86400 seconds)
+        else if seconds < 86400 {
+            let hours = seconds / 3600
+            return (hours < 2 ? String(format: "%.1f hour", hours) : String(format: "%.1f hours", hours)) + " ago"
+        }
+        // 1 day or more
+        else {
+            let days = seconds / 86400
+            return (days < 2 ? String(format: "%.1f day", days) : String(format: "%.1f days", days)) + " ago"
+        }
+    }
+}
