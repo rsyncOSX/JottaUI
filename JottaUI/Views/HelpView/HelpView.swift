@@ -69,6 +69,8 @@ struct HelpView: View {
             .navigationDestination(isPresented: $showhelp) {
                 JottaStatusOutputView(output: jottaclioutput.output ?? [])
             }
+            
+            HelpView.previews
         }
     }
 
@@ -84,6 +86,41 @@ struct HelpView: View {
         }
         .pickerStyle(DefaultPickerStyle())
     }
+    
+    static var previews: some View {
+            Group {
+                VStack(spacing: 16) {
+                    Button("Refined Glass") {}
+                        .buttonStyle(RefinedGlassButtonStyle())
+
+                    Button(action: {}) {
+                        HStack {
+                            Image(systemName: "paperplane.fill")
+                            Text("Send")
+                        }
+                    }
+                    .buttonStyle(RefinedGlassButtonStyle())
+
+                    Button("Small") {}
+                        .buttonStyle(RefinedGlassButtonStyle(cornerRadius: 8, horizontalPadding: 10, verticalPadding: 6, font: .subheadline))
+                }
+                .padding()
+                .previewDisplayName("Light")
+
+                VStack(spacing: 16) {
+                    Button("Refined Glass") {}
+                        .buttonStyle(RefinedGlassButtonStyle())
+
+                    Button("Small") {}
+                        .buttonStyle(RefinedGlassButtonStyle(cornerRadius: 8, horizontalPadding: 10, verticalPadding: 6, font: .subheadline))
+                }
+                .padding()
+                .background(Color.black)
+                .environment(\.colorScheme, .dark)
+                .previewDisplayName("Dark")
+            }
+            .previewLayout(.sizeThatFits)
+        }
 }
 
 extension HelpView {

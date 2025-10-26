@@ -101,7 +101,7 @@ struct NavigationJottaCliLogfileView: View {
                         Image(systemName: "arrow.down.circle.fill")
                     }
                     .help("Most recent at bottom")
-                    .buttonStyle(GlassButtonStyle())
+                    .buttonStyle(RefinedGlassButtonStyle())
                 } else {
                     Button {
                         guard sortdirection != false else { return }
@@ -110,7 +110,7 @@ struct NavigationJottaCliLogfileView: View {
                         Image(systemName: "arrow.up.circle.fill")
                     }
                     .help("Most recent at top")
-                    .buttonStyle(GlassButtonStyle())
+                    .buttonStyle(RefinedGlassButtonStyle())
                 }
             }
 
@@ -121,7 +121,7 @@ struct NavigationJottaCliLogfileView: View {
                     Image(systemName: "clear")
                 }
                 .help("Reset and read again")
-                .buttonStyle(GlassButtonStyle())
+                .buttonStyle(RefinedGlassButtonStyle())
             }
         }
     }

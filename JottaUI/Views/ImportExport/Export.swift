@@ -55,7 +55,7 @@ struct ExportView: View {
                     focusexport = false
                 }
                 .help("Export tasks")
-                .buttonStyle(GlassButtonStyle())
+                .buttonStyle(RefinedGlassButtonStyle())
 
                 Spacer()
 
@@ -63,7 +63,7 @@ struct ExportView: View {
                     focusexport = false
                     dismiss()
                 }
-                .buttonStyle(GlassButtonStyle())
+                .buttonStyle(RefinedGlassButtonStyle())
             }
         }
         .padding()

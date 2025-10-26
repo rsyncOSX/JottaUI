@@ -98,8 +98,7 @@ struct AddCatalogsView: View {
                             .imageScale(.large)
                     }
                     .disabled(observablecatalogsforbackup.verifycatalogsforbackup(observablecatalogsforbackup.catalogsforbackup) == false || jottatask == .select)
-                    .buttonStyle(.borderedProminent)
-                    .buttonStyle(GlassButtonStyle())
+                    .buttonStyle(RefinedGlassButtonStyle())
                 }
             } header: {
                 Text("Add catalogs for backup and sync")
@@ -114,8 +113,7 @@ struct AddCatalogsView: View {
                     Image(systemName: "tablecells.fill")
                         .imageScale(.large)
                 }
-                .buttonStyle(.borderedProminent)
-                .buttonStyle(GlassButtonStyle())
+                .buttonStyle(RefinedGlassButtonStyle())
 
                 Table(observablecatalogsforbackup.catalogs ?? [], selection: $selectedcatalog) {
                     TableColumn("Catalogs") { catalog in
@@ -166,7 +164,7 @@ struct AddCatalogsView: View {
                 observablecatalogsforbackup.catalogsforbackup = ""
                 catalogadded = false
             }
-            .buttonStyle(GlassButtonStyle())
+            .buttonStyle(RefinedGlassButtonStyle())
         }
     }
 

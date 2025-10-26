@@ -38,7 +38,7 @@ struct NavigationJottaUILogfileView: View {
                     Image(systemName: "clear")
                 }
                 .help("Reset logfile")
-                .buttonStyle(GlassButtonStyle())
+                .buttonStyle(RefinedGlassButtonStyle())
             }
         }
     }

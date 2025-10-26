@@ -36,7 +36,7 @@ struct JottaDumpView: View {
                                 .imageScale(.large)
                             // .foregroundColor(Color(.blue))
                         }
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(RefinedGlassButtonStyle())
 
                         Toggle("Excl ./git", isOn: $excludegitcatalogs)
                             .toggleStyle(.switch)

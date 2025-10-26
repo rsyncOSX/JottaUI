@@ -55,7 +55,7 @@ struct SyncView: View {
                             .imageScale(.large)
                     }
                     .buttonStyle(.borderedProminent)
-                    .buttonStyle(GlassButtonStyle())
+                    .buttonStyle(RefinedGlassButtonStyle())
                 }
             }
             .navigationTitle("Sync parameters")

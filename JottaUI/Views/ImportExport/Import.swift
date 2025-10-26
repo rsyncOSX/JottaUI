@@ -24,7 +24,7 @@ struct ImportView: View {
                 Button("Select a file for import") {
                     showimportdialog = true
                 }
-                .buttonStyle(GlassButtonStyle())
+                .buttonStyle(RefinedGlassButtonStyle())
                 .fileImporter(isPresented: $showimportdialog,
                               allowedContentTypes: [uutype],
                               onCompletion: { result in
@@ -43,7 +43,7 @@ struct ImportView: View {
                     focusimport = false
                     dismiss()
                 }
-                .buttonStyle(GlassButtonStyle())
+                .buttonStyle(RefinedGlassButtonStyle())
             }
         }
         .padding()
