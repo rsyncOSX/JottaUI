@@ -60,6 +60,7 @@ struct JottaStatusView: View {
                                 .imageScale(.large)
                         }
                         .buttonStyle(.borderedProminent)
+                        .buttonStyle(GlassButtonStyle())
 
                         Toggle("JSON", isOn: $jsonstatus)
                             .toggleStyle(.switch)
@@ -80,6 +81,11 @@ struct JottaStatusView: View {
                         Image(systemName: "network")
                     }
                     .help("Jottacloud Web")
+                    .buttonStyle(GlassButtonStyle())
+                }
+                ToolbarItem {
+                    
+                    Spacer()
                 }
 
                 ToolbarItem {
@@ -89,6 +95,7 @@ struct JottaStatusView: View {
                         Image(systemName: "doc.plaintext")
                     }
                     .help("View logfile")
+                    .buttonStyle(GlassButtonStyle())
                 }
             }
             .sheet(isPresented: $importorexport) {
