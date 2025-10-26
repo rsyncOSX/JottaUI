@@ -164,7 +164,7 @@ struct AddCatalogsView: View {
                 observablecatalogsforbackup.catalogsforbackup = ""
                 catalogadded = false
             }
-            .buttonStyle(ColorfulButtonStyle())
+            .buttonStyle(GlassButtonStyle())
         }
     }
 

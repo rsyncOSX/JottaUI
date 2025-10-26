@@ -24,7 +24,7 @@ struct ImportView: View {
                 Button("Select a file for import") {
                     showimportdialog = true
                 }
-                .buttonStyle(ColorfulButtonStyle())
+                .buttonStyle(GlassButtonStyle())
                 .fileImporter(isPresented: $showimportdialog,
                               allowedContentTypes: [uutype],
                               onCompletion: { result in
@@ -39,11 +39,11 @@ struct ImportView: View {
                                   }
                               })
 
-                Button("Dismiss") {
+                Button("Close", role: .close) {
                     focusimport = false
                     dismiss()
                 }
-                .buttonStyle(ColorfulButtonStyle())
+                .buttonStyle(GlassButtonStyle())
             }
         }
         .padding()

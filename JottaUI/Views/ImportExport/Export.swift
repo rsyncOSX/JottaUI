@@ -55,14 +55,15 @@ struct ExportView: View {
                     focusexport = false
                 }
                 .help("Export tasks")
-                .buttonStyle(ColorfulButtonStyle())
+                .buttonStyle(GlassButtonStyle())
 
                 Spacer()
 
-                Button("Dismiss") {
+                Button("Close", role: .close) {
                     focusexport = false
+                    dismiss()
                 }
-                .buttonStyle(ColorfulButtonStyle())
+                .buttonStyle(GlassButtonStyle())
             }
         }
         .padding()

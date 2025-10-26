@@ -7,51 +7,20 @@
 
 import SwiftUI
 
-extension Color {
-    static let darkStart = Color(red: 50 / 255, green: 60 / 255, blue: 65 / 255)
-    static let darkEnd = Color(red: 25 / 255, green: 25 / 255, blue: 30 / 255)
-
-    static let lightStart = Color(red: 60 / 255, green: 160 / 255, blue: 240 / 255)
-    static let lightEnd = Color(red: 30 / 255, green: 80 / 255, blue: 120 / 255)
-}
-
-extension LinearGradient {
-    init(_ colors: Color...) {
-        self.init(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)
-    }
-}
-
-struct ColorfulBackground<S: Shape>: View {
-    var isHighlighted: Bool
-    var shape: S
-
-    var body: some View {
-        ZStack {
-            if isHighlighted {
-                shape
-                    .fill(LinearGradient(Color.lightEnd, Color.lightStart))
-                    .overlay(shape.stroke(LinearGradient(Color.lightStart, Color.lightEnd), lineWidth: 2))
-                    .shadow(color: Color.darkStart, radius: 2, x: 1, y: 1)
-                    .shadow(color: Color.darkEnd, radius: 2, x: -1, y: -1)
-            } else {
-                shape
-                    .fill(LinearGradient(Color.darkStart, Color.darkEnd))
-                    .overlay(shape.stroke(LinearGradient(Color.lightStart, Color.lightEnd), lineWidth: 2))
-                    .shadow(color: Color.darkStart, radius: 2, x: -1, y: -1)
-                    .shadow(color: Color.darkEnd, radius: 2, x: 1, y: 1)
-            }
-        }
-    }
-}
-
-struct ColorfulButtonStyle: ButtonStyle {
+struct GlassButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundColor(.white)
-            .padding(8)
-            .contentShape(Capsule())
-            .background(
-                ColorfulBackground(isHighlighted: configuration.isPressed, shape: Capsule())
-            )
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(.thinMaterial)
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(.white.opacity(0.2), lineWidth: 1)
+            }
+            .glassEffect()
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .shadow(color: .black.opacity(0.1), radius: 10)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }
