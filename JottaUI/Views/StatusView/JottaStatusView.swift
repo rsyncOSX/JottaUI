@@ -47,7 +47,14 @@ struct JottaStatusView: View {
 
                 } else {
                     HStack {
-                        Button {
+                        
+                        Button(action: {}) {
+                            
+                        }
+                        .buttonStyle(RefinedGlassButtonStyle())
+                        
+                        
+                        Button(action: {
                             completedjottastatusview = false
 
                             if jsonstatus {
@@ -55,9 +62,13 @@ struct JottaStatusView: View {
                             } else {
                                 executestatus()
                             }
-                        } label: {
-                            Image(systemName: "checkmark.circle.fill")
-                                .imageScale(.large)
+                            
+                        }) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text("Go")
+                            }
+                            
                         }
                         .buttonStyle(RefinedGlassButtonStyle())
 

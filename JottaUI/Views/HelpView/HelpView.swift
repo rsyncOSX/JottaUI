@@ -103,6 +103,10 @@ struct HelpView: View {
 
                     Button("Small") {}
                         .buttonStyle(RefinedGlassButtonStyle(cornerRadius: 8, horizontalPadding: 10, verticalPadding: 6, font: .subheadline))
+
+                    Button("Disabled") {}
+                        .buttonStyle(RefinedGlassButtonStyle())
+                        .disabled(true)
                 }
                 .padding()
                 .previewDisplayName("Light")
@@ -113,6 +117,10 @@ struct HelpView: View {
 
                     Button("Small") {}
                         .buttonStyle(RefinedGlassButtonStyle(cornerRadius: 8, horizontalPadding: 10, verticalPadding: 6, font: .subheadline))
+
+                    Button("Disabled") {}
+                        .buttonStyle(RefinedGlassButtonStyle())
+                        .disabled(true)
                 }
                 .padding()
                 .background(Color.black)
