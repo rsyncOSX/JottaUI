@@ -31,10 +31,15 @@ struct JottaStatusOutputView: View {
                 } else {
                     if data.record.contains(strings.uptodate) {
                         if seconds > 0 {
-                            Text(data.record) + Text(" ( ").foregroundColor(Color.green) +
-                                Text(seconds.latest()).foregroundColor(Color.green) +
-                                Text(" )").foregroundColor(Color.green)
-
+                            HStack(spacing: 0) {
+                                Text(data.record)
+                                Text(" (")
+                                    .foregroundStyle(.green)
+                                Text(seconds.latest())
+                                    .foregroundStyle(.green)
+                                Text(")")
+                                    .foregroundStyle(.green)
+                            }
                         } else {
                             Text(data.record)
                         }
