@@ -54,7 +54,6 @@ struct SyncView: View {
                         Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill")
                             .imageScale(.large)
                     }
-                    .buttonStyle(.borderedProminent)
                     .buttonStyle(RefinedGlassButtonStyle())
                 }
             }

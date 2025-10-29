@@ -35,6 +35,7 @@ struct OpencatalogView: View {
                               SharedReference.shared.errorobject?.alert(error: error)
                           }
                       })
+        .buttonStyle(RefinedGlassButtonStyle())
     }
 
     var uutype: UTType {

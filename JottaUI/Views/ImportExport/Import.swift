@@ -38,6 +38,7 @@ struct ImportView: View {
                                       SharedReference.shared.errorobject?.alert(error: error)
                                   }
                               })
+                .buttonStyle(RefinedGlassButtonStyle())
 
                 Button("Close", role: .close) {
                     focusimport = false

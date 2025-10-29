@@ -139,6 +139,7 @@ struct AddCatalogsView: View {
                         delete()
                         confirmdelete = false
                     }
+                    .buttonStyle(RefinedGlassButtonStyle())
                 }
                 .onDeleteCommand {
                     confirmdelete = true
