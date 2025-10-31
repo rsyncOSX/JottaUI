@@ -17,13 +17,8 @@ final class ProcessCommand {
     var errordiscovered: Bool = false
     var checkforerror = CheckForError()
     var oneargumentisjsonordump: [Bool]?
-
     // Store inputPipe as a property
     private var inputPipe: Pipe?
-
-    // AsyncSequence handlers
-    let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: nil)
-    let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: nil)
     // Task handlers
     var sequenceFileHandlerTask: Task<Void, Never>?
     var sequenceTerminationTask: Task<Void, Never>?
@@ -53,6 +48,10 @@ final class ProcessCommand {
 
             let outHandle = pipe.fileHandleForReading
             outHandle.waitForDataInBackgroundAndNotify()
+            
+            // AsyncSequence
+            let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: outHandle)
+            let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: task)
 
             sequenceFileHandlerTask = Task {
                 for await _ in sequencefilehandler {
@@ -68,7 +67,7 @@ final class ProcessCommand {
             sequenceTerminationTask = Task {
                 for await _ in sequencetermination {
                     // Small delay to let final data arrive
-                    try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+                    // try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
                     await self.termination()
                 }
             }
@@ -147,12 +146,6 @@ final class ProcessCommand {
             }
         }
         SharedReference.shared.process = nil
-        NotificationCenter.default.removeObserver(sequencefilehandler as Any,
-                                                  name: NSNotification.Name.NSFileHandleDataAvailable,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(sequencetermination as Any,
-                                                  name: Process.didTerminateNotification,
-                                                  object: nil)
         sequenceFileHandlerTask?.cancel()
         sequenceTerminationTask?.cancel()
         Logger.process.info("ProcessCommand: process = nil and termination discovered")
