@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-fileprivate extension Color {
+private extension Color {
     @MainActor static var glassBorderLight = Color.white.opacity(0.35)
     @MainActor static var glassBorderDark = Color.white.opacity(0.12)
     @MainActor static var glassShadowLight = Color.black.opacity(0.10)

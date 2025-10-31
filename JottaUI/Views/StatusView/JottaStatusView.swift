@@ -47,13 +47,9 @@ struct JottaStatusView: View {
 
                 } else {
                     HStack {
-                        
-                        Button(action: {}) {
-                            
-                        }
-                        .buttonStyle(RefinedGlassButtonStyle())
-                        
-                        
+                        Button(action: {}) {}
+                            .buttonStyle(RefinedGlassButtonStyle())
+
                         Button(action: {
                             completedjottastatusview = false
 
@@ -62,13 +58,12 @@ struct JottaStatusView: View {
                             } else {
                                 executestatus()
                             }
-                            
+
                         }) {
                             HStack {
                                 Image(systemName: "checkmark.circle.fill")
                                 Text("Go")
                             }
-                            
                         }
                         .buttonStyle(RefinedGlassButtonStyle())
 
@@ -94,7 +89,6 @@ struct JottaStatusView: View {
                     .buttonStyle(RefinedGlassButtonStyle())
                 }
                 ToolbarItem {
-                    
                     Spacer()
                 }
 
