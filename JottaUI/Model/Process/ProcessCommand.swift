@@ -74,8 +74,8 @@ final class ProcessCommand {
                 propogateerror(error: error)
             }
             if let launchPath = task.launchPath, let arguments = task.arguments {
-                Logger.process.info("ProcessRsyncOpenrsync: \(launchPath, privacy: .public)")
-                Logger.process.info("ProcessRsyncOpenrsync: \(arguments.joined(separator: "\n"), privacy: .public)")
+                Logger.process.info("ProcessCommand: \(launchPath, privacy: .public)")
+                Logger.process.info("ProcessCommand: \(arguments.joined(separator: "\n"), privacy: .public)")
             }
         }
     }
