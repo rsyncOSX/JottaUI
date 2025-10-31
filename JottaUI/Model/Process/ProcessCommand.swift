@@ -54,21 +54,11 @@ final class ProcessCommand {
 
             sequenceFileHandlerTask = Task {
                 for await _ in sequencefilehandler {
-                    Logger.process.info("ProcessCommand: sequenceFileHandlerTask - handling data")
                     await self.datahandle(pipe)
                 }
                 Logger.process.info("ProcessCommand: sequenceFileHandlerTask completed")
             }
-            /*
-             sequenceTerminationTask = Task {
-                             for await _ in sequencetermination {
-                                 // Small delay to let final data arrive
-                                 try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-                                 await self.termination()
-                             }
-                         }
-             */
-
+            
             sequenceTerminationTask = Task {
                 for await _ in sequencetermination {
                     Logger.process.info("ProcessCommand: Process terminated - starting drain")
@@ -130,7 +120,6 @@ final class ProcessCommand {
                     self.output.append(line)
 
                     // Only write to inputPipe if prompt detected
-
                     if line.contains(self.strings.continueSyncSetup) {
                         let reply = self.input ?? "yes"
                         pipe.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
@@ -214,3 +203,13 @@ final class ProcessCommand {
         Logger.process.info("ProcessCommand: DEINIT")
     }
 }
+
+/*
+ sequenceTerminationTask = Task {
+                 for await _ in sequencetermination {
+                     // Small delay to let final data arrive
+                     try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+                     await self.termination()
+                 }
+             }
+ */
