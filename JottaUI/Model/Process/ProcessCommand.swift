@@ -17,8 +17,6 @@ final class ProcessCommand {
     var errordiscovered: Bool = false
     var checkforerror = CheckForError()
     var oneargumentisjsonordump: [Bool]?
-    // Store inputPipe as a property
-    private var inputPipe: Pipe?
     // Task handlers
     var sequenceFileHandlerTask: Task<Void, Never>?
     var sequenceTerminationTask: Task<Void, Never>?
@@ -37,18 +35,13 @@ final class ProcessCommand {
             task.launchPath = command
             task.arguments = arguments
 
+            // Pipe for reading output from Process
             let pipe = Pipe()
             task.standardOutput = pipe
             task.standardError = pipe
-
-            // Create and store inputPipe
-            let inputPipe = Pipe()
-            self.inputPipe = inputPipe
-            task.standardInput = inputPipe
-
             let outHandle = pipe.fileHandleForReading
             outHandle.waitForDataInBackgroundAndNotify()
-            
+
             // AsyncSequence
             let sequencefilehandler = NotificationCenter.default.notifications(named: NSNotification.Name.NSFileHandleDataAvailable, object: outHandle)
             let sequencetermination = NotificationCenter.default.notifications(named: Process.didTerminateNotification, object: task)
@@ -76,19 +69,13 @@ final class ProcessCommand {
 
             do {
                 try task.run()
-                // If you want to send input immediately, write here.
-                // Otherwise, wait for the prompt in datahandle.
-                if let input, input != "" {
-                    inputPipe.fileHandleForWriting.write((input + "\n").data(using: .utf8)!)
-                    // Do NOT close fileHandleForWriting unless you are sure no further input is needed
-                }
             } catch let e {
                 let error = e
                 propogateerror(error: error)
             }
             if let launchPath = task.launchPath, let arguments = task.arguments {
-                Logger.process.info("ProcessCommand: \(launchPath, privacy: .public)")
-                Logger.process.info("ProcessCommand: \(arguments.joined(separator: "\n"), privacy: .public)")
+                Logger.process.info("ProcessRsyncOpenrsync: \(launchPath, privacy: .public)")
+                Logger.process.info("ProcessRsyncOpenrsync: \(arguments.joined(separator: "\n"), privacy: .public)")
             }
         }
     }
@@ -115,22 +102,22 @@ final class ProcessCommand {
 
                     if line.contains(self.strings.continueSyncSetup) {
                         let reply = self.input ?? "yes"
-                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
+                        pipe.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
 
                     if line.contains(self.strings.chooseErrorReportingMode) {
                         let reply = self.syncmode ?? "full"
-                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
+                        pipe.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
 
                     if line.contains(self.strings.continueSyncReset) {
                         let reply = self.input ?? "y"
-                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
+                        pipe.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
 
                     if line.contains(self.strings.theExistingSyncFolderOnJottacloudCom) {
                         let reply = self.input ?? "n"
-                        self.inputPipe?.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
+                        pipe.fileHandleForWriting.write((reply + "\n").data(using: .utf8)!)
                     }
                 }
             }
