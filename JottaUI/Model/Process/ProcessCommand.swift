@@ -48,6 +48,7 @@ final class ProcessCommand {
 
             sequenceFileHandlerTask = Task {
                 for await _ in sequencefilehandler {
+                    Logger.process.info("ProcessCommand: sequenceFileHandlerTask - handling data")
                     await self.datahandle(pipe)
                 }
                 // Final drain - keep reading until no more data
@@ -60,7 +61,7 @@ final class ProcessCommand {
             sequenceTerminationTask = Task {
                 for await _ in sequencetermination {
                     // Small delay to let final data arrive
-                    // try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+                    try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
                     await self.termination()
                 }
             }
@@ -74,8 +75,8 @@ final class ProcessCommand {
                 propogateerror(error: error)
             }
             if let launchPath = task.launchPath, let arguments = task.arguments {
-                Logger.process.info("ProcessCommand: \(launchPath, privacy: .public)")
-                Logger.process.info("ProcessCommand: \(arguments.joined(separator: "\n"), privacy: .public)")
+                Logger.process.info("ProcessCommand: command - \(launchPath, privacy: .public)")
+                Logger.process.info("ProcessCommand: arguments - \(arguments.joined(separator: "\n"), privacy: .public)")
             }
         }
     }
