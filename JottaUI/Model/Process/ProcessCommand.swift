@@ -54,14 +54,6 @@ final class ProcessCommand {
 
             sequenceFileHandlerTask = Task {
                 for await _ in sequencefilehandler {
-                    Logger.process.info("ProcessCommand: handling data")
-                    await self.datahandle(pipe)
-                }
-                Logger.process.info("ProcessCommand: file handler sequence ended")
-            }
-
-            sequenceFileHandlerTask = Task {
-                for await _ in sequencefilehandler {
                     Logger.process.info("ProcessCommand: sequenceFileHandlerTask - handling data")
                     await self.datahandle(pipe)
                 }
