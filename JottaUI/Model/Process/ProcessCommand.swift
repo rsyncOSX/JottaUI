@@ -4,7 +4,7 @@
 //
 //  Created by Thomas Evensen on 03/08/2025.
 //
-
+/*
 import Foundation
 import OSLog
 
@@ -207,6 +207,8 @@ final class ProcessCommand {
     }
 }
 
+*/
+
 /*
  sequenceTerminationTask = Task {
                  for await _ in sequencetermination {
@@ -216,3 +218,5 @@ final class ProcessCommand {
                  }
              }
  */
+
+

@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import ProcessCommand
 
 // Records for paths
 struct Catalogs: Identifiable, Codable {

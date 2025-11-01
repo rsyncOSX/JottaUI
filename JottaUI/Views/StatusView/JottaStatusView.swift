@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 import SwiftUI
+import ProcessCommand
 
 enum DestinationView: String, Identifiable {
     case statusjsonview, logfileview, statustextview

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import ProcessCommand
 
 struct ExportView: View {
     @Environment(\.dismiss) var dismiss

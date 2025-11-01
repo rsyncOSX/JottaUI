@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 import SwiftUI
+import ProcessCommand
 
 struct JottaDumpView: View {
     @Binding var showdumptabletable: Bool

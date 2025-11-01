@@ -1,5 +1,6 @@
 import OSLog
 import SwiftUI
+import ProcessCommand
 
 enum JottaSync: String, CaseIterable, Identifiable, CustomStringConvertible {
     // case configure

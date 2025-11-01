@@ -7,6 +7,7 @@
 
 import OSLog
 import SwiftUI
+import ProcessCommand
 
 enum JottaTask: String, CaseIterable, Identifiable, CustomStringConvertible {
     case backup

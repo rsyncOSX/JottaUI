@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ProcessCommand
 
 enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible {
     case add

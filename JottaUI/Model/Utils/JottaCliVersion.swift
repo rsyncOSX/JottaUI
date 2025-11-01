@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import ProcessCommand
 
 @Observable @MainActor
 final class JottaCliVersion {
