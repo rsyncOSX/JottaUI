@@ -8,6 +8,7 @@
 import SwiftUI
 
 enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible {
+    
     case add
     case archive
     case completion
@@ -47,22 +48,17 @@ enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible
 
 struct HelpView: View {
     @State private var showhelp: Bool = false
-    @State private var showprogressview = false
     @State private var jottaclioutput = ObservableJottaOutput()
     @State private var selectedhelpcommand: TypeofCommands?
 
     var body: some View {
         NavigationStack {
             HStack {
-                if showprogressview {
-                    ProgressView()
-                } else {
-                    pickerselecttypeofhelptask
-                        .onChange(of: selectedhelpcommand) {
-                            help()
-                        }
-                        .frame(width: 300)
-                }
+                pickerselecttypeofhelptask
+                    .onChange(of: selectedhelpcommand) {
+                        help()
+                    }
+                    .frame(width: 300)
             }
             .padding()
             .navigationTitle("Help view")
@@ -93,7 +89,6 @@ extension HelpView {
             let command = FullpathJottaCli().jottaclipathandcommand()
 
             // Start progressview
-            showprogressview = true
             let process = ProcessCommand(command: command,
                                          arguments: arguments,
                                          syncmode: nil,
@@ -104,10 +99,20 @@ extension HelpView {
     }
 
     func processterminationhelp(_ stringoutput: [String]?, _: Bool) {
-        showprogressview = false
-        Task {
-            jottaclioutput.output = await ActorCreateOutputforview().createaoutput(stringoutput)
-            showhelp = true
+        
+        var helpoutput: [JottaCliOutputData] = []
+        
+        if let stringoutput {
+            helpoutput = stringoutput.flatMap { line in
+                line.components(separatedBy: .newlines)
+                    .filter { !$0.isEmpty }  // Optional: remove empty lines
+                    .map { subline in
+                        JottaCliOutputData(record: subline)
+                    }
+            }
         }
+        
+        jottaclioutput.output = helpoutput
+        showhelp = true
     }
 }

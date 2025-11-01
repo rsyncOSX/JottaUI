@@ -77,8 +77,11 @@ final class ProcessCommand {
 
                         // IMPORTANT: Actually process the drained data
                         if let text = String(data: data, encoding: .utf8) {
-                            Logger.process.info("ProcessCommand: Drained text: \(text)")
+                            // Logger.process.info("ProcessCommand: Drained text: \(text)")
+                            Logger.process.info("ProcessCommand: ther is drained text")
                             self.output.append(text)
+                            // There is drain data
+                            // processtermination(output, errordiscovered)
                         }
                     }
 
