@@ -21,6 +21,22 @@ actor ActorCreateOutputforview {
         }
     }
 
+    // The input containes newlines and must be breaked up
+    @concurrent
+    nonisolated func createaoutputnewlines(_ stringoutput: [String]?) async -> [JottaCliOutputData] {
+        Logger.process.info("ActorCreateOutputforview: createaoutput() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        if let stringoutput {
+            return stringoutput.flatMap { line in
+                line.components(separatedBy: .newlines)
+                    .filter { !$0.isEmpty } // Optional: remove empty lines
+                    .map { subline in
+                        JottaCliOutputData(record: subline)
+                    }
+            }
+        }
+        return []
+    }
+
     @concurrent
     nonisolated func createaoutput(_ stringoutput: [String]?) async -> [JottaCliOutputData] {
         Logger.process.info("ActorCreateOutputforview: createaoutput() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")

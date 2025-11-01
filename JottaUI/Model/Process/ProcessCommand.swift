@@ -58,7 +58,7 @@ final class ProcessCommand {
                 }
                 Logger.process.info("ProcessCommand: sequenceFileHandlerTask completed")
             }
-            
+
             sequenceTerminationTask = Task {
                 for await _ in sequencetermination {
                     Logger.process.info("ProcessCommand: Process terminated - starting drain")

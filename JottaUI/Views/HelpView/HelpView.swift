@@ -8,7 +8,6 @@
 import SwiftUI
 
 enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible {
-    
     case add
     case archive
     case completion
@@ -99,20 +98,9 @@ extension HelpView {
     }
 
     func processterminationhelp(_ stringoutput: [String]?, _: Bool) {
-        
-        var helpoutput: [JottaCliOutputData] = []
-        
-        if let stringoutput {
-            helpoutput = stringoutput.flatMap { line in
-                line.components(separatedBy: .newlines)
-                    .filter { !$0.isEmpty }  // Optional: remove empty lines
-                    .map { subline in
-                        JottaCliOutputData(record: subline)
-                    }
-            }
+        Task {
+            jottaclioutput.output = await ActorCreateOutputforview().createaoutputnewlines(stringoutput)
+            showhelp = true
         }
-        
-        jottaclioutput.output = helpoutput
-        showhelp = true
     }
 }
