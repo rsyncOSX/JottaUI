@@ -177,7 +177,7 @@ actor ActorJottaUILogToFile {
     }
 
     @discardableResult
-    init(command: String, stringoutput: [String]?) async {
+    init(_ command: String, _ stringoutput: [String]?) async {
         if let stringoutput {
             await logging(command: command, stringoutput: stringoutput)
         }

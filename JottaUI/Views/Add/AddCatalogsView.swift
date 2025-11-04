@@ -83,6 +83,9 @@ struct AddCatalogsView: View {
                                 propogateerror: { error in
                                     SharedReference.shared.errorobject?.alert(error: error)
                                 },
+                                logger: { command, output in
+                                    _  = await ActorJottaUILogToFile(command, output)
+                                },
                                 rsyncui: false
                             )
                             
@@ -107,6 +110,9 @@ struct AddCatalogsView: View {
                                 updateprocess: SharedReference.shared.updateprocess,
                                 propogateerror: { error in
                                     SharedReference.shared.errorobject?.alert(error: error)
+                                },
+                                logger: { command, output in
+                                    _  = await ActorJottaUILogToFile(command, output)
                                 },
                                 rsyncui: false
                             )
@@ -255,6 +261,9 @@ struct AddCatalogsView: View {
             updateprocess: SharedReference.shared.updateprocess,
             propogateerror: { error in
                 SharedReference.shared.errorobject?.alert(error: error)
+            },
+            logger: { command, output in
+                _  = await ActorJottaUILogToFile(command, output)
             },
             rsyncui: false
         )

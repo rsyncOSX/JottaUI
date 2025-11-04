@@ -20,6 +20,9 @@ final class JottaCliVersion {
             propogateerror: { error in
                 SharedReference.shared.errorobject?.alert(error: error)
             },
+            logger: { command, output in
+                _  = await ActorJottaUILogToFile(command, output)
+            },
             rsyncui: false
         )
         

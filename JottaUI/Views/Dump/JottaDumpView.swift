@@ -79,11 +79,15 @@ extension JottaDumpView {
             propogateerror: { error in
                 SharedReference.shared.errorobject?.alert(error: error)
             },
+            logger: { command, output in
+                _  = await ActorJottaUILogToFile(command, output)
+            },
             rsyncui: false
         )
         
         let arguments = ["dump"]
         let command = FullpathJottaCli().jottaclipathandcommand()
+        
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
@@ -113,3 +117,4 @@ extension JottaDumpView {
         }
     }
 }
+
