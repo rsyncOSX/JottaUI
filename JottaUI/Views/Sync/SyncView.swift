@@ -42,14 +42,30 @@ struct SyncView: View {
                     Button {
                         let argumentssync = ["sync", synctask.description]
                         let command = FullpathJottaCli().jottaclipathandcommand()
+                        
+                        let handlers = ProcessHandlersCommand(
+                            processtermination: processtermination,
+                            checklineforerror: CheckForError().checkforerror(_:),
+                            updateprocess: SharedReference.shared.updateprocess,
+                            propogateerror: { error in
+                                SharedReference.shared.errorobject?.alert(error: error)
+                            },
+                            rsyncui: false
+                        )
+                        
                         let process = ProcessCommand(command: command,
                                                      arguments: argumentssync,
+                                                     handlers: handlers,
                                                      syncmode: nil,
-                                                     input: nil,
-                                                     processtermination: processtermination)
+                                                     input: nil)
                         // Start progressview
                         showprogressview = true
-                        process.executeProcess()
+                        do {
+                            try process.executeProcess()
+                        } catch let e {
+                            let error = e
+                            SharedReference.shared.errorobject?.alert(error: error)
+                        }
 
                     } label: {
                         Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill")

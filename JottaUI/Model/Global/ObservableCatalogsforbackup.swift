@@ -30,14 +30,30 @@ final class ObservableCatalogsforbackup {
     }
 
     func excutestatusjson() {
+        
+        let handlers = ProcessHandlersCommand(
+            processtermination: processtermination,
+            checklineforerror: CheckForError().checkforerror(_:),
+            updateprocess: SharedReference.shared.updateprocess,
+            propogateerror: { error in
+                SharedReference.shared.errorobject?.alert(error: error)
+            },
+            rsyncui: false
+        )
+        
         let arguments = ["status", "--json"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     handlers: handlers,
                                      syncmode: nil,
-                                     input: nil,
-                                     processtermination: processtermination)
-        process.executeProcess()
+                                     input: nil)
+        do {
+            try process.executeProcess()
+        } catch let e {
+            let error = e
+            SharedReference.shared.errorobject?.alert(error: error)
+        }
     }
 
     func processtermination(_ stringoutput: [String]?, _: Bool) {

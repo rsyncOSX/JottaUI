@@ -8,6 +8,7 @@
 
 import Foundation
 import Observation
+import OSLog
 
 public extension Thread {
     static var isMain: Bool { isMainThread }
@@ -37,4 +38,14 @@ final class SharedReference {
     // Object for propogate errors to views
     @ObservationIgnored var errorobject: AlertError?
     var jottacliversion: String?
+    
+    func updateprocess(_ task: Process?) {
+        if task != nil {
+            Logger.process.info("SharedReference: Process set to ACTIVE")
+            process = task
+        } else {
+            Logger.process.info("SharedReference: Process set to NIL")
+            process = nil
+        }
+    }
 }

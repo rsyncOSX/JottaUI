@@ -75,23 +75,55 @@ struct AddCatalogsView: View {
 
                         let command = FullpathJottaCli().jottaclipathandcommand()
                         if jottatask == .backup {
+                            
+                            let handlers = ProcessHandlersCommand(
+                                processtermination: processtermination,
+                                checklineforerror: CheckForError().checkforerror(_:),
+                                updateprocess: SharedReference.shared.updateprocess,
+                                propogateerror: { error in
+                                    SharedReference.shared.errorobject?.alert(error: error)
+                                },
+                                rsyncui: false
+                            )
+                            
                             let argumentsbackup = ["add", catalogsforbackup]
                             let process = ProcessCommand(command: command,
                                                          arguments: argumentsbackup,
+                                                         handlers: handlers,
                                                          syncmode: nil,
-                                                         input: nil,
-                                                         processtermination: processtermination)
+                                                         input: nil)
                             // Start progressview
-                            process.executeProcess()
+                            do {
+                                try process.executeProcess()
+                            } catch let e {
+                                let error = e
+                                SharedReference.shared.errorobject?.alert(error: error)
+                            }
                         } else if jottatask == .sync {
+                            
+                            let handlers = ProcessHandlersCommand(
+                                processtermination: processtermination,
+                                checklineforerror: CheckForError().checkforerror(_:),
+                                updateprocess: SharedReference.shared.updateprocess,
+                                propogateerror: { error in
+                                    SharedReference.shared.errorobject?.alert(error: error)
+                                },
+                                rsyncui: false
+                            )
+                            
                             let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
                             let process = ProcessCommand(command: command,
                                                          arguments: argumentssync,
+                                                         handlers: handlers,
                                                          syncmode: syncmode.description,
-                                                         input: nil,
-                                                         processtermination: processtermination)
+                                                         input: nil)
                             // Start progressview
-                            process.executeProcess()
+                            do {
+                                try process.executeProcess()
+                            } catch let e {
+                                let error = e
+                                SharedReference.shared.errorobject?.alert(error: error)
+                            }
                         }
 
                     } label: {
@@ -216,14 +248,29 @@ struct AddCatalogsView: View {
     }
 
     func delete() {
+        
+        let handlers = ProcessHandlersCommand(
+            processtermination: processterminationdelete,
+            checklineforerror: CheckForError().checkforerror(_:),
+            updateprocess: SharedReference.shared.updateprocess,
+            propogateerror: { error in
+                SharedReference.shared.errorobject?.alert(error: error)
+            },
+            rsyncui: false
+        )
+        
         let command = FullpathJottaCli().jottaclipathandcommand()
         let argumentssync = ["rem", catalogfordelete]
         let process = ProcessCommand(command: command,
                                      arguments: argumentssync,
+                                     handlers: handlers,
                                      syncmode: syncmode.description,
-                                     input: nil,
-                                     processtermination: processterminationdelete)
-        // Start progressview
-        process.executeProcess()
+                                     input: nil)
+        do {
+            try process.executeProcess()
+        } catch let e {
+            let error = e
+            SharedReference.shared.errorobject?.alert(error: error)
+        }
     }
 }

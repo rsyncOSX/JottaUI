@@ -85,16 +85,31 @@ struct HelpView: View {
 extension HelpView {
     func help() {
         if let selectedhelpcommand {
+            let handlers = ProcessHandlersCommand(
+                processtermination: processterminationhelp,
+                checklineforerror: CheckForError().checkforerror(_:),
+                updateprocess: SharedReference.shared.updateprocess,
+                propogateerror: { error in
+                    SharedReference.shared.errorobject?.alert(error: error)
+                },
+                rsyncui: false
+            )
+            
             let arguments = ["help", selectedhelpcommand.rawValue]
             let command = FullpathJottaCli().jottaclipathandcommand()
 
             // Start progressview
             let process = ProcessCommand(command: command,
                                          arguments: arguments,
+                                         handlers: handlers,
                                          syncmode: nil,
-                                         input: nil,
-                                         processtermination: processterminationhelp)
-            process.executeProcess()
+                                         input: nil)
+            do {
+                try process.executeProcess()
+            } catch let e {
+                let error = e
+                SharedReference.shared.errorobject?.alert(error: error)
+            }
         }
     }
 

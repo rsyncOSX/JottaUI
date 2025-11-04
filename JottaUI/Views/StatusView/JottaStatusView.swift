@@ -156,23 +156,59 @@ struct JottaStatusView: View {
 extension JottaStatusView {
     // For text view
     func executestatus() {
+        let handlers = ProcessHandlersCommand(
+            processtermination: processtermination,
+            checklineforerror: CheckForError().checkforerror(_:),
+            updateprocess: SharedReference.shared.updateprocess,
+            propogateerror: { error in
+                SharedReference.shared.errorobject?.alert(error: error)
+            },
+            rsyncui: false
+        )
+        
         let arguments = ["status"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     handlers: handlers,
                                      syncmode: nil,
-                                     input: nil,
-                                     processtermination: processtermination)
-        process.executeProcess()
+                                     input: nil)
+        do {
+            try process.executeProcess()
+        } catch let e {
+            let error = e
+            SharedReference.shared.errorobject?.alert(error: error)
+        }
     }
 
     func webview() {
+        let handlers = ProcessHandlersCommand(
+            processtermination: { _, _ in
+                Logger.process.info("ProcessCommand: Process terminated with default handler")
+            },
+            checklineforerror: CheckForError().checkforerror(_:),
+            updateprocess: SharedReference.shared.updateprocess,
+            propogateerror: { error in
+                SharedReference.shared.errorobject?.alert(error: error)
+            },
+            rsyncui: false
+        )
+        
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
+        
+        
+        
         let process = ProcessCommand(command: command,
-                                     arguments: arguments)
-        process.executeProcess()
+                                     arguments: arguments,
+                                     handlers: handlers)
+        do {
+            try process.executeProcess()
+        } catch let e {
+            let error = e
+            SharedReference.shared.errorobject?.alert(error: error)
+        }
     }
 
     func abort() {
@@ -181,16 +217,31 @@ extension JottaStatusView {
 
     // Execute a scan before JSON view
     func executescan() {
+        let handlers = ProcessHandlersCommand(
+            processtermination: processtermination,
+            checklineforerror: CheckForError().checkforerror(_:),
+            updateprocess: SharedReference.shared.updateprocess,
+            propogateerror: { error in
+                SharedReference.shared.errorobject?.alert(error: error)
+            },
+            rsyncui: false
+        )
+        
         let arguments = ["scan"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     handlers: handlers,
                                      syncmode: nil,
-                                     input: nil,
-                                     processtermination: processtermination)
-        process.executeProcess()
+                                     input: nil)
+        do {
+            try process.executeProcess()
+        } catch let e {
+            let error = e
+            SharedReference.shared.errorobject?.alert(error: error)
+        }
     }
 
     func processterminationjson(_ stringoutput: [String]?, _: Bool) {
@@ -203,14 +254,30 @@ extension JottaStatusView {
 
     func processtermination(_ stringoutput: [String]?, _: Bool) {
         if jsonstatus {
+            
+            let handlers = ProcessHandlersCommand(
+                processtermination: processterminationjson,
+                checklineforerror: CheckForError().checkforerror(_:),
+                updateprocess: SharedReference.shared.updateprocess,
+                propogateerror: { error in
+                    SharedReference.shared.errorobject?.alert(error: error)
+                },
+                rsyncui: false
+            )
+            
             let arguments = ["status", "--json"]
             let command = FullpathJottaCli().jottaclipathandcommand()
             let process = ProcessCommand(command: command,
                                          arguments: arguments,
+                                         handlers: handlers,
                                          syncmode: nil,
-                                         input: nil,
-                                         processtermination: processterminationjson)
-            process.executeProcess()
+                                         input: nil)
+            do {
+                try process.executeProcess()
+            } catch let e {
+                let error = e
+                SharedReference.shared.errorobject?.alert(error: error)
+            }
 
         } else {
             showprogressview = false

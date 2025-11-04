@@ -12,15 +12,31 @@ import ProcessCommand
 @Observable @MainActor
 final class JottaCliVersion {
     func getjottacliversion() {
+        
+        let handlers = ProcessHandlersCommand(
+            processtermination: processtermination,
+            checklineforerror: CheckForError().checkforerror(_:),
+            updateprocess: SharedReference.shared.updateprocess,
+            propogateerror: { error in
+                SharedReference.shared.errorobject?.alert(error: error)
+            },
+            rsyncui: false
+        )
+        
         let arguments = ["version"]
         let clicommand = FullpathJottaCli().jottaclipathandcommand()
 
-        let command = ProcessCommand(command: clicommand,
+        let process = ProcessCommand(command: clicommand,
                                      arguments: arguments,
+                                     handlers: handlers,
                                      syncmode: nil,
-                                     input: nil,
-                                     processtermination: processtermination)
-        command.executeProcess()
+                                     input: nil)
+        do {
+            try process.executeProcess()
+        } catch let e {
+            let error = e
+            SharedReference.shared.errorobject?.alert(error: error)
+        }
     }
 
     init() {

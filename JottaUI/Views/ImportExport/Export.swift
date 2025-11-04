@@ -85,15 +85,30 @@ struct ExportView: View {
     }
 
     func executeexport() {
+        let handlers = ProcessHandlersCommand(
+            processtermination: processterminationexport,
+            checklineforerror: CheckForError().checkforerror(_:),
+            updateprocess: SharedReference.shared.updateprocess,
+            propogateerror: { error in
+                SharedReference.shared.errorobject?.alert(error: error)
+            },
+            rsyncui: false
+        )
+        
         let arguments = ["status", "--json"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
+                                     handlers: handlers,
                                      syncmode: nil,
-                                     input: nil,
-                                     processtermination: processterminationexport)
-        process.executeProcess()
+                                     input: nil)
+        do {
+            try process.executeProcess()
+        } catch let e {
+            let error = e
+            SharedReference.shared.errorobject?.alert(error: error)
+        }
     }
 
     func processterminationexport(_ stringoutput: [String]?, _: Bool) {
