@@ -12,20 +12,8 @@ import ProcessCommand
 @Observable @MainActor
 final class JottaCliVersion {
     func getjottacliversion() {
-        
-        let handlers = ProcessHandlersCommand(
-            processtermination: processtermination,
-            checklineforerror: CheckForError().checkforerror(_:),
-            updateprocess: SharedReference.shared.updateprocess,
-            propogateerror: { error in
-                SharedReference.shared.errorobject?.alert(error: error)
-            },
-            logger: { command, output in
-                _  = await ActorJottaUILogToFile(command, output)
-            },
-            rsyncui: false
-        )
-        
+        let handlers = CreateCommandHandlers().createcommandhandlers(
+            processtermination: processtermination)
         let arguments = ["version"]
         let clicommand = FullpathJottaCli().jottaclipathandcommand()
 

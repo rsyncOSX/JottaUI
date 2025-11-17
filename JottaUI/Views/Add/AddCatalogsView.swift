@@ -6,8 +6,8 @@
 //
 
 import OSLog
-import SwiftUI
 import ProcessCommand
+import SwiftUI
 
 enum JottaTask: String, CaseIterable, Identifiable, CustomStringConvertible {
     case backup
@@ -75,20 +75,8 @@ struct AddCatalogsView: View {
 
                         let command = FullpathJottaCli().jottaclipathandcommand()
                         if jottatask == .backup {
-                            
-                            let handlers = ProcessHandlersCommand(
-                                processtermination: processtermination,
-                                checklineforerror: CheckForError().checkforerror(_:),
-                                updateprocess: SharedReference.shared.updateprocess,
-                                propogateerror: { error in
-                                    SharedReference.shared.errorobject?.alert(error: error)
-                                },
-                                logger: { command, output in
-                                    _  = await ActorJottaUILogToFile(command, output)
-                                },
-                                rsyncui: false
-                            )
-                            
+                            let handlers = CreateCommandHandlers().createcommandhandlers(
+                                processtermination: processtermination)
                             let argumentsbackup = ["add", catalogsforbackup]
                             let process = ProcessCommand(command: command,
                                                          arguments: argumentsbackup,
@@ -103,20 +91,8 @@ struct AddCatalogsView: View {
                                 SharedReference.shared.errorobject?.alert(error: error)
                             }
                         } else if jottatask == .sync {
-                            
-                            let handlers = ProcessHandlersCommand(
-                                processtermination: processtermination,
-                                checklineforerror: CheckForError().checkforerror(_:),
-                                updateprocess: SharedReference.shared.updateprocess,
-                                propogateerror: { error in
-                                    SharedReference.shared.errorobject?.alert(error: error)
-                                },
-                                logger: { command, output in
-                                    _  = await ActorJottaUILogToFile(command, output)
-                                },
-                                rsyncui: false
-                            )
-                            
+                            let handlers = CreateCommandHandlers().createcommandhandlers(
+                                processtermination: processtermination)
                             let argumentssync = ["sync", "setup", "--root", catalogsforbackup]
                             let process = ProcessCommand(command: command,
                                                          arguments: argumentssync,
@@ -254,20 +230,8 @@ struct AddCatalogsView: View {
     }
 
     func delete() {
-        
-        let handlers = ProcessHandlersCommand(
-            processtermination: processterminationdelete,
-            checklineforerror: CheckForError().checkforerror(_:),
-            updateprocess: SharedReference.shared.updateprocess,
-            propogateerror: { error in
-                SharedReference.shared.errorobject?.alert(error: error)
-            },
-            logger: { command, output in
-                _  = await ActorJottaUILogToFile(command, output)
-            },
-            rsyncui: false
-        )
-        
+        let handlers = CreateCommandHandlers().createcommandhandlers(
+            processtermination: processterminationdelete)
         let command = FullpathJottaCli().jottaclipathandcommand()
         let argumentssync = ["rem", catalogfordelete]
         let process = ProcessCommand(command: command,

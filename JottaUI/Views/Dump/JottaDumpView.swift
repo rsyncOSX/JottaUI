@@ -7,8 +7,8 @@
 
 import Foundation
 import OSLog
-import SwiftUI
 import ProcessCommand
+import SwiftUI
 
 struct JottaDumpView: View {
     @Binding var showdumptabletable: Bool
@@ -71,23 +71,11 @@ struct JottaDumpView: View {
 extension JottaDumpView {
     // For text view
     func executedump() {
-        
-        let handlers = ProcessHandlersCommand(
-            processtermination: processtermination,
-            checklineforerror: CheckForError().checkforerror(_:),
-            updateprocess: SharedReference.shared.updateprocess,
-            propogateerror: { error in
-                SharedReference.shared.errorobject?.alert(error: error)
-            },
-            logger: { command, output in
-                _  = await ActorJottaUILogToFile(command, output)
-            },
-            rsyncui: false
-        )
-        
+        let handlers = CreateCommandHandlers().createcommandhandlers(
+            processtermination: processtermination)
         let arguments = ["dump"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-        
+
         showprogressview = true
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
@@ -117,4 +105,3 @@ extension JottaDumpView {
         }
     }
 }
-

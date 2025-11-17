@@ -38,7 +38,7 @@ final class SharedReference {
     // Object for propogate errors to views
     @ObservationIgnored var errorobject: AlertError?
     var jottacliversion: String?
-    
+
     func updateprocess(_ task: Process?) {
         if task != nil {
             Logger.process.info("SharedReference: Process set to ACTIVE")

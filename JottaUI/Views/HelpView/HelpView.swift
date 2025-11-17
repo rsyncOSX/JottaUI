@@ -5,8 +5,8 @@
 //  Created by Thomas Evensen on 22/07/2025.
 //
 
-import SwiftUI
 import ProcessCommand
+import SwiftUI
 
 enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible {
     case add
@@ -85,19 +85,8 @@ struct HelpView: View {
 extension HelpView {
     func help() {
         if let selectedhelpcommand {
-            let handlers = ProcessHandlersCommand(
-                processtermination: processterminationhelp,
-                checklineforerror: CheckForError().checkforerror(_:),
-                updateprocess: SharedReference.shared.updateprocess,
-                propogateerror: { error in
-                    SharedReference.shared.errorobject?.alert(error: error)
-                },
-                logger: { command, output in
-                    _  = await ActorJottaUILogToFile(command, output)
-                },
-                rsyncui: false
-            )
-            
+            let handlers = CreateCommandHandlers().createcommandhandlers(
+                processtermination: processtermination)
             let arguments = ["help", selectedhelpcommand.rawValue]
             let command = FullpathJottaCli().jottaclipathandcommand()
 
@@ -116,7 +105,7 @@ extension HelpView {
         }
     }
 
-    func processterminationhelp(_ stringoutput: [String]?, _: Bool) {
+    func processtermination(_ stringoutput: [String]?, _: Bool) {
         Task {
             jottaclioutput.output = await ActorCreateOutputforview().createaoutputnewlines(stringoutput)
             showhelp = true

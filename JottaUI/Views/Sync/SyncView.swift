@@ -1,6 +1,6 @@
 import OSLog
-import SwiftUI
 import ProcessCommand
+import SwiftUI
 
 enum JottaSync: String, CaseIterable, Identifiable, CustomStringConvertible {
     // case configure
@@ -42,20 +42,8 @@ struct SyncView: View {
                     Button {
                         let argumentssync = ["sync", synctask.description]
                         let command = FullpathJottaCli().jottaclipathandcommand()
-                        
-                        let handlers = ProcessHandlersCommand(
-                            processtermination: processtermination,
-                            checklineforerror: CheckForError().checkforerror(_:),
-                            updateprocess: SharedReference.shared.updateprocess,
-                            propogateerror: { error in
-                                SharedReference.shared.errorobject?.alert(error: error)
-                            },
-                            logger: { command, output in
-                                _  = await ActorJottaUILogToFile(command, output)
-                            },
-                            rsyncui: false
-                        )
-                        
+                        let handlers = CreateCommandHandlers().createcommandhandlers(
+                            processtermination: processtermination)
                         let process = ProcessCommand(command: command,
                                                      arguments: argumentssync,
                                                      handlers: handlers,

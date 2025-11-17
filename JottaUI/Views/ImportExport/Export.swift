@@ -5,9 +5,9 @@
 //  Created by Thomas Evensen on 18/07/2025.
 //
 
+import ProcessCommand
 import SwiftUI
 import UniformTypeIdentifiers
-import ProcessCommand
 
 struct ExportView: View {
     @Environment(\.dismiss) var dismiss
@@ -85,19 +85,8 @@ struct ExportView: View {
     }
 
     func executeexport() {
-        let handlers = ProcessHandlersCommand(
-            processtermination: processterminationexport,
-            checklineforerror: CheckForError().checkforerror(_:),
-            updateprocess: SharedReference.shared.updateprocess,
-            propogateerror: { error in
-                SharedReference.shared.errorobject?.alert(error: error)
-            },
-            logger: { command, output in
-                _  = await ActorJottaUILogToFile(command, output)
-            },
-            rsyncui: false
-        )
-        
+        let handlers = CreateCommandHandlers().createcommandhandlers(
+            processtermination: processtermination)
         let arguments = ["status", "--json"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
@@ -114,7 +103,7 @@ struct ExportView: View {
         }
     }
 
-    func processterminationexport(_ stringoutput: [String]?, _: Bool) {
+    func processtermination(_ stringoutput: [String]?, _: Bool) {
         guard exportcatalog.isEmpty == false, filenameexport.isEmpty == false else {
             focusexport = false
             return

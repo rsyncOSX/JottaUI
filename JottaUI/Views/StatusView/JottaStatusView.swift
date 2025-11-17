@@ -7,8 +7,8 @@
 
 import Foundation
 import OSLog
-import SwiftUI
 import ProcessCommand
+import SwiftUI
 
 enum DestinationView: String, Identifiable {
     case statusjsonview, logfileview, statustextview
@@ -156,19 +156,8 @@ struct JottaStatusView: View {
 extension JottaStatusView {
     // For text view
     func executestatus() {
-        let handlers = ProcessHandlersCommand(
-            processtermination: processtermination,
-            checklineforerror: CheckForError().checkforerror(_:),
-            updateprocess: SharedReference.shared.updateprocess,
-            propogateerror: { error in
-                SharedReference.shared.errorobject?.alert(error: error)
-            },
-            logger: { command, output in
-                _  = await ActorJottaUILogToFile(command, output)
-            },
-            rsyncui: false
-        )
-        
+        let handlers = CreateCommandHandlers().createcommandhandlers(
+            processtermination: processtermination)
         let arguments = ["status"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         showprogressview = true
@@ -186,26 +175,11 @@ extension JottaStatusView {
     }
 
     func webview() {
-        let handlers = ProcessHandlersCommand(
-            processtermination: { _, _ in
-                Logger.process.info("ProcessCommand: Process terminated with default handler")
-            },
-            checklineforerror: CheckForError().checkforerror(_:),
-            updateprocess: SharedReference.shared.updateprocess,
-            propogateerror: { error in
-                SharedReference.shared.errorobject?.alert(error: error)
-            },
-            logger: { command, output in
-                _  = await ActorJottaUILogToFile(command, output)
-            },
-            rsyncui: false
-        )
-        
+        let handlers = CreateCommandHandlers().createcommandhandlers(
+            processtermination: { _, _ in })
         let arguments = ["web"]
         let command = FullpathJottaCli().jottaclipathandcommand()
-        
-        
-        
+
         let process = ProcessCommand(command: command,
                                      arguments: arguments,
                                      handlers: handlers)
@@ -223,19 +197,8 @@ extension JottaStatusView {
 
     // Execute a scan before JSON view
     func executescan() {
-        let handlers = ProcessHandlersCommand(
-            processtermination: processtermination,
-            checklineforerror: CheckForError().checkforerror(_:),
-            updateprocess: SharedReference.shared.updateprocess,
-            propogateerror: { error in
-                SharedReference.shared.errorobject?.alert(error: error)
-            },
-            logger: { command, output in
-                _  = await ActorJottaUILogToFile(command, output)
-            },
-            rsyncui: false
-        )
-        
+        let handlers = CreateCommandHandlers().createcommandhandlers(
+            processtermination: processtermination)
         let arguments = ["scan"]
         let command = FullpathJottaCli().jottaclipathandcommand()
         // Start progressview
@@ -263,20 +226,8 @@ extension JottaStatusView {
 
     func processtermination(_ stringoutput: [String]?, _: Bool) {
         if jsonstatus {
-            
-            let handlers = ProcessHandlersCommand(
-                processtermination: processterminationjson,
-                checklineforerror: CheckForError().checkforerror(_:),
-                updateprocess: SharedReference.shared.updateprocess,
-                propogateerror: { error in
-                    SharedReference.shared.errorobject?.alert(error: error)
-                },
-                logger: { command, output in
-                    _  = await ActorJottaUILogToFile(command, output)
-                },
-                rsyncui: false
-            )
-            
+            let handlers = CreateCommandHandlers().createcommandhandlers(
+                processtermination: processterminationjson)
             let arguments = ["status", "--json"]
             let command = FullpathJottaCli().jottaclipathandcommand()
             let process = ProcessCommand(command: command,
