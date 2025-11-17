@@ -1,56 +1,63 @@
 APP = JottaUI
 BUNDLE_ID = no.blogspot.$(APP)
 VERSION = 0.2.0
-
 BUILD_PATH = $(PWD)/build
 APP_PATH = "$(BUILD_PATH)/$(APP).app"
 ZIP_PATH = "$(BUILD_PATH)/$(APP).$(VERSION).zip"
 
+# Default target is release build
 build: clean archive notarize sign prepare-dmg open
 
-# --- MAIN WORLFLOW FUNCTIONS --- #
+# Debug build - skips notarization and signing
+debug: clean archive-debug open-debug
 
+# --- MAIN WORKFLOW FUNCTIONS --- #
 archive: clean
 	osascript -e 'display notification "Exporting application archive..." with title "Build the RsyncUI"'
 	echo "Exporting application archive..."
-
 	xcodebuild \
   		-scheme $(APP) \
   		-destination 'platform=OS X,arch=x86_64' \
   		-configuration Release archive \
   		-archivePath $(BUILD_PATH)/$(APP).xcarchive
-
 	echo "Application built, starting the export archive..."
-
 	xcodebuild -exportArchive \
   		-exportOptionsPlist "exportOptions.plist" \
   		-archivePath $(BUILD_PATH)/$(APP).xcarchive \
   		-exportPath $(BUILD_PATH)
-
 	ditto -c -k --keepParent $(APP_PATH) $(ZIP_PATH)
-
 	echo "Project archived successfully"
 
+archive-debug: clean
+	osascript -e 'display notification "Building debug version..." with title "Build the RsyncUI"'
+	echo "Building application (DEBUG)..."
+	xcodebuild \
+		-scheme $(APP) \
+		-destination 'platform=OS X,arch=x86_64' \
+		-configuration Debug archive \
+		-archivePath $(BUILD_PATH)/$(APP).xcarchive
+	echo "Application built, starting the export archive..."
+	xcodebuild -exportArchive \
+		-exportOptionsPlist "exportOptions.plist" \
+		-archivePath $(BUILD_PATH)/$(APP).xcarchive \
+		-exportPath $(BUILD_PATH)
+	echo "Debug build completed successfully"
+	
 notarize:
 	osascript -e 'display notification "Submitting app for notarization..." with title "Build the RsyncUI"'
 	echo "Submitting app for notarization..."
-
 	xcrun notarytool submit --keychain-profile "RsyncUI" --wait $(ZIP_PATH)
-
 	echo "RsyncUI successfully notarized"
 
 sign:
 	osascript -e 'display notification "Stampling the RsyncU..." with title "Build the RsyncUI"'
 	echo "Going to staple an application..."
-
 	xcrun stapler staple $(APP_PATH)
 	spctl -a -t exec -vvv $(APP_PATH)
-
 	osascript -e 'display notification "RsyncUI successfully stapled" with title "Build the RsyncUI"'
 	echo "RsyncUI successfully stapled"
 
 prepare-dmg:
-
 	../create-dmg/create-dmg \
 	    --volname "JottaUI ver $(VERSION)" \
 	    --background "./images/background.png" \
@@ -66,7 +73,6 @@ prepare-dmg:
 	    $(APP_PATH)
 
 # --- HELPERS --- #
-
 clean:
 	rm -rf $(BUILD_PATH)
 	if [ -a $(PWD)/$(APP).$(VERSION).dmg ]; then rm $(PWD)/$(APP).$(VERSION).dmg; fi;
@@ -81,3 +87,11 @@ open:
 	osascript -e 'display notification "RsyncUI signed and ready for distribution" with title "Build the RsyncUI"'
 	echo "Opening working folder..."
 	open $(PWD)
+	
+open-debug:
+	osascript -e 'display notification "RsyncUI debug build ready" with title "Build the RsyncUI"'
+	echo "Opening working folder..."
+	open $(PWD)
+	echo "Debug build complete - app is at: $(APP_PATH)"
+
+.PHONY: build debug archive archive-debug notarize sign prepare-dmg clean check history open open-debug
