@@ -13,6 +13,10 @@ import OSLog
 public extension Thread {
     static var isMain: Bool { isMainThread }
     static var currentThread: Thread { Thread.current }
+
+    nonisolated static func checkIsMainThread() -> Bool {
+        Thread.isMainThread
+    }
 }
 
 public extension Task where Success == Never, Failure == Never {
@@ -41,10 +45,8 @@ final class SharedReference {
 
     func updateprocess(_ task: Process?) {
         if task != nil {
-            Logger.process.info("SharedReference: Process set to ACTIVE")
             process = task
         } else {
-            Logger.process.info("SharedReference: Process set to NIL")
             process = nil
         }
     }

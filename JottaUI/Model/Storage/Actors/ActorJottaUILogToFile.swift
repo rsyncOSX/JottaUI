@@ -29,11 +29,10 @@ actor ActorJottaUILogToFile {
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
 
-            Logger.process.info("LogToFile: writeloggfile() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+            Logger.process.debugtthreadonly("LogToFile: writeloggfile() ")
             if let logfiledata = await appendloggfileData(newlogadata, reset) {
                 do {
                     try logfiledata.write(to: logfileURL)
-                    Logger.process.info("LogToFile: writeloggfile() logfile \(logfileURL.path, privacy: .public)")
                     let checker = FileSize()
                     Task {
                         do {
@@ -66,7 +65,7 @@ actor ActorJottaUILogToFile {
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
 
-            Logger.process.info("LogToFile: readloggfile() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+            Logger.process.info("LogToFile: readloggfile() ")
 
             do {
                 let data = try Data(contentsOf: logfileURL)
@@ -95,11 +94,10 @@ actor ActorJottaUILogToFile {
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
 
-            Logger.process.info("LogToFile: readloggfileasline() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+            Logger.process.debugtthreadonly("LogToFile: readloggfileasline() ")
 
             do {
                 let data = try Data(contentsOf: logfileURL)
-                Logger.process.info("LogToFile: read logfile \(logfileURL.path, privacy: .public)")
                 return String(data: data, encoding: .utf8)
 
             } catch let e {
@@ -122,7 +120,7 @@ actor ActorJottaUILogToFile {
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
 
-            Logger.process.info("LogToFile: appendloggfileData() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+            Logger.process.debugtthreadonly("LogToFile: appendloggfileData() ")
 
             if let newdata = newlogadata.data(using: .utf8) {
                 do {
@@ -132,14 +130,12 @@ actor ActorJottaUILogToFile {
                     } else {
                         // Or append any new log data
                         if fm.locationExists(at: logfileString, kind: .file) == true {
-                            Logger.process.info("LogToFile: append existing logfile \(logfileURL.path, privacy: .public)")
                             let data = try Data(contentsOf: logfileURL)
                             var returneddata = data
                             returneddata.append(newdata)
                             return returneddata
                         } else {
                             // Or if first time write logfile ony return new log data
-                            Logger.process.info("LogToFile: create new logfile \(logfileURL.path, privacy: .public)")
                             return newdata
                         }
                     }

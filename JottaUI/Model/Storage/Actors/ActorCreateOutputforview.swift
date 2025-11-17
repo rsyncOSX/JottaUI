@@ -24,7 +24,7 @@ actor ActorCreateOutputforview {
     // The input containes newlines and must be breaked up
     @concurrent
     nonisolated func createaoutputnewlines(_ stringoutput: [String]?) async -> [JottaCliOutputData] {
-        Logger.process.info("ActorCreateOutputforview: createaoutput() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        Logger.process.debugtthreadonly("ActorCreateOutputforview: createaoutput() ")
         if let stringoutput {
             return stringoutput.flatMap { line in
                 line.components(separatedBy: .newlines)
@@ -39,7 +39,7 @@ actor ActorCreateOutputforview {
 
     @concurrent
     nonisolated func createaoutput(_ stringoutput: [String]?) async -> [JottaCliOutputData] {
-        Logger.process.info("ActorCreateOutputforview: createaoutput() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        Logger.process.debugtthreadonly("ActorCreateOutputforview: createaoutput() ")
         if let stringoutput {
             return stringoutput.map { filename in
                 JottaCliOutputData(record: filename)
@@ -50,7 +50,7 @@ actor ActorCreateOutputforview {
 
     @concurrent
     nonisolated func createoutputlogdata() async -> [LogfileRecords] {
-        Logger.process.info("ActorCreateOutputforview: createoutputlogdata() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        Logger.process.debugtthreadonly("ActorCreateOutputforview: createoutputlogdata() ")
         if let data = await ActorJottaUILogToFile(false).readloggfile() {
             return data.map { record in
                 LogfileRecords(logrecordline: record)

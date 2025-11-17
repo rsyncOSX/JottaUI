@@ -13,7 +13,7 @@ actor ActorConvertDumpData {
 
     @concurrent
     nonisolated func convertStringToData(_ stringarray: [String]) async -> [Data] {
-        Logger.process.info("ActorConvertDumpData: convertStringToData() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        Logger.process.debugtthreadonly("ActorConvertDumpData: convertStringToData()")
         var convertedData = [Data]()
         for i in 0 ..< stringarray.count {
             if let data = stringarray[i].data(using: .utf8) {
@@ -25,7 +25,7 @@ actor ActorConvertDumpData {
 
     @concurrent
     nonisolated func convertDataToBackup(_ dataarray: [Data], _ excludegit: Bool) async -> [Files] {
-        Logger.process.info("ActorConvertDumpData: convertDataToBackup() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        Logger.process.debugtthreadonly("ActorConvertDumpData: convertDataToBackup()")
         var converted = [Files]()
         for i in 0 ..< dataarray.count {
             var fileitem: Files?

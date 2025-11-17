@@ -10,7 +10,7 @@ import OSLog
 actor ActorJottaCliLogfile {
     @concurrent
     nonisolated func jottaclilogfile() async -> [LogfileRecords] {
-        Logger.process.info("ActorJottaCliLogfile: jottaclilogfile() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        Logger.process.debugtthreadonly("ActorJottaCliLogfile: jottaclilogfile() ")
         if let data = await ActorReadJottaCliLogfile().readloggfile() {
             let logdata = data.compactMap { record in
                 let parts = record.split(separator: " ")
@@ -37,7 +37,7 @@ actor ActorJottaCliLogfile {
 
     @concurrent
     nonisolated func sortjottaclilogfile(_ direction: Bool) async -> [LogfileRecords] {
-        Logger.process.info("ActorJottaCliLogfile: sortjottaclilogfile() MAIN THREAD: \(Thread.isMain) but on \(Thread.current)")
+        Logger.process.debugtthreadonly("ActorJottaCliLogfile: sortjottaclilogfile() ")
         if let data = await ActorReadJottaCliLogfile().readloggfile() {
             let logdata = data.compactMap { record in
                 let parts = record.split(separator: " ")

@@ -26,6 +26,21 @@ struct JottaUIApp: App {
 extension Logger {
     private static let subsystem = Bundle.main.bundleIdentifier!
     static let process = Logger(subsystem: subsystem, category: "process")
-}
 
+    func debugmesseageonly(_ message: String) {
+        #if DEBUG
+            debug("\(message)")
+        #endif
+    }
+
+    func debugtthreadonly(_ message: String) {
+        #if DEBUG
+            if Thread.checkIsMainThread() {
+                debug("\(message) Running on main thread")
+            } else {
+                debug("\(message) NOT on main thread, currently on \(Thread.current)")
+            }
+        #endif
+    }
+}
 // swiftlint:enable multiple_closures_with_trailing_closure
