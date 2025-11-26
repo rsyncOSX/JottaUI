@@ -43,4 +43,5 @@ extension Logger {
         #endif
     }
 }
+
 // swiftlint:enable multiple_closures_with_trailing_closure
