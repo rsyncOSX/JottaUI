@@ -10,7 +10,7 @@ import Observation
 
 @Observable
 final class ObservableJSONStatus {
-    @ObservationIgnored var jsondata: JSON?
+    @ObservationIgnored var jsondata: DecodeJSON?
     // User data
     @ObservationIgnored var userdata: User?
     // Backup data
@@ -22,7 +22,7 @@ final class ObservableJSONStatus {
     @ObservationIgnored var background: Background?
 
     func debugJSONdata() {
-        if let user: JSON = jsondata?["User"] {
+        if let user: DecodeJSON = jsondata?["User"] {
             device = Device(Type: user["device"]["Type"].intValue,
                             Name: user["device"]["Name"].stringValue)
             background = Background(r: user["Avatar"]["Background"]["r"].intValue,
@@ -56,7 +56,7 @@ final class ObservableJSONStatus {
                                 device: nil)
             }
 
-            if let backuplist: [JSON] = jsondata?["Backups"].arrayValue {
+            if let backuplist: [DecodeJSON] = jsondata?["Backups"].arrayValue {
                 for item in backuplist {
                     // History start
                     let historyitem = item["History"]
@@ -112,12 +112,12 @@ final class ObservableJSONStatus {
 
     func setJSONstring(_ stringdata: [String]?) {
         if let data = stringdata?.joined(separator: "\n").data(using: .utf8, allowLossyConversion: false) {
-            jsondata = try? JSON(data: data)
+            jsondata = try? DecodeJSON(data: data)
         }
     }
 
     func setJSONData(_ data: Data) {
-        jsondata = try? JSON(data: data)
+        jsondata = try? DecodeJSON(data: data)
     }
 
     func formatted_number_GiB(_ number: Int) -> String {

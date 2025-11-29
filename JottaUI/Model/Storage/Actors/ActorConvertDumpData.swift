@@ -29,12 +29,12 @@ actor ActorConvertDumpData {
         var converted = [Files]()
         for i in 0 ..< dataarray.count {
             var fileitem: Files?
-            let jsondata = try? JSON(data: dataarray[i])
+            let jsondata = try? DecodeJSON(data: dataarray[i])
 
             let backuproot = jsondata?["backuproot"].stringValue
             let folder = jsondata?["folder"].stringValue
 
-            if let files: [JSON] = jsondata?["files"].arrayValue,
+            if let files: [DecodeJSON] = jsondata?["files"].arrayValue,
                let backuproot, let folder
             {
                 for file in files {
