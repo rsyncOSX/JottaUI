@@ -13,9 +13,8 @@ import OSLog
 actor ActorReadJottaCliLogfile {
     @concurrent
     nonisolated func readloggfile() async -> [String]? {
-        let path = Homepath()
         let fm = FileManager.default
-        if let homepath = await path.userHomeDirectoryPath {
+        if let homepath = URL.userHomeDirectoryURLPath?.path() {
             let logfilepath = SharedConstants().logfilepath
             let logfileString = homepath.appending(logfilepath) + SharedConstants().logname
 
@@ -33,11 +32,16 @@ actor ActorReadJottaCliLogfile {
                 }
             } catch let e {
                 let error = e
-                await path.propogateerror(error: error)
+                await propogateerror(error: error)
             }
         }
 
         return nil
+    }
+    
+    @MainActor
+    func propogateerror(error: Error) {
+            SharedReference.shared.errorobject?.alert(error: error)
     }
 }
 

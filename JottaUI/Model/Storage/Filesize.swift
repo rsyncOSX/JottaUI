@@ -10,9 +10,8 @@ import OSLog
 
 struct FileSize {
     @Sendable func filesize() async throws -> NSNumber? {
-        let path = Homepath()
         let fm = FileManager.default
-        if let homepath = await path.userHomeDirectoryPath {
+        if let homepath = URL.userHomeDirectoryURLPath?.path() {
             let logfilepath = SharedConstants().jottaUIlogfile
             let logfileString = homepath.appending(logfilepath) + SharedConstants().jottaUIlogfile
             guard fm.locationExists(at: logfileString, kind: .file) == true else { return nil }

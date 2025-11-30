@@ -74,3 +74,32 @@ extension Double {
         }
     }
 }
+
+public extension URL {
+    static var userHomeDirectoryURLPath: URL? {
+        FileManager.default.homeDirectoryForCurrentUser
+    }
+}
+
+extension FileManager {
+    func locationExists(at path: String, kind: LocationKind) -> Bool {
+        var isFolder: ObjCBool = false
+
+        guard fileExists(atPath: path, isDirectory: &isFolder) else {
+            return false
+        }
+
+        switch kind {
+        case .file: return !isFolder.boolValue
+        case .folder: return isFolder.boolValue
+        }
+    }
+}
+
+/// Enum describing various kinds of locations that can be found on a file system.
+public enum LocationKind {
+    /// A file can be found at the location.
+    case file
+    /// A folder can be found at the location.
+    case folder
+}

@@ -13,7 +13,7 @@ struct ExportView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var focusexport: Bool
 
-    @State var exportcatalog: String = Homepath().userHomeDirectoryPath ?? ""
+    @State var exportcatalog: String = URL.userHomeDirectoryURLPath?.path() ?? ""
     @State private var path: String = ""
 
     @State var filenameexport: String = "export"
