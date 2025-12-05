@@ -3,7 +3,6 @@
 //
 //  Created by Thomas Evensen on 12/01/2021.
 //
-// swiftlint:disable multiple_closures_with_trailing_closure
 
 import OSLog
 import SwiftUI
@@ -43,5 +42,3 @@ extension Logger {
         #endif
     }
 }
-
-// swiftlint:enable multiple_closures_with_trailing_closure

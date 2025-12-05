@@ -30,8 +30,7 @@ struct SyncView: View {
                     ProgressView()
                 } else {
                     Picker(NSLocalizedString("Sync", comment: ""),
-                           selection: $synctask)
-                    {
+                           selection: $synctask) {
                         ForEach(JottaSync.allCases) { Text($0.description)
                             .tag($0)
                         }

@@ -5,7 +5,6 @@
 //  Created by Thomas Evensen on 20.11.2017.
 //  Copyright © 2017 Thomas Evensen. All rights reserved.
 //
-// swiftlint:disable non_optional_string_data_conversion
 
 import Foundation
 import OSLog
@@ -174,11 +173,9 @@ actor ActorJottaUILogToFile {
             await logging(command: command, stringoutput: stringoutput)
         }
     }
-    
+
     @MainActor
     func propogateerror(error: Error) {
-            SharedReference.shared.errorobject?.alert(error: error)
+        SharedReference.shared.errorobject?.alert(error: error)
     }
 }
-
-// swiftlint:enable non_optional_string_data_conversion

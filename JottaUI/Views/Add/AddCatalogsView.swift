@@ -48,8 +48,7 @@ struct AddCatalogsView: View {
 
                     VStack {
                         Picker(NSLocalizedString("Task", comment: ""),
-                               selection: $jottatask)
-                        {
+                               selection: $jottatask) {
                             ForEach(JottaTask.allCases) { Text($0.description)
                                 .tag($0)
                             }
@@ -59,8 +58,7 @@ struct AddCatalogsView: View {
 
                         if jottatask == .sync {
                             Picker(NSLocalizedString("Mode", comment: ""),
-                                   selection: $syncmode)
-                            {
+                                   selection: $syncmode) {
                                 ForEach(SyncMode.allCases) { Text($0.description)
                                     .tag($0)
                                 }

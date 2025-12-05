@@ -1,4 +1,3 @@
-
 import Foundation
 
 // MARK: - Error
@@ -16,17 +15,17 @@ extension JSONError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .unsupportedType:
-            return "Unsupported type"
+            "Unsupported type"
         case .indexOutOfBounds:
-            return "Array index is out of bounds"
+            "Array index is out of bounds"
         case .wrongType:
-            return "Cannot merge JSONs with different top-level types"
+            "Cannot merge JSONs with different top-level types"
         case .notExist:
-            return "Dictionary key does not exist"
+            "Dictionary key does not exist"
         case .invalidJSON:
-            return "JSON is invalid"
+            "JSON is invalid"
         case .elementTooDeep:
-            return "Element too deep. Increase maxObjectDepth and ensure there are no reference loops"
+            "Element too deep. Increase maxObjectDepth and ensure there are no reference loops"
         }
     }
 }
@@ -47,7 +46,7 @@ public enum JSONType {
 
 public struct DecodeJSON {
     // MARK: - Storage
-    
+
     private enum Storage {
         case array([Any])
         case dictionary([String: Any])
@@ -56,28 +55,28 @@ public struct DecodeJSON {
         case bool(Bool)
         case null
     }
-    
+
     private var storage: Storage
     public private(set) var error: JSONError?
-    
+
     public var type: JSONType {
         switch storage {
-        case .array: return .array
-        case .dictionary: return .dictionary
-        case .string: return .string
-        case .number: return .number
-        case .bool: return .bool
-        case .null: return .null
+        case .array: .array
+        case .dictionary: .dictionary
+        case .string: .string
+        case .number: .number
+        case .bool: .bool
+        case .null: .null
         }
     }
-    
+
     // MARK: - Initializers
-    
+
     public init(data: Data, options: JSONSerialization.ReadingOptions = []) throws {
         let object = try JSONSerialization.jsonObject(with: data, options: options)
         self.init(object)
     }
-    
+
     public init(parseJSON jsonString: String) {
         if let data = jsonString.data(using: .utf8) {
             self.init(data)
@@ -85,7 +84,7 @@ public struct DecodeJSON {
             self.init(NSNull())
         }
     }
-    
+
     public init(_ object: Any) {
         switch object {
         case let data as Data:
@@ -98,10 +97,10 @@ public struct DecodeJSON {
             self.init(jsonObject: object)
         }
     }
-    
+
     private init(jsonObject: Any) {
         let unwrapped = Self.unwrap(jsonObject)
-        
+
         switch unwrapped {
         case let number as NSNumber:
             if number.isBool {
@@ -122,43 +121,43 @@ public struct DecodeJSON {
             error = .unsupportedType
         }
     }
-    
+
     // MARK: - Static Properties
-    
+
     public static var null: DecodeJSON {
         DecodeJSON(NSNull())
     }
-    
+
     // MARK: - Object Access
-    
+
     public var object: Any {
         get {
             switch storage {
-            case .array(let value): return value
-            case .dictionary(let value): return value
-            case .string(let value): return value
-            case .number(let value): return value
-            case .bool(let value): return value
-            case .null: return NSNull()
+            case let .array(value): value
+            case let .dictionary(value): value
+            case let .string(value): value
+            case let .number(value): value
+            case let .bool(value): value
+            case .null: NSNull()
             }
         }
         set {
             self = DecodeJSON(newValue)
         }
     }
-    
+
     // MARK: - Merging
-    
+
     public mutating func merge(with other: DecodeJSON) throws {
         try merge(with: other, typecheck: true)
     }
-    
+
     public func merged(with other: DecodeJSON) throws -> DecodeJSON {
         var merged = self
         try merged.merge(with: other, typecheck: true)
         return merged
     }
-    
+
     private mutating func merge(with other: DecodeJSON, typecheck: Bool) throws {
         guard type == other.type else {
             if typecheck {
@@ -168,36 +167,36 @@ public struct DecodeJSON {
                 return
             }
         }
-        
+
         switch (storage, other.storage) {
-        case (.dictionary(var dict), .dictionary(let otherDict)):
+        case (.dictionary(var dict), let .dictionary(otherDict)):
             for (key, _) in otherDict {
                 var value = self[key]
                 try value.merge(with: other[key], typecheck: false)
                 dict[key] = value.object
             }
-            self.storage = .dictionary(dict)
-            
-        case (.array(let arr), .array(let otherArr)):
-            self.storage = .array(arr + otherArr)
-            
+            storage = .dictionary(dict)
+
+        case let (.array(arr), .array(otherArr)):
+            storage = .array(arr + otherArr)
+
         default:
             self = other
         }
     }
-    
+
     // MARK: - Helper Methods
-    
+
     private static func unwrap(_ object: Any) -> Any {
         switch object {
         case let json as DecodeJSON:
-            return unwrap(json.object)
+            unwrap(json.object)
         case let array as [Any]:
-            return array.map(unwrap)
+            array.map(unwrap)
         case let dictionary as [String: Any]:
-            return dictionary.mapValues(unwrap)
+            dictionary.mapValues(unwrap)
         default:
-            return object
+            object
         }
     }
 }
@@ -211,65 +210,65 @@ extension DecodeJSON: Collection {
             case dictionary(Dictionary<String, Any>.Index)
             case null
         }
-        
+
         fileprivate let value: Value
-        
+
         public static func == (lhs: Index, rhs: Index) -> Bool {
             switch (lhs.value, rhs.value) {
-            case (.array(let l), .array(let r)): return l == r
-            case (.dictionary(let l), .dictionary(let r)): return l == r
-            case (.null, .null): return true
-            default: return false
+            case let (.array(l), .array(r)): l == r
+            case let (.dictionary(l), .dictionary(r)): l == r
+            case (.null, .null): true
+            default: false
             }
         }
-        
+
         public static func < (lhs: Index, rhs: Index) -> Bool {
             switch (lhs.value, rhs.value) {
-            case (.array(let l), .array(let r)): return l < r
-            case (.dictionary(let l), .dictionary(let r)): return l < r
-            default: return false
+            case let (.array(l), .array(r)): l < r
+            case let (.dictionary(l), .dictionary(r)): l < r
+            default: false
             }
         }
     }
-    
+
     public var startIndex: Index {
         switch storage {
-        case .array(let arr):
-            return Index(value: .array(arr.startIndex))
-        case .dictionary(let dict):
-            return Index(value: .dictionary(dict.startIndex))
+        case let .array(arr):
+            Index(value: .array(arr.startIndex))
+        case let .dictionary(dict):
+            Index(value: .dictionary(dict.startIndex))
         default:
-            return Index(value: .null)
+            Index(value: .null)
         }
     }
-    
+
     public var endIndex: Index {
         switch storage {
-        case .array(let arr):
-            return Index(value: .array(arr.endIndex))
-        case .dictionary(let dict):
-            return Index(value: .dictionary(dict.endIndex))
+        case let .array(arr):
+            Index(value: .array(arr.endIndex))
+        case let .dictionary(dict):
+            Index(value: .dictionary(dict.endIndex))
         default:
-            return Index(value: .null)
+            Index(value: .null)
         }
     }
-    
+
     public func index(after i: Index) -> Index {
         switch (storage, i.value) {
-        case (.array(let arr), .array(let idx)):
-            return Index(value: .array(arr.index(after: idx)))
-        case (.dictionary(let dict), .dictionary(let idx)):
-            return Index(value: .dictionary(dict.index(after: idx)))
+        case let (.array(arr), .array(idx)):
+            Index(value: .array(arr.index(after: idx)))
+        case let (.dictionary(dict), .dictionary(idx)):
+            Index(value: .dictionary(dict.index(after: idx)))
         default:
-            return Index(value: .null)
+            Index(value: .null)
         }
     }
-    
+
     public subscript(position: Index) -> (String, DecodeJSON) {
         switch (storage, position.value) {
-        case (.array(let arr), .array(let idx)):
+        case let (.array(arr), .array(idx)):
             return (String(idx), DecodeJSON(arr[idx]))
-        case (.dictionary(let dict), .dictionary(let idx)):
+        case let (.dictionary(dict), .dictionary(idx)):
             let pair = dict[idx]
             return (pair.key, DecodeJSON(pair.value))
         default:
@@ -300,89 +299,88 @@ extension String: JSONSubscriptType {
 extension DecodeJSON {
     private subscript(index index: Int) -> DecodeJSON {
         get {
-            guard case .array(let arr) = storage else {
+            guard case let .array(arr) = storage else {
                 var result = DecodeJSON.null
                 result.error = error ?? .wrongType
                 return result
             }
-            
+
             guard arr.indices.contains(index) else {
                 var result = DecodeJSON.null
                 result.error = .indexOutOfBounds
                 return result
             }
-            
+
             return DecodeJSON(arr[index])
         }
         set {
-            guard case .array(var arr) = storage,
+            guard case var .array(arr) = storage,
                   arr.indices.contains(index),
                   newValue.error == nil else { return }
-            
+
             arr[index] = newValue.object
             storage = .array(arr)
         }
     }
-    
+
     private subscript(key key: String) -> DecodeJSON {
         get {
-            guard case .dictionary(let dict) = storage else {
+            guard case let .dictionary(dict) = storage else {
                 var result = DecodeJSON.null
                 result.error = error ?? .wrongType
                 return result
             }
-            
+
             guard let value = dict[key] else {
                 var result = DecodeJSON.null
                 result.error = .notExist
                 return result
             }
-            
+
             return DecodeJSON(value)
         }
         set {
-            guard case .dictionary(var dict) = storage,
+            guard case var .dictionary(dict) = storage,
                   newValue.error == nil else { return }
-            
+
             dict[key] = newValue.object
             storage = .dictionary(dict)
         }
     }
-    
+
     public subscript(path: [JSONSubscriptType]) -> DecodeJSON {
         get {
             path.reduce(self) { json, key in
                 switch key.jsonKey {
-                case .index(let idx): return json[index: idx]
-                case .key(let k): return json[key: k]
+                case let .index(idx): json[index: idx]
+                case let .key(k): json[key: k]
                 }
             }
         }
         set {
             guard !path.isEmpty else { return }
-            
+
             if path.count == 1 {
                 switch path[0].jsonKey {
-                case .index(let idx): self[index: idx] = newValue
-                case .key(let k): self[key: k] = newValue
+                case let .index(idx): self[index: idx] = newValue
+                case let .key(k): self[key: k] = newValue
                 }
             } else {
                 let nextPath = Array(path.dropFirst())
                 let firstKey = path[0]
-                var nextJSON: DecodeJSON
-                switch firstKey.jsonKey {
-                case .index(let idx): nextJSON = self[index: idx]
-                case .key(let k): nextJSON = self[key: k]
+                var nextJSON: DecodeJSON = switch firstKey.jsonKey {
+                case let .index(idx): self[index: idx]
+                case let .key(k): self[key: k]
                 }
                 nextJSON[nextPath] = newValue
                 switch firstKey.jsonKey {
-                case .index(let idx): self[index: idx] = nextJSON
-                case .key(let k): self[key: k] = nextJSON
+                case let .index(idx): self[index: idx] = nextJSON
+                case let .key(k): self[key: k] = nextJSON
                 }
             }
         }
     }
-    
+
     public subscript(path: JSONSubscriptType...) -> DecodeJSON {
         get { self[path] }
         set { self[path] = newValue }
@@ -436,18 +434,18 @@ extension DecodeJSON: RawRepresentable {
         guard json.type != .unknown else { return nil }
         self = json
     }
-    
+
     public var rawValue: Any {
         object
     }
-    
+
     public func rawData(options: JSONSerialization.WritingOptions = []) throws -> Data {
         guard JSONSerialization.isValidJSONObject(object) else {
             throw JSONError.invalidJSON
         }
         return try JSONSerialization.data(withJSONObject: object, options: options)
     }
-    
+
     public func rawString(options: JSONSerialization.WritingOptions = .prettyPrinted, encoding: String.Encoding = .utf8) -> String? {
         guard let data = try? rawData(options: options) else { return nil }
         return String(data: data, encoding: encoding)
@@ -460,7 +458,7 @@ extension DecodeJSON: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
         rawString() ?? "unknown"
     }
-    
+
     public var debugDescription: String {
         description
     }
@@ -471,117 +469,117 @@ extension DecodeJSON: CustomStringConvertible, CustomDebugStringConvertible {
 public extension DecodeJSON {
     // Array
     var array: [DecodeJSON]? {
-        guard case .array(let arr) = storage else { return nil }
+        guard case let .array(arr) = storage else { return nil }
         return arr.map { DecodeJSON($0) }
     }
-    
+
     var arrayValue: [DecodeJSON] {
         array ?? []
     }
-    
+
     var arrayObject: [Any]? {
         get {
-            guard case .array(let arr) = storage else { return nil }
+            guard case let .array(arr) = storage else { return nil }
             return arr
         }
         set {
             object = newValue ?? NSNull()
         }
     }
-    
+
     // Dictionary
     var dictionary: [String: DecodeJSON]? {
-        guard case .dictionary(let dict) = storage else { return nil }
+        guard case let .dictionary(dict) = storage else { return nil }
         return dict.mapValues { DecodeJSON($0) }
     }
-    
+
     var dictionaryValue: [String: DecodeJSON] {
         dictionary ?? [:]
     }
-    
+
     var dictionaryObject: [String: Any]? {
         get {
-            guard case .dictionary(let dict) = storage else { return nil }
+            guard case let .dictionary(dict) = storage else { return nil }
             return dict
         }
         set {
             object = newValue ?? NSNull()
         }
     }
-    
+
     // Bool
     var bool: Bool? {
         get {
-            guard case .bool(let value) = storage else { return nil }
+            guard case let .bool(value) = storage else { return nil }
             return value
         }
         set {
             object = newValue ?? NSNull()
         }
     }
-    
+
     var boolValue: Bool {
         get {
             switch storage {
-            case .bool(let value): return value
-            case .number(let num): return num.boolValue
-            case .string(let str):
-                return ["true", "y", "t", "yes", "1"].contains {
+            case let .bool(value): value
+            case let .number(num): num.boolValue
+            case let .string(str):
+                ["true", "y", "t", "yes", "1"].contains {
                     str.caseInsensitiveCompare($0) == .orderedSame
                 }
-            default: return false
+            default: false
             }
         }
         set {
             object = newValue
         }
     }
-    
+
     // String
     var string: String? {
         get {
-            guard case .string(let value) = storage else { return nil }
+            guard case let .string(value) = storage else { return nil }
             return value
         }
         set {
             object = newValue ?? NSNull()
         }
     }
-    
+
     var stringValue: String {
         get {
             switch storage {
-            case .string(let value): return value
-            case .number(let num): return num.stringValue
-            case .bool(let value): return String(value)
-            default: return ""
+            case let .string(value): value
+            case let .number(num): num.stringValue
+            case let .bool(value): String(value)
+            default: ""
             }
         }
         set {
             object = newValue
         }
     }
-    
+
     // Number
     var number: NSNumber? {
         get {
             switch storage {
-            case .number(let value): return value
-            case .bool(let value): return NSNumber(value: value)
-            default: return nil
+            case let .number(value): value
+            case let .bool(value): NSNumber(value: value)
+            default: nil
             }
         }
         set {
             object = newValue ?? NSNull()
         }
     }
-    
+
     var numberValue: NSNumber {
         get {
             switch storage {
-            case .number(let value): return value
-            case .bool(let value): return NSNumber(value: value)
-            case .string(let str):
+            case let .number(value): return value
+            case let .bool(value): return NSNumber(value: value)
+            case let .string(str):
                 let decimal = NSDecimalNumber(string: str)
                 return decimal == .notANumber ? NSNumber(value: 0) : decimal
             default: return NSNumber(value: 0)
@@ -591,43 +589,43 @@ public extension DecodeJSON {
             object = newValue
         }
     }
-    
+
     // Numeric types
     var int: Int? {
         get { number?.intValue }
         set { object = newValue.map(NSNumber.init) ?? NSNull() }
     }
-    
+
     var intValue: Int {
         get { numberValue.intValue }
         set { object = NSNumber(value: newValue) }
     }
-    
+
     var double: Double? {
         get { number?.doubleValue }
         set { object = newValue.map(NSNumber.init) ?? NSNull() }
     }
-    
+
     var doubleValue: Double {
         get { numberValue.doubleValue }
         set { object = NSNumber(value: newValue) }
     }
-    
+
     var float: Float? {
         get { number?.floatValue }
         set { object = newValue.map(NSNumber.init) ?? NSNull() }
     }
-    
+
     var floatValue: Float {
         get { numberValue.floatValue }
         set { object = NSNumber(value: newValue) }
     }
-    
+
     // URL
     var url: URL? {
         get {
-            guard case .string(let str) = storage else { return nil }
-            
+            guard case let .string(str) = storage else { return nil }
+
             if str.range(of: "%[0-9A-Fa-f]{2}", options: .regularExpression) != nil {
                 return URL(string: str)
             } else if let encoded = str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
@@ -639,7 +637,7 @@ public extension DecodeJSON {
             object = newValue?.absoluteString ?? NSNull()
         }
     }
-    
+
     // Null
     var null: NSNull? {
         get {
@@ -650,10 +648,10 @@ public extension DecodeJSON {
             object = NSNull()
         }
     }
-    
+
     func exists() -> Bool {
-        guard let error = error else { return true }
-        return !(400...1000).contains(error.rawValue)
+        guard let error else { return true }
+        return !(400 ... 1000).contains(error.rawValue)
     }
 }
 
@@ -662,21 +660,21 @@ public extension DecodeJSON {
 extension DecodeJSON: Comparable {
     public static func == (lhs: DecodeJSON, rhs: DecodeJSON) -> Bool {
         switch (lhs.storage, rhs.storage) {
-        case (.number(let l), .number(let r)): return l == r
-        case (.string(let l), .string(let r)): return l == r
-        case (.bool(let l), .bool(let r)): return l == r
-        case (.array(let l), .array(let r)): return l as NSArray == r as NSArray
-        case (.dictionary(let l), .dictionary(let r)): return l as NSDictionary == r as NSDictionary
-        case (.null, .null): return true
-        default: return false
+        case let (.number(l), .number(r)): l == r
+        case let (.string(l), .string(r)): l == r
+        case let (.bool(l), .bool(r)): l == r
+        case let (.array(l), .array(r)): l as NSArray == r as NSArray
+        case let (.dictionary(l), .dictionary(r)): l as NSDictionary == r as NSDictionary
+        case (.null, .null): true
+        default: false
         }
     }
-    
+
     public static func < (lhs: DecodeJSON, rhs: DecodeJSON) -> Bool {
         switch (lhs.storage, rhs.storage) {
-        case (.number(let l), .number(let r)): return l < r
-        case (.string(let l), .string(let r)): return l < r
-        default: return false
+        case let (.number(l), .number(r)): l < r
+        case let (.string(l), .string(r)): l < r
+        default: false
         }
     }
 }
@@ -686,12 +684,12 @@ extension DecodeJSON: Comparable {
 extension DecodeJSON: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        
+
         if container.decodeNil() {
             self.init(NSNull())
             return
         }
-        
+
         if let bool = try? container.decode(Bool.self) {
             self.init(bool)
         } else if let int = try? container.decode(Int.self) {
@@ -701,25 +699,25 @@ extension DecodeJSON: Codable {
         } else if let string = try? container.decode(String.self) {
             self.init(string)
         } else if let array = try? container.decode([DecodeJSON].self) {
-            self.init(array.map { $0.object })
+            self.init(array.map(\.object))
         } else if let dictionary = try? container.decode([String: DecodeJSON].self) {
             self.init(dictionary.mapValues { $0.object })
         } else {
             self.init(NSNull())
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        
+
         switch storage {
         case .null:
             try container.encodeNil()
-        case .bool(let value):
+        case let .bool(value):
             try container.encode(value)
-        case .number(let value):
+        case let .number(value):
             try container.encode(value.doubleValue)
-        case .string(let value):
+        case let .string(value):
             try container.encode(value)
         case .array:
             try container.encode(arrayValue)
@@ -746,4 +744,3 @@ private func < (lhs: NSNumber, rhs: NSNumber) -> Bool {
     guard lhs.isBool == rhs.isBool else { return false }
     return lhs.compare(rhs) == .orderedAscending
 }
-

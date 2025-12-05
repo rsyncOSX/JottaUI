@@ -35,8 +35,7 @@ actor ActorConvertDumpData {
             let folder = jsondata?["folder"].stringValue
 
             if let files: [DecodeJSON] = jsondata?["files"].arrayValue,
-               let backuproot, let folder
-            {
+               let backuproot, let folder {
                 for file in files {
                     fileitem = Files(backuproot: backuproot,
                                      folder: folder,

@@ -46,9 +46,7 @@ struct SidebarMainView: View {
 
                 if item.menuitem == .Jotta_cli_help ||
                     item.menuitem == .dump ||
-                    item.menuitem == .catalogs
-
-                { Divider() }
+                    item.menuitem == .catalogs { Divider() }
             }
             .listStyle(.sidebar)
             .disabled(statuspath.isEmpty == false ||

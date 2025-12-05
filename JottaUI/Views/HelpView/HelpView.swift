@@ -70,8 +70,7 @@ struct HelpView: View {
 
     var pickerselecttypeofhelptask: some View {
         Picker(NSLocalizedString("Command for help", comment: "") + ":",
-               selection: $selectedhelpcommand)
-        {
+               selection: $selectedhelpcommand) {
             Text("Select")
                 .tag(nil as TypeofCommands?)
             ForEach(TypeofCommands.allCases) { Text($0.description)
