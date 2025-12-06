@@ -634,7 +634,7 @@ public extension DecodeJSON {
             return nil
         }
         set {
-            if let newValue = newValue {
+            if let newValue {
                 object = newValue.absoluteString
             } else {
                 object = NSNull()
