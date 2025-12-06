@@ -47,8 +47,7 @@ struct JottaStatusView: View {
                     ProgressView()
 
                 } else {
-                    HStack {
-                        
+                    HStack {                       
                         Button {
                             completedjottastatusview = false
 
