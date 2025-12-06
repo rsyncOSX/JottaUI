@@ -9,31 +9,13 @@ import OSLog
 import SwiftUI
 
 struct JottaUIView: View {
-    @State private var start: Bool = true
     @State private var jottacliversion = JottaCliVersion()
 
     var body: some View {
-        VStack {
-            if start {
-                VStack {
-                    Text("JottaUI a GUI\nfor Jotta-client")
-                        .font(.largeTitle)
-                }
-                .onAppear(perform: {
-                    Task {
-                        try await Task.sleep(seconds: 1)
-                        start = false
-                    }
-
-                })
-            } else {
-                SidebarMainView(errorhandling: errorhandling)
+        SidebarMainView(errorhandling: errorhandling)
+            .task {
+                jottacliversion.getjottacliversion()
             }
-        }
-        .padding()
-        .task {
-            jottacliversion.getjottacliversion()
-        }
     }
 
     var errorhandling: AlertError {
