@@ -203,15 +203,15 @@ public struct DecodeJSON {
 
 // MARK: - Collection Conformance
 
+private enum DecodeJSONIndexValue {
+    case array(Int)
+    case dictionary(Dictionary<String, Any>.Index)
+    case null
+}
+
 extension DecodeJSON: Collection {
     public struct Index: Comparable {
-        fileprivate enum Value {
-            case array(Int)
-            case dictionary(Dictionary<String, Any>.Index)
-            case null
-        }
-
-        fileprivate let value: Value
+        fileprivate let value: DecodeJSONIndexValue
 
         public static func == (lhs: Index, rhs: Index) -> Bool {
             switch (lhs.value, rhs.value) {
@@ -593,7 +593,7 @@ public extension DecodeJSON {
     // Numeric types
     var int: Int? {
         get { number?.intValue }
-        set { object = newValue.map(NSNumber.init) ?? NSNull() }
+        set { object = newValue.map { NSNumber(value: $0) } ?? NSNull() }
     }
 
     var intValue: Int {
@@ -603,7 +603,7 @@ public extension DecodeJSON {
 
     var double: Double? {
         get { number?.doubleValue }
-        set { object = newValue.map(NSNumber.init) ?? NSNull() }
+        set { object = newValue.map { NSNumber(value: $0) } ?? NSNull() }
     }
 
     var doubleValue: Double {
@@ -613,7 +613,7 @@ public extension DecodeJSON {
 
     var float: Float? {
         get { number?.floatValue }
-        set { object = newValue.map(NSNumber.init) ?? NSNull() }
+        set { object = newValue.map { NSNumber(value: $0) } ?? NSNull() }
     }
 
     var floatValue: Float {
@@ -634,7 +634,11 @@ public extension DecodeJSON {
             return nil
         }
         set {
-            object = newValue?.absoluteString ?? NSNull()
+            if let newValue = newValue {
+                object = newValue.absoluteString
+            } else {
+                object = NSNull()
+            }
         }
     }
 
@@ -645,6 +649,7 @@ public extension DecodeJSON {
             return NSNull()
         }
         set {
+            _ = newValue
             object = NSNull()
         }
     }
