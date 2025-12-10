@@ -84,8 +84,8 @@ struct JottaStatusJsonOutputView: View {
         .padding()
     }
 
-    let dateinmilliseconds: (Int) -> String = { (ms: Int) -> String in
-        let date = Date(timeIntervalSince1970: TimeInterval(ms) / 1000.0)
+    let dateinmilliseconds: (Int) -> String = { (milliseconds: Int) -> String in
+        let date = Date(timeIntervalSince1970: TimeInterval(milliseconds) / 1000.0)
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
         // dateFormatter.dateFormat = "yy-MM-dd HH:mm"

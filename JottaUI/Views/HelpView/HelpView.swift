@@ -4,6 +4,7 @@
 //
 //  Created by Thomas Evensen on 22/07/2025.
 //
+// swiftlint:disable identifier_name
 
 import ProcessCommand
 import SwiftUI
@@ -111,3 +112,4 @@ extension HelpView {
         }
     }
 }
+// swiftlint:enable identifier_name

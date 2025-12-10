@@ -12,12 +12,12 @@ import OSLog
 actor ActorReadJottaCliLogfile {
     @concurrent
     nonisolated func readloggfile() async -> [String]? {
-        let fm = FileManager.default
+        let fileManager = FileManager.default
         if let homepath = URL.userHomeDirectoryURLPath?.path() {
             let logfilepath = SharedConstants().logfilepath
             let logfileString = homepath.appending(logfilepath) + SharedConstants().logname
 
-            guard fm.locationExists(at: logfileString, kind: .file) == true else { return nil }
+            guard fileManager.locationExists(at: logfileString, kind: .file) == true else { return nil }
 
             let homelogfilepathURL = URL(fileURLWithPath: homepath.appending(logfilepath))
             let logfileURL = homelogfilepathURL.appendingPathComponent(SharedConstants().logname)

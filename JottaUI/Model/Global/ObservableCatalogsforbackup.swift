@@ -25,8 +25,8 @@ final class ObservableCatalogsforbackup {
     // Mark number of days since last backup
 
     func verifycatalogsforbackup(_ path: String) -> Bool {
-        let fm = FileManager.default
-        return fm.fileExists(atPath: path, isDirectory: nil)
+        let fileManager = FileManager.default
+        return fileManager.fileExists(atPath: path, isDirectory: nil)
     }
 
     func excutestatusjson() {

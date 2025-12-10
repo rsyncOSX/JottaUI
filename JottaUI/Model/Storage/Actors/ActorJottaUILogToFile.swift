@@ -54,10 +54,10 @@ actor ActorJottaUILogToFile {
 
     @concurrent
     nonisolated func readloggfile() async -> [String]? {
-        let fm = FileManager.default
+        let fileManager = FileManager.default
         if let homepath = URL.userHomeDirectoryURLPath?.path() {
             let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
-            guard fm.locationExists(at: logfileString, kind: .file) == true else { return nil }
+            guard fileManager.locationExists(at: logfileString, kind: .file) == true else { return nil }
 
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
@@ -82,10 +82,10 @@ actor ActorJottaUILogToFile {
 
     @concurrent
     private nonisolated func readloggfileasline() async -> String? {
-        let fm = FileManager.default
+        let fileManager = FileManager.default
         if let homepath = URL.userHomeDirectoryURLPath?.path() {
             let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
-            guard fm.locationExists(at: logfileString, kind: .file) == true else { return nil }
+            guard fileManager.locationExists(at: logfileString, kind: .file) == true else { return nil }
 
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
@@ -107,10 +107,10 @@ actor ActorJottaUILogToFile {
 
     @concurrent
     private nonisolated func appendloggfileData(_ newlogadata: String, _ reset: Bool) async -> Data? {
-        let fm = FileManager.default
+        let fileManager = FileManager.default
         if let homepath = URL.userHomeDirectoryURLPath?.path() {
             let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
-            // guard fm.locationExists(at: logfileString, kind: .file) == true else { return nil }
+            // guard fileManager.locationExists(at: logfileString, kind: .file) == true else { return nil }
 
             let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
             let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
@@ -124,7 +124,7 @@ actor ActorJottaUILogToFile {
                         return newdata
                     } else {
                         // Or append any new log data
-                        if fm.locationExists(at: logfileString, kind: .file) == true {
+                        if fileManager.locationExists(at: logfileString, kind: .file) == true {
                             let data = try Data(contentsOf: logfileURL)
                             var returneddata = data
                             returneddata.append(newdata)
