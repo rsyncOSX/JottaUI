@@ -39,13 +39,13 @@ actor ActorJottaUILogToFile {
                                     throw FilesizeError.toobig
                                 }
                             }
-                        } catch let e {
-                            let error = e
+                        } catch let err {
+                            let error = err
                             await propogateerror(error: error)
                         }
                     }
-                } catch let e {
-                    let error = e
+                } catch let err {
+                    let error = err
                     await propogateerror(error: error)
                 }
             }
@@ -71,8 +71,8 @@ actor ActorJottaUILogToFile {
                 return logfile.map { line in
                     line.components(separatedBy: .newlines)
                 }
-            } catch let e {
-                let error = e
+            } catch let err {
+                let error = err
                 await propogateerror(error: error)
             }
         }
@@ -96,8 +96,8 @@ actor ActorJottaUILogToFile {
                 let data = try Data(contentsOf: logfileURL)
                 return String(data: data, encoding: .utf8)
 
-            } catch let e {
-                let error = e
+            } catch let err {
+                let error = err
                 await propogateerror(error: error)
             }
         }
@@ -134,8 +134,8 @@ actor ActorJottaUILogToFile {
                             return newdata
                         }
                     }
-                } catch let e {
-                    let error = e
+                } catch let err {
+                    let error = err
                     await propogateerror(error: error)
                 }
             }

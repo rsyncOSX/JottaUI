@@ -84,8 +84,8 @@ struct AddCatalogsView: View {
                             // Start progressview
                             do {
                                 try process.executeProcess()
-                            } catch let e {
-                                let error = e
+                            } catch let err {
+                                let error = err
                                 SharedReference.shared.errorobject?.alert(error: error)
                             }
                         } else if jottatask == .sync {
@@ -100,8 +100,8 @@ struct AddCatalogsView: View {
                             // Start progressview
                             do {
                                 try process.executeProcess()
-                            } catch let e {
-                                let error = e
+                            } catch let err {
+                                let error = err
                                 SharedReference.shared.errorobject?.alert(error: error)
                             }
                         }
@@ -248,8 +248,8 @@ struct AddCatalogsView: View {
                                      input: nil)
         do {
             try process.executeProcess()
-        } catch let e {
-            let error = e
+        } catch let err {
+            let error = err
             SharedReference.shared.errorobject?.alert(error: error)
         }
     }

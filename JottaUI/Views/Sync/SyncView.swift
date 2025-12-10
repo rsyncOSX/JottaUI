@@ -52,8 +52,8 @@ struct SyncView: View {
                         showprogressview = true
                         do {
                             try process.executeProcess()
-                        } catch let e {
-                            let error = e
+                        } catch let err {
+                            let error = err
                             SharedReference.shared.errorobject?.alert(error: error)
                         }
 

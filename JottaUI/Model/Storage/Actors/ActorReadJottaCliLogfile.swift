@@ -29,8 +29,8 @@ actor ActorReadJottaCliLogfile {
                 return logfile.map { line in
                     line.components(separatedBy: .newlines)
                 }
-            } catch let e {
-                let error = e
+            } catch let err {
+                let error = err
                 await propogateerror(error: error)
             }
         }

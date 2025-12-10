@@ -1,8 +1,8 @@
 disabled_rules:
 #  - line_length
   - file_length
-  - type_body_length
-  - identifier_name
+# - type_body_length
+#  - identifier_name
 
 excluded:
   - SourcePackages/*
