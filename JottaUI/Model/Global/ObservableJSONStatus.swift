@@ -56,58 +56,64 @@ final class ObservableJSONStatus {
                                 device: nil)
             }
 
-            if let backuplist: [DecodeJSON] = jsondata?["Backups"].arrayValue {
-                for item in backuplist {
-                    // History start
-                    let historyitem = item["History"]
-                    // Upload Started
-                    let sbytes = historyitem[0]["Upload"]["Started"]["Bytes"].intValue
-                    let sfiles = historyitem[0]["Upload"]["Started"]["Files"].intValue
-                    // Upload Completed
-                    let cbytes = historyitem[0]["Upload"]["Completed"]["Bytes"].intValue
-                    let cfiles = historyitem[0]["Upload"]["Completed"]["Files"].intValue
-                    // Upload itself
-                    let upload = Upload(Started: Started(Files: sbytes, Bytes: sfiles),
-                                        Completed: Completed(Files: cbytes, Bytes: cfiles))
+            processBackups()
+        }
+    }
 
-                    let finished = historyitem[0]["Finished"].boolValue
-                    let started = historyitem[0]["Started"].intValue
-                    let hpath = historyitem[0]["Path"].stringValue
-
-                    let tbytes = historyitem[0]["Total"]["Bytes"].intValue
-                    let tfiles = historyitem[0]["Total"]["Files"].intValue
-                    let total = Total(Bytes: tbytes, Files: tfiles)
-                    let ended = historyitem[0]["Ended"].intValue
-
-                    let history = History(Ended: ended, Started: started, Path: hpath, Upload: upload, Total: total, Finished: finished)
-                    // History ended
-
-                    let NextBackupMS = item["NextBackupMS"].intValue
-                    let LastUpdateMS = item["LastUpdateMS"].intValue
-                    let path = item["Path"].stringValue
-                    // Count in Backup
-                    let countfiles = item["Count"]["Files"].intValue
-                    let countbytes = item["Count"]["Bytes"].intValue
-                    let count = Count(Bytes: countbytes, Files: countfiles)
-
-                    let DeviceID = item["DeviceID"].stringValue
-                    let LastScanStartedMS = item["LastScanStartedMS"].intValue
-                    let name = item["Name"].stringValue
-                    let WaitingForScan = item["WaitingForScan"].boolValue
-
-                    let backupitem = Backup(LastUpdateMS: LastUpdateMS,
-                                            NextBackupMS: NextBackupMS,
-                                            Count: count,
-                                            Path: path,
-                                            history: history,
-                                            DeviceID: DeviceID,
-                                            LastScanStartedMS: LastScanStartedMS,
-                                            Name: name,
-                                            WaitingForScan: WaitingForScan)
+    private func processBackups() {
+        if let backuplist: [DecodeJSON] = jsondata?["Backups"].arrayValue {
+            for item in backuplist {
+                if let backupitem = createBackupItem(from: item) {
                     backups.append(backupitem)
                 }
             }
         }
+    }
+
+    private func createBackupItem(from item: DecodeJSON) -> Backup? {
+        let historyitem = item["History"]
+        // Upload Started
+        let sbytes = historyitem[0]["Upload"]["Started"]["Bytes"].intValue
+        let sfiles = historyitem[0]["Upload"]["Started"]["Files"].intValue
+        // Upload Completed
+        let cbytes = historyitem[0]["Upload"]["Completed"]["Bytes"].intValue
+        let cfiles = historyitem[0]["Upload"]["Completed"]["Files"].intValue
+        // Upload itself
+        let upload = Upload(Started: Started(Files: sbytes, Bytes: sfiles),
+                            Completed: Completed(Files: cbytes, Bytes: cfiles))
+
+        let finished = historyitem[0]["Finished"].boolValue
+        let started = historyitem[0]["Started"].intValue
+        let hpath = historyitem[0]["Path"].stringValue
+
+        let tbytes = historyitem[0]["Total"]["Bytes"].intValue
+        let tfiles = historyitem[0]["Total"]["Files"].intValue
+        let total = Total(Bytes: tbytes, Files: tfiles)
+        let ended = historyitem[0]["Ended"].intValue
+
+        let history = History(Ended: ended, Started: started, Path: hpath, Upload: upload, Total: total, Finished: finished)
+
+        let NextBackupMS = item["NextBackupMS"].intValue
+        let LastUpdateMS = item["LastUpdateMS"].intValue
+        let path = item["Path"].stringValue
+        let countfiles = item["Count"]["Files"].intValue
+        let countbytes = item["Count"]["Bytes"].intValue
+        let count = Count(Bytes: countbytes, Files: countfiles)
+
+        let DeviceID = item["DeviceID"].stringValue
+        let LastScanStartedMS = item["LastScanStartedMS"].intValue
+        let name = item["Name"].stringValue
+        let WaitingForScan = item["WaitingForScan"].boolValue
+
+        return Backup(LastUpdateMS: LastUpdateMS,
+                      NextBackupMS: NextBackupMS,
+                      Count: count,
+                      Path: path,
+                      history: history,
+                      DeviceID: DeviceID,
+                      LastScanStartedMS: LastScanStartedMS,
+                      Name: name,
+                      WaitingForScan: WaitingForScan)
     }
 
     func setJSONstring(_ stringdata: [String]?) {
