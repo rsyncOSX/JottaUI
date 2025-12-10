@@ -1,9 +1,7 @@
 import Foundation
 
 fileprivate extension NSNumber {
-    // Detect if this NSNumber actually represents a Bool
     var isBool: Bool {
-        // CFBoolean is a subclass of NSNumber; compare CoreFoundation type IDs
         CFGetTypeID(self) == CFBooleanGetTypeID()
     }
 }
@@ -25,17 +23,17 @@ extension JSONError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .unsupportedType:
-            "Unsupported type"
+            return "Unsupported type"
         case .indexOutOfBounds:
-            "Array index is out of bounds"
+            return "Array index is out of bounds"
         case .wrongType:
-            "Cannot merge JSONs with different top-level types"
+            return "Cannot merge JSONs with different top-level types"
         case .notExist:
-            "Dictionary key does not exist"
+            return "Dictionary key does not exist"
         case .invalidJSON:
-            "JSON is invalid"
+            return "JSON is invalid"
         case .elementTooDeep:
-            "Element too deep. Increase maxObjectDepth and ensure there are no reference loops"
+            return "Element too deep. Increase maxObjectDepth and ensure there are no reference loops"
         }
     }
 }
@@ -163,10 +161,13 @@ public final class DecodeJSON {
                 storage = .string(string)
             case is NSNull:
                 storage = .null
+                error = nil
             case let array as [Any]:
                 storage = .array(array)
+                error = nil
             case let dictionary as [String: Any]:
                 storage = .dictionary(dictionary)
+                error = nil
             default:
                 storage = .null
                 error = .unsupportedType
@@ -181,9 +182,10 @@ public final class DecodeJSON {
     }
 
     public func merged(with other: DecodeJSON) throws -> DecodeJSON {
-        let merged = self
-        try merged.merge(with: other, typecheck: true)
-        return merged
+        let copy = DecodeJSON(self.object)
+        copy.error = self.error
+        try copy.merge(with: other, typecheck: true)
+        return copy
     }
 
     private func merge(with other: DecodeJSON, typecheck: Bool) throws {
@@ -192,6 +194,7 @@ public final class DecodeJSON {
                 throw JSONError.wrongType
             } else {
                 self.storage = other.storage
+                self.error = other.error
                 return
             }
         }
@@ -210,6 +213,7 @@ public final class DecodeJSON {
 
         default:
             self.storage = other.storage
+            self.error = other.error
         }
     }
 
@@ -230,54 +234,71 @@ public final class DecodeJSON {
 }
 
 // MARK: - Subscripts
+
 public extension DecodeJSON {
-    // Labeled dictionary subscript used by merge logic
     subscript(key key: String) -> DecodeJSON {
         get {
-            guard case let .dictionary(dict) = storage, let value = dict[key] else {
-                return DecodeJSON.null
+            guard case let .dictionary(dict) = storage else {
+                let result = DecodeJSON.null
+                result.error = error ?? .wrongType
+                return result
             }
+            
+            guard let value = dict[key] else {
+                let result = DecodeJSON.null
+                result.error = .notExist
+                return result
+            }
+            
             return DecodeJSON(value)
         }
         set {
-            switch storage {
-            case var .dictionary(dict):
-                dict[key] = newValue.object
-                storage = .dictionary(dict)
-            default:
-                // If not a dictionary, promote to dictionary with this single key
-                storage = .dictionary([key: newValue.object])
+            guard case var .dictionary(dict) = storage else {
+                return
+            }
+            dict[key] = newValue.object
+            storage = .dictionary(dict)
+            if error == .notExist || error == .wrongType {
+                error = nil
             }
         }
     }
 
-    // Unlabeled dictionary subscript for convenience
     subscript(_ key: String) -> DecodeJSON {
         get { self[key: key] }
         set { self[key: key] = newValue }
     }
 
-    // Array subscript by index
     subscript(index: Int) -> DecodeJSON {
         get {
-            guard case let .array(arr) = storage, index >= 0, index < arr.count else {
-                return DecodeJSON.null
+            guard case let .array(arr) = storage else {
+                let result = DecodeJSON.null
+                result.error = error ?? .wrongType
+                return result
             }
+            
+            guard arr.indices.contains(index) else {
+                let result = DecodeJSON.null
+                result.error = .indexOutOfBounds
+                return result
+            }
+            
             return DecodeJSON(arr[index])
         }
         set {
-            switch storage {
-            case var .array(arr):
-                if index >= 0 && index < arr.count {
-                    arr[index] = newValue.object
-                    storage = .array(arr)
-                } else {
-                    // Out of bounds: set error and do nothing else
-                    error = .indexOutOfBounds
-                }
-            default:
-                // If not an array, ignore the set and set error
-                error = .wrongType
+            guard case var .array(arr) = storage else {
+                return
+            }
+            
+            guard arr.indices.contains(index) else {
+                error = .indexOutOfBounds
+                return
+            }
+            
+            arr[index] = newValue.object
+            storage = .array(arr)
+            if error == .indexOutOfBounds || error == .wrongType {
+                error = nil
             }
         }
     }
@@ -479,6 +500,37 @@ public extension DecodeJSON {
     }
 }
 
+// MARK: - CustomStringConvertible
+
+extension DecodeJSON: CustomStringConvertible, CustomDebugStringConvertible {
+    public var description: String {
+        rawString() ?? "unknown"
+    }
+
+    public var debugDescription: String {
+        description
+    }
+}
+
+// MARK: - Raw Representation
+
+public extension DecodeJSON {
+    func rawData(options: JSONSerialization.WritingOptions = []) throws -> Data {
+        guard JSONSerialization.isValidJSONObject(object) else {
+            throw JSONError.invalidJSON
+        }
+        return try JSONSerialization.data(withJSONObject: object, options: options)
+    }
+
+    func rawString(
+        options: JSONSerialization.WritingOptions = .prettyPrinted,
+        encoding: String.Encoding = .utf8
+    ) -> String? {
+        guard let data = try? rawData(options: options) else { return nil }
+        return String(data: data, encoding: encoding)
+    }
+}
+
 // MARK: - Comparable
 
 extension DecodeJSON: Comparable {
@@ -563,4 +615,3 @@ private func < (lhs: NSNumber, rhs: NSNumber) -> Bool {
     return lhs.compare(rhs) == .orderedAscending
 }
 // swiftlint:enable identifier_name
-
