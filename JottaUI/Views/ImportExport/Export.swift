@@ -24,13 +24,8 @@ struct ExportView: View {
     var body: some View {
         VStack {
             HStack {
-                if exportcatalog.hasSuffix("/") {
-                    Text(exportcatalog)
-                        .foregroundColor(.secondary)
-                } else {
-                    Text(exportcatalog + "/")
-                        .foregroundColor(.secondary)
-                }
+                Text(exportcatalog)
+                    .foregroundColor(.secondary)
 
                 setfilename
 
@@ -40,11 +35,8 @@ struct ExportView: View {
                 OpencatalogView(selecteditem: $exportcatalog, catalogs: true)
 
                 Button("Export") {
-                    if exportcatalog.hasSuffix("/") == true {
-                        path = exportcatalog + filenameexport + ".json"
-                    } else {
-                        path = exportcatalog + "/" + filenameexport + ".json"
-                    }
+                    
+                    path = exportcatalog + filenameexport + ".json"
 
                     guard exportcatalog.isEmpty == false, filenameexport.isEmpty == false else {
                         focusexport = false
@@ -69,8 +61,8 @@ struct ExportView: View {
         }
         .padding()
         .onAppear {
-            if FileManager.default.locationExists(at: exportcatalog + "/" + "tmp", kind: .folder) {
-                exportcatalog += "/" + "tmp" + "/"
+            if FileManager.default.locationExists(at: exportcatalog + "tmp", kind: .folder) {
+                exportcatalog += "tmp" + "/"
             } else {
                 exportcatalog += "/"
             }

@@ -11,7 +11,7 @@ struct JsonStatus {
     let User: User
     let Backups: [Backup]
     let Sync: Sync
-    let State: state
+    // let State: state
 }
 
 struct User {
@@ -117,9 +117,11 @@ struct Sync {
     let RemoteCount: Int
 }
 
+/*
 struct state {
     let RestoreWorking: Bool
     let Uploading: Int
     let Downloading: Int
     let LastTokenRefresh: Int
 }
+*/
