@@ -35,7 +35,6 @@ struct ExportView: View {
                 OpencatalogView(selecteditem: $exportcatalog, catalogs: true)
 
                 Button("Export") {
-                    
                     path = exportcatalog + filenameexport + ".json"
 
                     guard exportcatalog.isEmpty == false, filenameexport.isEmpty == false else {
