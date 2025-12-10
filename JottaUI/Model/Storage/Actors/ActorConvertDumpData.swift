@@ -4,7 +4,7 @@
 //
 //  Created by Thomas Evensen on 04/08/2025.
 //
-
+// swiftlint:disable identifier_name
 import Foundation
 import OSLog
 
@@ -53,3 +53,4 @@ actor ActorConvertDumpData {
         return converted
     }
 }
+// swiftlint:enable identifier_name

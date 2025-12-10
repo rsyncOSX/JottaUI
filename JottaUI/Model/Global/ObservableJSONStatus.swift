@@ -95,27 +95,27 @@ final class ObservableJSONStatus {
         let history = History(Ended: ended, Started: started, Path: hpath,
                               Upload: upload, Total: total, Finished: finished)
 
-        let NextBackupMS = item["NextBackupMS"].intValue
-        let LastUpdateMS = item["LastUpdateMS"].intValue
+        let nextBackupMS = item["NextBackupMS"].intValue
+        let lastUpdateMS = item["LastUpdateMS"].intValue
         let path = item["Path"].stringValue
         let countfiles = item["Count"]["Files"].intValue
         let countbytes = item["Count"]["Bytes"].intValue
         let count = Count(Bytes: countbytes, Files: countfiles)
 
-        let DeviceID = item["DeviceID"].stringValue
-        let LastScanStartedMS = item["LastScanStartedMS"].intValue
+        let deviceID = item["DeviceID"].stringValue
+        let lastScanStartedMS = item["LastScanStartedMS"].intValue
         let name = item["Name"].stringValue
-        let WaitingForScan = item["WaitingForScan"].boolValue
+        let waitingForScan = item["WaitingForScan"].boolValue
 
-        return Backup(LastUpdateMS: LastUpdateMS,
-                      NextBackupMS: NextBackupMS,
+        return Backup(LastUpdateMS: lastUpdateMS,
+                      NextBackupMS: nextBackupMS,
                       Count: count,
                       Path: path,
                       history: history,
-                      DeviceID: DeviceID,
-                      LastScanStartedMS: LastScanStartedMS,
+                      DeviceID: deviceID,
+                      LastScanStartedMS: lastScanStartedMS,
                       Name: name,
-                      WaitingForScan: WaitingForScan)
+                      WaitingForScan: waitingForScan)
     }
 
     func setJSONstring(_ stringdata: [String]?) {

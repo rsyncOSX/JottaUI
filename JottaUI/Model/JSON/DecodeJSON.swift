@@ -1,5 +1,7 @@
 import Foundation
 
+// swiftlint:disable identifier_name
+
 // MARK: - Error
 
 public enum JSONError: Int, Error {
@@ -752,3 +754,4 @@ private func < (lhs: NSNumber, rhs: NSNumber) -> Bool {
     guard lhs.isBool == rhs.isBool else { return false }
     return lhs.compare(rhs) == .orderedAscending
 }
+// swiftlint:enable identifier_name
