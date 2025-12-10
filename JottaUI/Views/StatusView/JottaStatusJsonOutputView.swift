@@ -95,8 +95,8 @@ struct JottaStatusJsonOutputView: View {
         return dateFormatter.string(from: date)
     }
 
-    let dateinseconds: (Int) -> String = { (s: Int) -> String in
-        let date = Date(timeIntervalSince1970: TimeInterval(s))
+    let dateinseconds: (Int) -> String = { (seconds: Int) -> String in
+        let date = Date(timeIntervalSince1970: TimeInterval(seconds))
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
         // dateFormatter.dateFormat = "yy-MM-dd HH:mm"
