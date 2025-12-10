@@ -446,7 +446,10 @@ extension DecodeJSON: RawRepresentable {
         return try JSONSerialization.data(withJSONObject: object, options: options)
     }
 
-    public func rawString(options: JSONSerialization.WritingOptions = .prettyPrinted, encoding: String.Encoding = .utf8) -> String? {
+    public func rawString(
+        options: JSONSerialization.WritingOptions = .prettyPrinted,
+        encoding: String.Encoding = .utf8
+    ) -> String? {
         guard let data = try? rawData(options: options) else { return nil }
         return String(data: data, encoding: encoding)
     }

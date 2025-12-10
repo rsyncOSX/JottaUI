@@ -110,7 +110,11 @@ struct AddCatalogsView: View {
                         Image(systemName: "plus.circle.fill")
                             .imageScale(.large)
                     }
-                    .disabled(observablecatalogsforbackup.verifycatalogsforbackup(observablecatalogsforbackup.catalogsforbackup) == false || jottatask == .select)
+                    .disabled(
+                        observablecatalogsforbackup.verifycatalogsforbackup(
+                            observablecatalogsforbackup.catalogsforbackup) == false
+                        || jottatask == .select
+                    )
                     .buttonStyle(RefinedGlassButtonStyle())
                 }
             } header: {
@@ -183,13 +187,18 @@ struct AddCatalogsView: View {
     }
 
     var catalogforbackup: some View {
-        EditValueErrorScheme(300, NSLocalizedString(defaultstring, comment: ""),
+        let isValid = observablecatalogsforbackup.verifycatalogsforbackup(
+            observablecatalogsforbackup.catalogsforbackup)
+        return EditValueErrorScheme(300, NSLocalizedString(defaultstring, comment: ""),
                              $observablecatalogsforbackup.catalogsforbackup,
-                             observablecatalogsforbackup.verifycatalogsforbackup(observablecatalogsforbackup.catalogsforbackup))
-            .foregroundColor(observablecatalogsforbackup.verifycatalogsforbackup(observablecatalogsforbackup.catalogsforbackup) ? Color.white : Color.red)
+                             isValid)
+            .foregroundColor(
+                isValid ? Color.white : Color.red
+            )
             .onChange(of: observablecatalogsforbackup.catalogsforbackup) {
                 Task {
-                    guard observablecatalogsforbackup.verifycatalogsforbackup(observablecatalogsforbackup.catalogsforbackup) else {
+                    let catalogPath = observablecatalogsforbackup.catalogsforbackup
+                    guard observablecatalogsforbackup.verifycatalogsforbackup(catalogPath) else {
                         return
                     }
                 }

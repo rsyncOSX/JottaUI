@@ -24,13 +24,13 @@ struct JottaStatusJsonOutputView: View {
                     }
 
                     Section {
-                        ValueSchemeView(200, jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set")
-                        // ValueSchemeView(200, jsondata.accountinfo?.SubscriptionNameLocalized ?? "Account data name not set")
-                        ValueSchemeView(200, "available " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Capacity ?? 0) + " GiB")
-                        ValueSchemeView(200, "used " + jsondata.formatted_number_GiB(jsondata.accountinfo?.Usage ?? 0) + " GiB")
-                        // ValueSchemeView(200, String(jsondata.accountinfo?.Subscription ?? 0))
-                        // ValueSchemeView(200, String(jsondata.accountinfo?.CanUpgrade ?? false))
-                        // ValueSchemeView(200, String(jsondata.accountinfo?.UpgradeHint ?? false))
+                        let productName = jsondata.accountinfo?.ProductNameLocalized ?? "Account data name not set"
+                        ValueSchemeView(200, productName)
+                        let capacity = jsondata.accountinfo?.Capacity ?? 0
+                        ValueSchemeView(200, "available " + jsondata.formatted_number_GiB(capacity) + " GiB")
+                        let usage = jsondata.accountinfo?.Usage ?? 0
+                        let used = jsondata.formatted_number_GiB(usage)
+                        ValueSchemeView(200, "used " + used + " GiB")
 
                     } header: {
                         Text("Account data")

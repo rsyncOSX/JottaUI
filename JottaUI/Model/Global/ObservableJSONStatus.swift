@@ -28,13 +28,14 @@ final class ObservableJSONStatus {
             background = Background(r: user["Avatar"]["Background"]["r"].intValue,
                                     g: user["Avatar"]["Background"]["g"].intValue,
                                     b: user["Avatar"]["Background"]["b"].intValue)
-            accountinfo = AccountInfo(Capacity: user["AccountInfo"]["Capacity"].intValue,
-                                      Usage: user["AccountInfo"]["Usage"].intValue,
-                                      Subscription: user["AccountInfo"]["Subscription"].intValue,
-                                      CanUpgrade: user["AccountInfo"]["CanUpgrade"].boolValue,
-                                      UpgradeHint: user["AccountInfo"]["UpgradeHint"].boolValue,
-                                      SubscriptionNameLocalized: user["AccountInfo"]["SubscriptionNameLocalized"].stringValue,
-                                      ProductNameLocalized: user["AccountInfo"]["ProductNameLocalized"].stringValue)
+            accountinfo = AccountInfo(
+                Capacity: user["AccountInfo"]["Capacity"].intValue,
+                Usage: user["AccountInfo"]["Usage"].intValue,
+                Subscription: user["AccountInfo"]["Subscription"].intValue,
+                CanUpgrade: user["AccountInfo"]["CanUpgrade"].boolValue,
+                UpgradeHint: user["AccountInfo"]["UpgradeHint"].boolValue,
+                SubscriptionNameLocalized: user["AccountInfo"]["SubscriptionNameLocalized"].stringValue,
+                ProductNameLocalized: user["AccountInfo"]["ProductNameLocalized"].stringValue)
             avatar = Avatar(Background: background!,
                             Initials: user["Avatar"]["Initials"].stringValue)
 
@@ -91,7 +92,8 @@ final class ObservableJSONStatus {
         let total = Total(Bytes: tbytes, Files: tfiles)
         let ended = historyitem[0]["Ended"].intValue
 
-        let history = History(Ended: ended, Started: started, Path: hpath, Upload: upload, Total: total, Finished: finished)
+        let history = History(Ended: ended, Started: started, Path: hpath,
+                              Upload: upload, Total: total, Finished: finished)
 
         let NextBackupMS = item["NextBackupMS"].intValue
         let LastUpdateMS = item["LastUpdateMS"].intValue
@@ -127,7 +129,9 @@ final class ObservableJSONStatus {
     }
 
     func formatted_number_GiB(_ number: Int) -> String {
-        NumberFormatter.localizedString(from: NSNumber(value: number / 1_073_741_824), number: NumberFormatter.Style.decimal)
+        NumberFormatter.localizedString(
+            from: NSNumber(value: number / 1_073_741_824),
+            number: NumberFormatter.Style.decimal)
     }
 
     func formatted_number(_ number: Int) -> String {

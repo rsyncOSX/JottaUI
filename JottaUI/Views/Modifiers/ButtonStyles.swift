@@ -129,7 +129,10 @@ private struct PressureAnimatedButton: View {
             .scaleEffect((showPressedState && isEnabled) ? 0.975 : 1.0)
             .opacity(isEnabled ? 1.0 : disabledOpacity)
             .brightness(isEnabled ? 0 : disabledBrightness)
-            .animation(reduceMotion || !isEnabled ? nil : .spring(response: 0.25, dampingFraction: 0.7), value: showPressedState)
+            .animation(
+                reduceMotion || !isEnabled ? nil : .spring(response: 0.25, dampingFraction: 0.7),
+                value: showPressedState
+            )
             .contentShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .onChange(of: pressed) { _, newValue in
                 if newValue, !isAnimatingPressure {

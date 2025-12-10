@@ -13,9 +13,15 @@ import OSLog
 struct FullpathJottaCli {
     func jottaclipathandcommand() -> String {
         if SharedReference.shared.macosarm {
-            Logger.process.info("GetfullpathforRsync HOMEBREW path ARM: \(SharedReference.shared.usrlocalbinarm.appending("/"), privacy: .public)")
+            let armPath = SharedReference.shared.usrlocalbinarm.appending("/")
+            Logger.process.info(
+                "GetfullpathforRsync HOMEBREW path ARM: \(armPath, privacy: .public)"
+            )
         } else {
-            Logger.process.info("GetfullpathforRsync HOMEBREW path INTEL: \(SharedReference.shared.usrlocalbin.appending("/"), privacy: .public)")
+            let intelPath = SharedReference.shared.usrlocalbin.appending("/")
+            Logger.process.info(
+                "GetfullpathforRsync HOMEBREW path INTEL: \(intelPath, privacy: .public)"
+            )
         }
         if SharedReference.shared.macosarm {
             return SharedReference.shared.usrlocalbinarm.appending("/") + SharedReference.shared.jottaclient
