@@ -106,6 +106,31 @@ public final class DecodeJSON {
         }
     }
 
+    public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if container.decodeNil() {
+            self.init(NSNull())
+            return
+        }
+
+        if let bool = try? container.decode(Bool.self) {
+            self.init(bool)
+        } else if let int = try? container.decode(Int.self) {
+            self.init(int)
+        } else if let double = try? container.decode(Double.self) {
+            self.init(double)
+        } else if let string = try? container.decode(String.self) {
+            self.init(string)
+        } else if let array = try? container.decode([DecodeJSON].self) {
+            self.init(array.map(\.object))
+        } else if let dictionary = try? container.decode([String: DecodeJSON].self) {
+            self.init(dictionary.mapValues { $0.object })
+        } else {
+            self.init(NSNull())
+        }
+    }
+    
     private init(jsonObject: Any) {
         let unwrapped = Self.unwrap(jsonObject)
 
@@ -558,31 +583,6 @@ extension DecodeJSON: Comparable {
 // MARK: - Codable
 
 extension DecodeJSON: Codable {
-    public convenience init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-
-        if container.decodeNil() {
-            self.init(NSNull())
-            return
-        }
-
-        if let bool = try? container.decode(Bool.self) {
-            self.init(bool)
-        } else if let int = try? container.decode(Int.self) {
-            self.init(int)
-        } else if let double = try? container.decode(Double.self) {
-            self.init(double)
-        } else if let string = try? container.decode(String.self) {
-            self.init(string)
-        } else if let array = try? container.decode([DecodeJSON].self) {
-            self.init(array.map(\.object))
-        } else if let dictionary = try? container.decode([String: DecodeJSON].self) {
-            self.init(dictionary.mapValues { $0.object })
-        } else {
-            self.init(NSNull())
-        }
-    }
-
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
