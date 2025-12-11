@@ -130,7 +130,7 @@ public final class DecodeJSON {
             self.init(NSNull())
         }
     }
-    
+
     private init(jsonObject: Any) {
         let unwrapped = Self.unwrap(jsonObject)
 
@@ -268,13 +268,13 @@ public extension DecodeJSON {
                 result.error = error ?? .wrongType
                 return result
             }
-            
+
             guard let value = dict[key] else {
                 let result = DecodeJSON.null
                 result.error = .notExist
                 return result
             }
-            
+
             return DecodeJSON(value)
         }
         set {
@@ -301,25 +301,25 @@ public extension DecodeJSON {
                 result.error = error ?? .wrongType
                 return result
             }
-            
+
             guard arr.indices.contains(index) else {
                 let result = DecodeJSON.null
                 result.error = .indexOutOfBounds
                 return result
             }
-            
+
             return DecodeJSON(arr[index])
         }
         set {
             guard case var .array(arr) = storage else {
                 return
             }
-            
+
             guard arr.indices.contains(index) else {
                 error = .indexOutOfBounds
                 return
             }
-            
+
             arr[index] = newValue.object
             storage = .array(arr)
             if error == .indexOutOfBounds || error == .wrongType {
