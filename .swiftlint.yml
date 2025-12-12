@@ -1,5 +1,3 @@
-disabled_rules:
-  - file_length
-
+# Paths to exclude from linting
 excluded:
-  - SourcePackages/*
+  - .build
