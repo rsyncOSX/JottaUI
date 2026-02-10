@@ -62,7 +62,7 @@ final class ObservableJSONStatus {
     }
 
     private func processBackups() {
-        if let backuplist: [DecodeJSON] = jsondata?["Backups"].arrayValue {
+        if let backuplist: [DecodeJSON] = jsondata?["Backup"].arrayValue {
             for item in backuplist {
                 if let backupitem = createBackupItem(from: item) {
                     backups.append(backupitem)
