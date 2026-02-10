@@ -23,16 +23,22 @@ struct JottaUIApp: App {
 }
 
 extension Logger {
-    private static let subsystem = Bundle.main.bundleIdentifier!
-    static let process = Logger(subsystem: subsystem, category: "process")
+    private static let subsystem = Bundle.main.bundleIdentifier
+    static let process = Logger(subsystem: subsystem ?? "process", category: "process")
 
-    func debugmesseageonly(_ message: String) {
+    func errorMessageOnly(_ message: String) {
+        #if DEBUG
+            error("\(message)")
+        #endif
+    }
+
+    func debugMessageOnly(_ message: String) {
         #if DEBUG
             debug("\(message)")
         #endif
     }
 
-    func debugtthreadonly(_ message: String) {
+    func debugThreadOnly(_ message: String) {
         #if DEBUG
             if Thread.checkIsMainThread() {
                 debug("\(message) Running on main thread")

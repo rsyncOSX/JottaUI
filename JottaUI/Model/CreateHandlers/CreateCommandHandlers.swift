@@ -22,7 +22,7 @@ struct CreateCommandHandlers {
                 SharedReference.shared.errorobject?.alert(error: error)
             },
             logger: { command, output in
-                _ = await ActorJottaUILogToFile(command, output)
+                _ = await ActorJottaUILogToFile().logOutput(command, output)
             },
             rsyncui: false
         )

@@ -1,9 +1,13 @@
 //
-//  ActorJottaUILogToFile.swift
-//  rcloneosx
+//  ActorLog.swift
+//  JottaUI
 //
-//  Created by Thomas Evensen on 20.11.2017.
-//  Copyright © 2017 Thomas Evensen. All rights reserved.
+//  Created by Thomas Evensen on 10/02/2026.
+//
+
+//
+//  ActorLogToFile.swift
+//  RsyncUI
 //
 
 import Foundation
@@ -11,171 +15,135 @@ import OSLog
 
 enum FilesizeError: LocalizedError {
     case toobig
+    case toobigandresetting
 
     var errorDescription: String? {
         switch self {
         case .toobig:
-            "Logfile is too big\n Please reset file"
+            "Logfile is too big\nPlease reset logfile"
+        case .toobigandresetting:
+            "Logfile is too big\nResetting logfile"
         }
     }
 }
 
 actor ActorJottaUILogToFile {
-    @concurrent
-    nonisolated func writeloggfile(_ newlogadata: String, _ reset: Bool) async {
-        if let homepath = URL.userHomeDirectoryURLPath?.path() {
-            let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
-            let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
+    private let fileManager = FileManager.default
+    private let logName = SharedConstants().logname
+    private let maxLogfileSize = SharedConstants().logfilesize
+    private lazy var fileSizeChecker = FileSize()
 
-            Logger.process.debugtthreadonly("LogToFile: writeloggfile() ")
-            if let logfiledata = await appendloggfileData(newlogadata, reset) {
-                do {
-                    try logfiledata.write(to: logfileURL)
-                    let checker = FileSize()
-                    Task {
-                        do {
-                            if let size = try await checker.filesize() {
-                                if Int(truncating: size) > SharedConstants().logfilesize {
-                                    throw FilesizeError.toobig
-                                }
-                            }
-                        } catch let err {
-                            let error = err
-                            await propogateerror(error: error)
-                        }
-                    }
-                } catch let err {
-                    let error = err
-                    await propogateerror(error: error)
+    // MARK: - Helper Properties
+
+    private var logfileURL: URL? {
+        guard let fullpathmacserial = URL.userHomeDirectoryURLPath?.path() else { return nil }
+        return URL(fileURLWithPath: fullpathmacserial).appendingPathComponent(logName)
+    }
+
+    // MARK: - Public Methods
+
+    func writeloggfile(_ newlogadata: String, _ reset: Bool) async {
+        guard let logURL = logfileURL else { return }
+
+        Logger.process.debugThreadOnly("ActorLogToFile: writeloggfile()")
+
+        do {
+            guard let newdata = newlogadata.data(using: .utf8) else {
+                throw NSError(domain: "ActorLogToFile", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode log data"])
+            }
+
+            if reset {
+                try newdata.write(to: logURL)
+            } else {
+                let logPath = logURL.path
+                if fileManager.locationExists(at: logPath, kind: .file) {
+                    Logger.process.debugMessageOnly("ActorLogToFile: append existing logfile \(logURL.path)")
+                    try appendDataToFile(logURL, newdata)
+                } else {
+                    Logger.process.debugMessageOnly("ActorLogToFile: create new logfile \(logURL.path)")
+                    try newdata.write(to: logURL)
                 }
             }
+
+            Logger.process.debugMessageOnly("ActorLogToFile: writeloggfile() logfile \(logURL.path)")
+            try await checkFileSizeAfterWrite()
+        } catch {
+            await propogateError(error: error)
         }
     }
 
-    @concurrent
-    nonisolated func readloggfile() async -> [String]? {
-        let fileManager = FileManager.default
-        if let homepath = URL.userHomeDirectoryURLPath?.path() {
-            let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
-            guard fileManager.locationExists(at: logfileString, kind: .file) == true else { return nil }
-
-            let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
-            let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
-
-            Logger.process.info("LogToFile: readloggfile() ")
-
-            do {
-                let data = try Data(contentsOf: logfileURL)
-                Logger.process.info("LogToFile: read logfile \(logfileURL.path, privacy: .public)")
-                let logfile = String(data: data, encoding: .utf8)
-                return logfile.map { line in
-                    line.components(separatedBy: .newlines)
-                }
-            } catch let err {
-                let error = err
-                await propogateerror(error: error)
-            }
-        }
-
-        return nil
+    func readloggfile() async -> [String]? {
+        guard let content = await readLogfileContent() else { return nil }
+        return content.components(separatedBy: .newlines)
     }
 
-    @concurrent
-    private nonisolated func readloggfileasline() async -> String? {
-        let fileManager = FileManager.default
-        if let homepath = URL.userHomeDirectoryURLPath?.path() {
-            let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
-            guard fileManager.locationExists(at: logfileString, kind: .file) == true else { return nil }
+    // MARK: - Private Methods
 
-            let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
-            let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
-
-            Logger.process.debugtthreadonly("LogToFile: readloggfileasline() ")
-
-            do {
-                let data = try Data(contentsOf: logfileURL)
-                return String(data: data, encoding: .utf8)
-
-            } catch let err {
-                let error = err
-                await propogateerror(error: error)
-            }
+    private func readLogfileContent() async -> String? {
+        guard let logURL = logfileURL,
+              fileManager.fileExists(atPath: logURL.path) else {
+            return nil
         }
 
-        return nil
-    }
+        Logger.process.debugThreadOnly("ActorLogToFile: readLogfileContent()")
 
-    @concurrent
-    private nonisolated func appendloggfileData(_ newlogadata: String, _ reset: Bool) async -> Data? {
-        let fileManager = FileManager.default
-        if let homepath = URL.userHomeDirectoryURLPath?.path() {
-            let logfileString = homepath.appending(SharedConstants().logfilepath) + SharedConstants().jottaUIlogfile
-            // guard fileManager.locationExists(at: logfileString, kind: .file) == true else { return nil }
-
-            let homepathlogfileURL = URL(fileURLWithPath: homepath.appending(SharedConstants().logfilepath))
-            let logfileURL = homepathlogfileURL.appendingPathComponent(SharedConstants().jottaUIlogfile)
-
-            Logger.process.debugtthreadonly("LogToFile: appendloggfileData() ")
-
-            if let newdata = newlogadata.data(using: .utf8) {
-                do {
-                    if reset {
-                        // Only return reset string
-                        return newdata
-                    } else {
-                        // Or append any new log data
-                        if fileManager.locationExists(at: logfileString, kind: .file) == true {
-                            let data = try Data(contentsOf: logfileURL)
-                            var returneddata = data
-                            returneddata.append(newdata)
-                            return returneddata
-                        } else {
-                            // Or if first time write logfile ony return new log data
-                            return newdata
-                        }
-                    }
-                } catch let err {
-                    let error = err
-                    await propogateerror(error: error)
-                }
-            }
-        }
-
-        return nil
-    }
-
-    private func logging(command _: String, stringoutput: [String]) async {
-        var logfile = await readloggfileasline()
-
-        if logfile == nil {
-            logfile = stringoutput.joined(separator: "\n")
-        } else {
-            logfile! += stringoutput.joined(separator: "\n")
-        }
-        if let logfile {
-            await writeloggfile(logfile, false)
+        do {
+            try await checkAndResetIfTooBig()
+            let data = try Data(contentsOf: logURL)
+            Logger.process.debugMessageOnly("ActorLogToFile: read logfile \(logURL.path)")
+            return String(data: data, encoding: .utf8)
+        } catch {
+            await propogateError(error: error)
+            return nil
         }
     }
 
-    @discardableResult
-    init(_ reset: Bool) async {
-        if reset {
-            // Reset loggfile
+    private func checkAndResetIfTooBig() async throws {
+        if let size = try await fileSizeChecker.filesize(),
+           Int(truncating: size) > maxLogfileSize {
             let date = Date().localized_string_from_date()
-            let reset = date + ": " + "logfile is reset..." + "\n"
-            await writeloggfile(reset, true)
+            let resetMessage = date + ": logfile is reset by RsyncUI by checking filesize when reading logfile...\n"
+            await writeloggfile(resetMessage, true)
+            throw FilesizeError.toobig
         }
     }
 
-    @discardableResult
-    init(_ command: String, _ stringoutput: [String]?) async {
-        if let stringoutput {
-            await logging(command: command, stringoutput: stringoutput)
+    private func checkFileSizeAfterWrite() async throws {
+        if let size = try await fileSizeChecker.filesize(),
+           Int(truncating: size) > maxLogfileSize {
+            throw FilesizeError.toobig
         }
     }
 
+    private func appendDataToFile(_ url: URL, _ data: Data) throws {
+        let fileHandle = try FileHandle(forWritingTo: url)
+        defer {
+            do { try fileHandle.close() } catch { /* ignore close errors */ }
+        }
+        try fileHandle.seekToEnd()
+        try fileHandle.write(contentsOf: data)
+    }
+
+    // MARK: - Reset and Logging Methods
+
+    func reset() async {
+        let date = Date().localized_string_from_date()
+        let resetMessage = "\(date): logfile is reset...\n"
+        await writeloggfile(resetMessage, true)
+    }
+
+    func logOutput(_ command: String, _ stringoutputfromrsync: [String]?) async {
+        guard let stringoutputfromrsync, !stringoutputfromrsync.isEmpty else { return }
+
+        let date = Date().localized_string_from_date()
+        let header = "\n\(date): \(command)\n"
+        let output = stringoutputfromrsync.joined(separator: "\n")
+        let logEntry = header + output + "\n"
+        await writeloggfile(logEntry, false)
+    }
+    
     @MainActor
-    func propogateerror(error: Error) {
+    func propogateError(error: Error) {
         SharedReference.shared.errorobject?.alert(error: error)
     }
 }

@@ -20,9 +20,6 @@ struct NavigationJottaUILogfileView: View {
                     Text(data.logrecordline)
                 }
             }
-            .onChange(of: resetloggfile) {
-                afterareload()
-            }
         }
         .padding()
         .onAppear {
@@ -33,7 +30,7 @@ struct NavigationJottaUILogfileView: View {
         .toolbar {
             ToolbarItem {
                 Button {
-                    reset()
+                    resetloggfile = true
                 } label: {
                     Image(systemName: "clear")
                 }
@@ -41,18 +38,9 @@ struct NavigationJottaUILogfileView: View {
                 .buttonStyle(RefinedGlassButtonStyle())
             }
         }
-    }
-
-    func reset() {
-        resetloggfile = true
-
-        Task {
-            await ActorJottaUILogToFile(true)
+        .task (id: resetloggfile) {
+            await ActorJottaUILogToFile().reset()
             logfilerecords = await ActorCreateOutputforview().createoutputlogdata()
         }
-    }
-
-    func afterareload() {
-        resetloggfile = false
     }
 }

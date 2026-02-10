@@ -21,7 +21,7 @@ actor ActorReadJottaCliLogfile {
 
             let homelogfilepathURL = URL(fileURLWithPath: homepath.appending(logfilepath))
             let logfileURL = homelogfilepathURL.appendingPathComponent(SharedConstants().logname)
-            Logger.process.debugtthreadonly("LogToFile: readloggfile() ")
+            Logger.process.debugThreadOnly("LogToFile: readloggfile() ")
 
             do {
                 let data = try Data(contentsOf: logfileURL)
