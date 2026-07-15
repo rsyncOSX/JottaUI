@@ -1,0 +1,112 @@
+APP = JottaUI
+BUNDLE_ID = no.blogspot.$(APP)
+VERSION := $(shell grep -m 1 'MARKETING_VERSION' JottaUI.xcodeproj/project.pbxproj | awk -F' = ' '{print $$2}' | tr -d ';')
+BUILD_PATH = $(PWD)/build
+
+# Arch-specific paths
+APP_PATH_ARM64  = "$(BUILD_PATH)/arm64/$(APP).app"
+ZIP_PATH_ARM64  = "$(BUILD_PATH)/$(APP).$(VERSION).arm64.zip"
+DMG_ARM64       = "$(APP).$(VERSION).arm64.dmg"
+
+# Default target builds both architectures
+build: clean archive notarize-arm64 sign-arm64 prepare-dmg-arm64 open
+
+# Debug builds
+debug: clean archive-debug-arm64 open-debug
+
+# --- MAIN WORKFLOW FUNCTIONS --- #
+
+archive:
+	osascript -e 'display notification "Exporting arm64 archive..." with title "Build the JottaUI"'
+	echo "Exporting application archive (RELEASE - arm64)..."
+	xcodebuild \
+		-scheme $(APP) \
+		-destination 'platform=OS X,arch=arm64' \
+		-configuration Release archive \
+		-archivePath $(BUILD_PATH)/arm64/$(APP).xcarchive \
+		ARCHS=arm64 \
+		ONLY_ACTIVE_ARCH=NO \
+		EXCLUDED_ARCHS=x86_64
+	xcodebuild -exportArchive \
+		-exportOptionsPlist "exportOptions.plist" \
+		-archivePath $(BUILD_PATH)/arm64/$(APP).xcarchive \
+		-exportPath $(BUILD_PATH)/arm64
+	ditto -c -k --keepParent $(APP_PATH_ARM64) $(ZIP_PATH_ARM64)
+	echo "Project archived successfully (RELEASE - arm64)"
+
+archive-debug-arm64:
+	osascript -e 'display notification "Building debug arm64 version..." with title "Build the JottaUI"'
+	echo "Building application (DEBUG - arm64)..."
+	xcodebuild \
+		-scheme $(APP) \
+		-destination 'platform=OS X,arch=arm64' \
+		-configuration Debug archive \
+		-archivePath $(BUILD_PATH)/arm64/$(APP).xcarchive \
+		ARCHS=arm64 \
+		ONLY_ACTIVE_ARCH=NO \
+		EXCLUDED_ARCHS=x86_64
+	xcodebuild -exportArchive \
+		-exportOptionsPlist "exportOptions.plist" \
+		-archivePath $(BUILD_PATH)/arm64/$(APP).xcarchive \
+		-exportPath $(BUILD_PATH)/arm64
+	echo "Debug build completed successfully (arm64)"
+
+notarize-arm64:
+	osascript -e 'display notification "Submitting arm64 app for notarization..." with title "Build the JottaUI"'
+	echo "Submitting arm64 app for notarization..."
+	xcrun notarytool submit --keychain-profile "JottaUI" --wait $(ZIP_PATH_ARM64)
+	echo "JottaUI arm64 successfully notarized"
+
+sign-arm64:
+	osascript -e 'display notification "Stapling arm64 JottaUI..." with title "Build the JottaUI"'
+	echo "Stapling arm64 application..."
+	xcrun stapler staple $(APP_PATH_ARM64)
+	spctl -a -t exec -vvv $(APP_PATH_ARM64)
+	osascript -e 'display notification "JottaUI arm64 successfully stapled" with title "Build the JottaUI"'
+	echo "JottaUI arm64 successfully stapled"
+
+prepare-dmg-arm64:
+	../create-dmg/create-dmg \
+		--volname "JottaUI ver $(VERSION) (Apple Silicon)" \
+		--background "./images/background.png" \
+		--window-pos 200 120 \
+		--window-size 500 320 \
+		--icon-size 80 \
+		--icon "JottaUI.app" 125 175 \
+		--hide-extension "JottaUI.app" \
+		--app-drop-link 375 175 \
+		--no-internet-enable \
+		--codesign 93M47F4H9T \
+		$(DMG_ARM64) \
+		$(APP_PATH_ARM64)
+
+# --- HELPERS --- #
+
+clean:
+	rm -rf $(BUILD_PATH)
+	if [ -a $(PWD)/$(DMG_ARM64) ]; then rm $(PWD)/$(DMG_ARM64); fi;
+
+check:
+	xcrun notarytool log f62c4146-0758-4942-baac-9575190858b8 --keychain-profile "JottaUI"
+
+history:
+	xcrun notarytool history --keychain-profile "JottaUI"
+
+open:
+	osascript -e 'display notification "JottaUI signed and ready for distribution" with title "Build the JottaUI"'
+	echo "Opening working folder..."
+	open $(PWD)
+
+open-debug:
+	osascript -e 'display notification "JottaUI debug builds ready" with title "Build the JottaUI"'
+	echo "Opening working folder..."
+	open $(PWD)
+	echo "Debug builds complete - arm64: $(APP_PATH_ARM64)"
+
+.PHONY: build debug \
+        archive \
+        archive-debug-arm64 \
+        notarize-arm64 \
+        sign-arm64 \
+        prepare-dmg-arm64 \
+        clean check history open open-debug

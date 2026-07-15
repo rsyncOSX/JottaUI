@@ -1,0 +1,122 @@
+//
+//  HelpView.swift
+//  JottaUI
+//
+//  Created by Thomas Evensen on 22/07/2025.
+//
+// swiftlint:disable identifier_name
+
+import ProcessCommand
+import SwiftUI
+
+enum TypeofCommands: String, CaseIterable, Identifiable, CustomStringConvertible {
+    case add
+    case archive
+    case completion
+    case config
+
+    case download
+    case dump
+    case help
+    case ignores
+
+    case list
+    case logfile
+    case login
+    case logout
+
+    case ls
+    case observe
+    case pause
+    case rem
+
+    case resume
+    case scan
+    case share
+    case status
+
+    case sync
+    case tail
+    case trash
+    case version
+
+    case web
+    case webhook
+
+    var id: String {
+        rawValue
+    }
+
+    var description: String {
+        rawValue.localizedLowercase
+    }
+}
+
+struct HelpView: View {
+    @State private var showhelp: Bool = false
+    @State private var jottaclioutput = ObservableJottaOutput()
+    @State private var selectedhelpcommand: TypeofCommands?
+
+    var body: some View {
+        NavigationStack {
+            HStack {
+                pickerselecttypeofhelptask
+                    .onChange(of: selectedhelpcommand) {
+                        help()
+                    }
+                    .frame(width: 300)
+            }
+            .padding()
+            .navigationTitle("Help view")
+            .navigationDestination(isPresented: $showhelp) {
+                JottaStatusOutputView(output: jottaclioutput.output ?? [])
+            }
+        }
+    }
+
+    var pickerselecttypeofhelptask: some View {
+        Picker(NSLocalizedString("Command for help", comment: "") + ":",
+               selection: $selectedhelpcommand) {
+            Text("Select")
+                .tag(nil as TypeofCommands?)
+            ForEach(TypeofCommands.allCases) { Text($0.description)
+                .tag($0)
+            }
+        }
+        .pickerStyle(DefaultPickerStyle())
+    }
+}
+
+extension HelpView {
+    func help() {
+        if let selectedhelpcommand {
+            let handlers = CreateCommandHandlers().createcommandhandlers(
+                processtermination: processtermination
+            )
+            let arguments = ["help", selectedhelpcommand.rawValue]
+            let command = FullpathJottaCli().jottaclipathandcommand()
+
+            // Start progressview
+            let process = ProcessCommand(command: command,
+                                         arguments: arguments,
+                                         handlers: handlers,
+                                         syncmode: nil,
+                                         input: nil)
+            do {
+                try process.executeProcess()
+            } catch let err {
+                let error = err
+                SharedReference.shared.errorobject?.alert(error: error)
+            }
+        }
+    }
+
+    func processtermination(_ stringoutput: [String]?, _: Bool) {
+        Task {
+            jottaclioutput.output = await ActorCreateOutputforview().createaoutputnewlines(stringoutput)
+            showhelp = true
+        }
+    }
+}
+
+// swiftlint:enable identifier_name

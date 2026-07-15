@@ -1,0 +1,58 @@
+//
+//  ActorCreateOutputforview.swift
+//  JottaUI
+//
+//  Created by Thomas Evensen on 02/07/2025.
+//
+
+import OSLog
+
+actor ActorCreateOutputforview {
+    func syncisenabled(_ stringoutput: [String]) async -> Bool {
+        let result: [String] = stringoutput.compactMap { line in
+            let syncisenabled = String(line)
+            return syncisenabled.replacingOccurrences(of: " ", with: "").contains("Sync:") ? line : nil
+        }
+        if result.isEmpty {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    /// The input containes newlines and must be breaked up
+    func createaoutputnewlines(_ stringoutput: [String]?) async -> [JottaCliOutputData] {
+        Logger.process.debugThreadOnly("ActorCreateOutputforview: createaoutput() ")
+        if let stringoutput {
+            return stringoutput.flatMap { line in
+                line.components(separatedBy: .newlines)
+                    .filter { !$0.isEmpty } // Optional: remove empty lines
+                    .map { subline in
+                        JottaCliOutputData(record: subline)
+                    }
+            }
+        }
+        return []
+    }
+
+    func createaoutput(_ stringoutput: [String]?) async -> [JottaCliOutputData] {
+        Logger.process.debugThreadOnly("ActorCreateOutputforview: createaoutput() ")
+        if let stringoutput {
+            return stringoutput.map { filename in
+                JottaCliOutputData(record: filename)
+            }
+        }
+        return []
+    }
+
+    func createoutputlogdata() async -> [LogfileRecords] {
+        Logger.process.debugThreadOnly("ActorCreateOutputforview: createoutputlogdata() ")
+        if let data = await ActorJottaUILogToFile().readloggfile() {
+            return data.map { record in
+                LogfileRecords(logrecordline: record)
+            }
+        } else {
+            return []
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "originHash" : "7008a152218944fc99d53518f15da9d6f8b98b3f9c77a0e24238034f9d5452f5",
+  "pins" : [
+    {
+      "identity" : "processcommand",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rsyncOSX/ProcessCommand.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c3d070a01d30bac147d7889bb8f38db03015d574"
+      }
+    }
+  ],
+  "version" : 3
+}

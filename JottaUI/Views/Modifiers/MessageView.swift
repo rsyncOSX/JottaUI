@@ -1,0 +1,36 @@
+//
+//  MessageView.swift
+//  JottaUI
+//
+//  Created by Thomas Evensen on 06/07/2025.
+//
+
+import SwiftUI
+
+struct MessageView: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    private var mytext: String
+    private var textsize: Font
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 15).fill(Color.gray.opacity(0.3))
+            Text(mytext)
+                .font(textsize)
+                .foregroundColor(colorScheme == .dark ? Color.green : Color.blue)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .allowsTightening(false)
+                .minimumScaleFactor(0.5)
+        }
+        .frame(height: 30, alignment: .center)
+        .background(RoundedRectangle(cornerRadius: 25).stroke(Color.gray, lineWidth: 1))
+        .padding()
+    }
+
+    init(mytext: String, size: Font) {
+        self.mytext = mytext
+        textsize = size
+    }
+}
