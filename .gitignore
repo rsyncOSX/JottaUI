@@ -81,4 +81,4 @@ SourcePackages
 RsyncSwiftUI.xcodeproj/xcuserdata/thomas.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 *.sdkstatcache
 info.plist
-!JottaUIModern/Info.plist
+!JottaUI/Info.plist
